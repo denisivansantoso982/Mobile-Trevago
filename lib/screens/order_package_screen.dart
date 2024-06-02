@@ -115,7 +115,7 @@ class _OrderPackageScreenState extends State<OrderPackageScreen> {
         body: Column(
           children: [
             Container(
-              height: 80,
+              height: 96,
               padding: const EdgeInsets.symmetric(
                 horizontal: 16,
                 vertical: 8,
@@ -160,12 +160,16 @@ class _OrderPackageScreenState extends State<OrderPackageScreen> {
                             ),
                           ),
                           const SizedBox(height: 4),
-                          const Text(
-                            "Pesan",
-                            style: TextStyle(
-                              color: Colors.black87,
-                              fontSize: 16,
-                              fontWeight: FontWeight.w500,
+                          const Expanded(
+                            child: Text(
+                              "Pesan",
+                              softWrap: true,
+                              maxLines: 2,
+                              style: TextStyle(
+                                color: Colors.black87,
+                                fontSize: 16,
+                                fontWeight: FontWeight.w500,
+                              ),
                             ),
                           ),
                         ],
@@ -209,12 +213,16 @@ class _OrderPackageScreenState extends State<OrderPackageScreen> {
                             ),
                           ),
                           const SizedBox(height: 4),
-                          const Text(
-                            "Data Pemesan",
-                            style: TextStyle(
-                              color: Colors.black87,
-                              fontSize: 16,
-                              fontWeight: FontWeight.w500,
+                          const Expanded(
+                            child: Text(
+                              "Data Pemesan",
+                              softWrap: true,
+                              maxLines: 2,
+                              style: TextStyle(
+                                color: Colors.black87,
+                                fontSize: 16,
+                                fontWeight: FontWeight.w500,
+                              ),
                             ),
                           ),
                         ],
@@ -258,12 +266,16 @@ class _OrderPackageScreenState extends State<OrderPackageScreen> {
                             ),
                           ),
                           const SizedBox(height: 4),
-                          const Text(
-                            "Pembayaran",
-                            style: TextStyle(
-                              color: Colors.black87,
-                              fontSize: 16,
-                              fontWeight: FontWeight.w500,
+                          const Expanded(
+                            child: Text(
+                              "Pembayaran",
+                              softWrap: true,
+                              maxLines: 2,
+                              style: TextStyle(
+                                color: Colors.black87,
+                                fontSize: 16,
+                                fontWeight: FontWeight.w500,
+                              ),
                             ),
                           ),
                         ],

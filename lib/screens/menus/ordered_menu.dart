@@ -24,21 +24,21 @@ class _OrderedMenuState extends State<OrderedMenu> {
           Container(
             margin: const EdgeInsets.symmetric(vertical: 4),
             decoration: BoxDecoration(
-              border: Border.all(color: Colors.black.withOpacity(.25)),
+              border: Border.all(width: .5, color: Colors.black38,),
               color: Colors.white,
-              borderRadius: BorderRadius.circular(4),
+              borderRadius: BorderRadius.circular(8),
               boxShadow: [
                 BoxShadow(
                   color: Colors.black.withOpacity(.25),
-                  spreadRadius: 4,
-                  offset: const Offset(1, 2),
+                  blurRadius: 4,
+                  offset: const Offset(.5, 1),
                 ),
               ],
             ),
             child: Column(
               children: [
                 Container(
-                  padding: const EdgeInsets.all(8.0),
+                  padding: const EdgeInsets.all(12),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -71,12 +71,12 @@ class _OrderedMenuState extends State<OrderedMenu> {
                   ),
                 ),
                 Container(
-                  padding: const EdgeInsets.all(8.0),
+                  padding: const EdgeInsets.all(12),
                   color: ColourConstant.lightGray,
                   child: const Row(
                     children: [
                       Icon( Icons.landscape),
-                      SizedBox(width: 4),
+                      SizedBox(width: 8),
                       Text(
                         "Wisata Prambanan",
                         style: TextStyle(
@@ -89,7 +89,7 @@ class _OrderedMenuState extends State<OrderedMenu> {
                   ),
                 ),
                 Container(
-                  padding: const EdgeInsets.all(8.0),
+                  padding: const EdgeInsets.all(12),
                   child: const Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [

@@ -25,7 +25,7 @@ class _DetailPackageScreenState extends State<DetailPackageScreen> {
     return Scaffold(
       body: ListView(
         children: [
-          // *Hotel Images
+          // *Images
           SizedBox(
             height: 300,
             child: Stack(

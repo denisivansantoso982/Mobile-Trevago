@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:trevago_app/constants/constant.dart';
 import 'package:trevago_app/screens/menus/dashboard_menu.dart';
 import 'package:trevago_app/screens/menus/ordered_menu.dart';
+import 'package:trevago_app/screens/menus/profile_menu.dart';
 
 class DashboardScreen extends StatefulWidget {
   const DashboardScreen({super.key});
@@ -24,7 +25,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
       );
     }
     return const Center(
-      child: Text("Profile"),
+      child: ProfileMenu(),
     );
   }
 

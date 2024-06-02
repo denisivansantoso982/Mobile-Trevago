@@ -1,4 +1,7 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:flutter/material.dart';
+import 'package:trevago_app/configs/functions/functions.dart';
 import 'package:trevago_app/constants/constant.dart';
 import 'package:trevago_app/screens/dashboard_screen.dart';
 import 'package:trevago_app/screens/register_screen.dart';
@@ -13,6 +16,71 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
+  final TextEditingController _usernameTextContrroller =
+      TextEditingController();
+  final TextEditingController _passwordTextContrroller =
+      TextEditingController();
+
+  Future<void> handleLogin() async {
+    try {
+      if (validation()) {
+        showDialog( // ?Loading Dialog
+          context: context,
+          barrierDismissible: false,
+          builder: (context) => const AlertDialog(
+            content: SizedBox(
+              width: 64,
+              height: 64,
+              child: Center(child: CircularProgressIndicator()),
+            ),
+          ),
+        );
+        await loginAction(
+          _usernameTextContrroller.text,
+          _passwordTextContrroller.text,
+        );
+        Navigator.of(context).pushNamedAndRemoveUntil(
+          DashboardScreen.route,
+          (Route<dynamic> route) => false,
+        );
+      }
+    } catch (error) {
+      Navigator.of(context).pop(); // ?Close Loading Dialog
+      showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: const Text("Terjadi Kesalahan!"),
+          content: Text("$error"),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: const Text("OKE"),
+            ),
+          ],
+        ),
+      );
+    }
+  }
+
+  bool validation() {
+    if (_usernameTextContrroller.text.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+        content: Text("Username harus diisi!"),
+        backgroundColor: Colors.red,
+      ));
+      return false;
+    } else if (_passwordTextContrroller.text.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+        content: Text("Password harus diisi!"),
+        backgroundColor: Colors.red,
+      ));
+      return false;
+    }
+    return true;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -21,11 +89,24 @@ class _LoginScreenState extends State<LoginScreen> {
         padding: const EdgeInsets.fromLTRB(40, 96, 40, 40),
         children: [
           const Center(
-            child: Icon(Icons.lock_sharp, color: Colors.black, size: 64,),
+            child: Icon(
+              Icons.lock_sharp,
+              color: Colors.black,
+              size: 64,
+            ),
           ),
-          const SizedBox(height: 24,),
+          const SizedBox(
+            height: 24,
+          ),
           const Center(
-            child: Text("Welcome back you've been missed", style: TextStyle(color: ColourConstant.deepGray, fontSize: 14, fontWeight: FontWeight.w400,),),
+            child: Text(
+              "Welcome back you've been missed",
+              style: TextStyle(
+                color: ColourConstant.deepGray,
+                fontSize: 14,
+                fontWeight: FontWeight.w400,
+              ),
+            ),
           ),
           const SizedBox(
             height: 24,
@@ -36,6 +117,8 @@ class _LoginScreenState extends State<LoginScreen> {
               children: [
                 // *Username
                 TextFormField(
+                  controller: _usernameTextContrroller,
+                  keyboardType: TextInputType.name,
                   style: TextStyle(
                     color: Colors.grey[700],
                     fontSize: 14,
@@ -54,6 +137,8 @@ class _LoginScreenState extends State<LoginScreen> {
                 const SizedBox(height: 16),
                 // *Password
                 TextFormField(
+                  controller: _passwordTextContrroller,
+                  keyboardType: TextInputType.visiblePassword,
                   obscureText: true,
                   style: TextStyle(
                     color: Colors.grey[700],
@@ -83,10 +168,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 // *Sign In Button
                 ElevatedButton(
                   onPressed: () {
-                    Navigator.of(context).pushNamedAndRemoveUntil(
-                      DashboardScreen.route,
-                      (Route<dynamic> route) => false,
-                    );
+                    handleLogin();
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.black,
@@ -108,74 +190,6 @@ class _LoginScreenState extends State<LoginScreen> {
             ),
           ),
           const SizedBox(height: 40),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisSize: MainAxisSize.max,
-            children: [
-              Expanded(
-                child: Container(
-                  color: ColourConstant.deepGray,
-                  height: 1,
-                  margin: const EdgeInsets.only(right: 4),
-                ),
-              ),
-              const Text(
-                "Or continue with",
-                style: TextStyle(
-                  color: ColourConstant.deepGray,
-                  fontSize: 14,
-                  fontWeight: FontWeight.w400,
-                ),
-              ),
-              Expanded(
-                child: Container(
-                  color: ColourConstant.deepGray,
-                  height: 1,
-                  margin: const EdgeInsets.only(left: 4),
-                ),
-              ),
-            ],
-          ),
-          const SizedBox(height: 32),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              // *Google Button
-              GestureDetector(
-                onTap: () {},
-                child: Container(
-                  height: 64,
-                  width: 64,
-                  alignment: Alignment.center,
-                  padding: const EdgeInsets.all(8),
-                  decoration: const BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.all(Radius.circular(8)),
-                  ),
-                  child: const Image(image: AssetImage("lib/assets/images/google.png")),
-                ),
-              ),
-              const SizedBox(width: 24),
-              // *Apple Button
-              GestureDetector(
-                onTap: () {},
-                child: Container(
-                  height: 64,
-                  width: 64,
-                  alignment: Alignment.center,
-                  padding: const EdgeInsets.all(8),
-                  decoration: const BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.all(Radius.circular(8)),
-                  ),
-                  child: const Image(
-                      image: AssetImage("lib/assets/images/apple.png")),
-                ),
-              ),
-            ],
-          ),
-          const SizedBox(height: 32),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -202,7 +216,9 @@ class _LoginScreenState extends State<LoginScreen> {
               ),
             ],
           ),
-          const SizedBox(height: 24,),
+          const SizedBox(
+            height: 24,
+          ),
           GestureDetector(
             onTap: () {},
             child: const Text(

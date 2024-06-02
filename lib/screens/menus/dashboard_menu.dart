@@ -436,14 +436,20 @@ class DashboardMenu extends StatelessWidget {
               padding: const EdgeInsets.symmetric(horizontal: 16),
               children: [
                 GestureDetector(
-                  onTap: () {
-                    Navigator.of(context).pushNamed(DetailPackageScreen.route);
-                  },
+                  onTap: () {},
                   child: Container(
                     margin: const EdgeInsets.only(bottom: 8),
                     height: 84,
                     decoration: BoxDecoration(
+                      color: Colors.white,
                       borderRadius: BorderRadius.circular(12),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withOpacity(.25),
+                          blurRadius: 4,
+                          offset: const Offset(.5, 1),
+                        ),
+                      ],
                     ),
                     child: Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -452,7 +458,7 @@ class DashboardMenu extends StatelessWidget {
                           borderRadius: BorderRadius.circular(12),
                           child: const Image(
                             image: NetworkImage(
-                                "https://cf.bstatic.com/xdata/images/hotel/max1024x768/210164636.jpg?k=abaeb4e01c4076157b12bf0ebb0dd10bd5ab1aa56e25540fc183b27a48828000&o=&hp=1"),
+                                "https://asset.kompas.com/crops/aDLG0yHaT9XzO9BMQef0vjDqa0Y=/0x123:1080x843/1200x800/data/photo/2023/02/03/63dcc27c29534.jpg"),
                             height: 84,
                             width: 84,
                             fit: BoxFit.cover,
@@ -465,19 +471,11 @@ class DashboardMenu extends StatelessWidget {
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: [
                               Text(
-                                "Diana Hotel",
+                                "Toyota Avanza Hybrid",
                                 style: TextStyle(
                                   color: Colors.black87,
                                   fontSize: 16,
                                   fontWeight: FontWeight.w500,
-                                ),
-                              ),
-                              Text(
-                                "Sleman, Yogyakarta",
-                                style: TextStyle(
-                                  color: ColourConstant.gray,
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w400,
                                 ),
                               ),
                               Row(
@@ -491,7 +489,7 @@ class DashboardMenu extends StatelessWidget {
                                     ),
                                   ),
                                   Text(
-                                    " / malam",
+                                    " / hari",
                                     style: TextStyle(
                                       color: ColourConstant.gray,
                                       fontSize: 14,
@@ -502,38 +500,26 @@ class DashboardMenu extends StatelessWidget {
                               ),
                             ],
                           ),
-                        ),
-                        const Row(
-                          children: [
-                            Icon(
-                              Icons.star,
-                              color: ColourConstant.yellow,
-                              size: 16,
-                            ),
-                            SizedBox(width: 4),
-                            Text(
-                              "5.0",
-                              style: TextStyle(
-                                color: Colors.black,
-                                fontSize: 16,
-                                fontWeight: FontWeight.w700,
-                              ),
-                            ),
-                          ],
                         ),
                       ],
                     ),
                   ),
                 ),
                 GestureDetector(
-                  onTap: () {
-                    Navigator.of(context).pushNamed(DetailPackageScreen.route);
-                  },
+                  onTap: () {},
                   child: Container(
                     margin: const EdgeInsets.only(bottom: 8),
                     height: 84,
                     decoration: BoxDecoration(
+                      color: Colors.white,
                       borderRadius: BorderRadius.circular(12),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withOpacity(.25),
+                          blurRadius: 4,
+                          offset: const Offset(.5, 1),
+                        ),
+                      ],
                     ),
                     child: Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -542,7 +528,7 @@ class DashboardMenu extends StatelessWidget {
                           borderRadius: BorderRadius.circular(12),
                           child: const Image(
                             image: NetworkImage(
-                                "https://cf.bstatic.com/xdata/images/hotel/max1024x768/210164636.jpg?k=abaeb4e01c4076157b12bf0ebb0dd10bd5ab1aa56e25540fc183b27a48828000&o=&hp=1"),
+                                "https://asset.kompas.com/crops/aDLG0yHaT9XzO9BMQef0vjDqa0Y=/0x123:1080x843/1200x800/data/photo/2023/02/03/63dcc27c29534.jpg"),
                             height: 84,
                             width: 84,
                             fit: BoxFit.cover,
@@ -555,19 +541,11 @@ class DashboardMenu extends StatelessWidget {
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: [
                               Text(
-                                "Diana Hotel",
+                                "Toyota Avanza Hybrid",
                                 style: TextStyle(
                                   color: Colors.black87,
                                   fontSize: 16,
                                   fontWeight: FontWeight.w500,
-                                ),
-                              ),
-                              Text(
-                                "Sleman, Yogyakarta",
-                                style: TextStyle(
-                                  color: ColourConstant.gray,
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w400,
                                 ),
                               ),
                               Row(
@@ -581,7 +559,7 @@ class DashboardMenu extends StatelessWidget {
                                     ),
                                   ),
                                   Text(
-                                    " / malam",
+                                    " / hari",
                                     style: TextStyle(
                                       color: ColourConstant.gray,
                                       fontSize: 14,
@@ -592,24 +570,6 @@ class DashboardMenu extends StatelessWidget {
                               ),
                             ],
                           ),
-                        ),
-                        const Row(
-                          children: [
-                            Icon(
-                              Icons.star,
-                              color: ColourConstant.yellow,
-                              size: 16,
-                            ),
-                            SizedBox(width: 4),
-                            Text(
-                              "5.0",
-                              style: TextStyle(
-                                color: Colors.black,
-                                fontSize: 16,
-                                fontWeight: FontWeight.w700,
-                              ),
-                            ),
-                          ],
                         ),
                       ],
                     ),
