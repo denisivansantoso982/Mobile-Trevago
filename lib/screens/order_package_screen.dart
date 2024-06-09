@@ -1,10 +1,15 @@
+// ignore_for_file: non_constant_identifier_names, use_build_context_synchronously
+
 import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
+import 'package:trevago_app/configs/api/api.dart';
+import 'package:trevago_app/configs/functions/functions.dart';
 import 'package:trevago_app/constants/constant.dart';
 import 'package:trevago_app/screens/dashboard_screen.dart';
+import 'package:trevago_app/screens/login_screen.dart';
 
 class OrderPackageScreen extends StatefulWidget {
   const OrderPackageScreen({super.key});
@@ -16,6 +21,7 @@ class OrderPackageScreen extends StatefulWidget {
 }
 
 class _OrderPackageScreenState extends State<OrderPackageScreen> {
+  static final NumberFormat formatter = NumberFormat("##,000");
   final PageController _pageController = PageController(initialPage: 0);
   final TextEditingController _dateTextController = TextEditingController();
   final TextEditingController _participantTextController =
@@ -24,18 +30,101 @@ class _OrderPackageScreenState extends State<OrderPackageScreen> {
   final TextEditingController _phoneTextController = TextEditingController();
   final TextEditingController _emailTextController = TextEditingController();
   final TextEditingController _noteTextController = TextEditingController();
+  late Map package;
+  late int package_price;
   DateTime selectedDate = DateTime.now();
   int participant = 1;
   int step = 1;
+
+  String formatPrice(int price) => formatter.format(price).replaceAll(",", ".");
 
   @override
   void initState() {
     _dateTextController.text =
         DateFormat("EEEE, dd MMMM yyyy").format(DateTime.now());
+    retrieveUserProfile(context);
     super.initState();
   }
 
-  void handleSubmit() {
+  Future<void> retrieveUserProfile(context) async {
+    try {
+      final Map profile = await getProfile();
+      _nameTextController.text = profile["name"];
+      _phoneTextController.text = profile["phone"];
+      _emailTextController.text = profile["email"];
+    } catch (error) {
+      showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: const Text("Terjadi Kesalahan!"),
+          content: Text("$error"),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: const Text("OKE"),
+            ),
+          ],
+        ),
+      );
+    }
+  }
+
+  Future<void> submitTransaction() async {
+    try {
+      showDialog( // ? Loading Dialog
+        context: context,
+        barrierDismissible: false,
+        builder: (context) => const AlertDialog(
+          content: SizedBox(
+            width: 64,
+            height: 64,
+            child: Center(child: CircularProgressIndicator()),
+          ),
+        ),
+      );
+      await newTransactionPackage(
+        selectedDate,
+        _noteTextController.text,
+        package["id_paket"],
+        participant,
+        package_price,
+        participant * package_price,
+      );
+      Navigator.of(context).pushNamedAndRemoveUntil(
+        DashboardScreen.route,
+        (route) => false,
+      );
+    } catch (error) {
+      Navigator.of(context).pop(); // Close Loading Dialog
+      showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: const Text("Terjadi Kesalahan!"),
+          content: Text("$error"),
+          actions: [
+            TextButton(
+              onPressed: () async {
+                if (error.toString().contains("Forbidden")) {
+                  await logoutAction();
+                  Navigator.of(context).pushNamedAndRemoveUntil(
+                    LoginScreen.route,
+                    (route) => false,
+                  );
+                } else {
+                 Navigator.of(context).pop();
+                }
+              },
+              child: const Text("OKE"),
+            ),
+          ],
+        ),
+      );
+    }
+  }
+
+  void handleSubmit() async {
     if (step <= 1) {
       if (participant < 1) {
         ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
@@ -60,10 +149,7 @@ class _OrderPackageScreenState extends State<OrderPackageScreen> {
         step = 3;
       });
     } else {
-      Navigator.of(context).pushNamedAndRemoveUntil(
-        DashboardScreen.route,
-        (route) => false,
-      );
+      submitTransaction();
     }
   }
 
@@ -86,6 +172,8 @@ class _OrderPackageScreenState extends State<OrderPackageScreen> {
 
   @override
   Widget build(BuildContext context) {
+    package = ModalRoute.of(context)!.settings.arguments as Map;
+    package_price = package["harga"];
     return PopScope(
       canPop: step == 1,
       onPopInvoked: (poped) {
@@ -381,10 +469,10 @@ class _OrderPackageScreenState extends State<OrderPackageScreen> {
                             Row(
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
-                                const Expanded(
+                                Expanded(
                                   child: Text(
-                                    "Rp. 1.200.000/orang",
-                                    style: TextStyle(
+                                    "Rp. ${formatPrice(package["harga"])} / orang",
+                                    style: const TextStyle(
                                       color: ColourConstant.blue,
                                       fontWeight: FontWeight.w700,
                                       fontSize: 16,
@@ -412,11 +500,13 @@ class _OrderPackageScreenState extends State<OrderPackageScreen> {
                                   child: TextField(
                                     controller: _participantTextController,
                                     onChanged: (val) {
-                                      if (val.isNotEmpty) {
-                                        participant = int.tryParse(val) ?? 0;
-                                      } else {
-                                        participant = 0;
-                                      }
+                                      setState(() {
+                                        if (val.isNotEmpty) {
+                                          participant = int.tryParse(val) ?? 0;
+                                        } else {
+                                          participant = 0;
+                                        }
+                                      });
                                     },
                                     keyboardType: TextInputType.number,
                                     textAlign: TextAlign.center,
@@ -464,9 +554,9 @@ class _OrderPackageScreenState extends State<OrderPackageScreen> {
                         alignment: Alignment.bottomCenter,
                         decoration: BoxDecoration(
                           color: Colors.white,
-                          image: const DecorationImage(
+                          image: DecorationImage(
                               image: NetworkImage(
-                                  "https://i0.wp.com/fahum.umsu.ac.id/wp-content/uploads/2024/02/Sejarah-Candi-Prambanan-serta-Fungsinya.jpg?fit=1366%2C768&ssl=1"),
+                                  "${ApiConfig.tour_package_storage}/${package["gambar_wisata"]}"),
                               fit: BoxFit.cover),
                           boxShadow: [
                             BoxShadow(
@@ -483,9 +573,10 @@ class _OrderPackageScreenState extends State<OrderPackageScreen> {
                             vertical: 16,
                           ),
                           color: Colors.white,
-                          child: const Text(
-                            "Wisata Candi Prambanan",
-                            style: TextStyle(
+                          child: Text(
+                            package["nama_paket"],
+                            softWrap: true,
+                            style: const TextStyle(
                               color: Colors.black87,
                               fontSize: 16,
                               fontWeight: FontWeight.w600,
@@ -515,6 +606,7 @@ class _OrderPackageScreenState extends State<OrderPackageScreen> {
                       const SizedBox(height: 4),
                       TextField(
                         controller: _nameTextController,
+                        readOnly: true,
                         style: const TextStyle(
                           color: Colors.black87,
                           fontWeight: FontWeight.w400,
@@ -553,6 +645,7 @@ class _OrderPackageScreenState extends State<OrderPackageScreen> {
                       const SizedBox(height: 4),
                       TextField(
                         controller: _phoneTextController,
+                        readOnly: true,
                         style: const TextStyle(
                           color: Colors.black87,
                           fontWeight: FontWeight.w400,
@@ -592,6 +685,7 @@ class _OrderPackageScreenState extends State<OrderPackageScreen> {
                       const SizedBox(height: 4),
                       TextField(
                         controller: _emailTextController,
+                        readOnly: true,
                         style: const TextStyle(
                           color: Colors.black87,
                           fontWeight: FontWeight.w400,
@@ -635,6 +729,11 @@ class _OrderPackageScreenState extends State<OrderPackageScreen> {
                           fontWeight: FontWeight.w400,
                           fontSize: 16,
                         ),
+                        onChanged: (val) {
+                          setState(() {
+                            _noteTextController.text = val;
+                          });
+                        },
                         keyboardType: TextInputType.multiline,
                         inputFormatters: [
                           LengthLimitingTextInputFormatter(500),
@@ -644,7 +743,7 @@ class _OrderPackageScreenState extends State<OrderPackageScreen> {
                         cursorColor: ColourConstant.blue,
                         decoration: InputDecoration(
                           isDense: true,
-                          hintText: "Catatan",
+                          hintText: "Catatan (opsional)",
                           contentPadding: const EdgeInsets.symmetric(
                             horizontal: 8,
                             vertical: 12,
@@ -683,16 +782,16 @@ class _OrderPackageScreenState extends State<OrderPackageScreen> {
                         ),
                       ),
                       const SizedBox(height: 8),
-                      const Row(
+                      Row(
                         children: [
-                          Icon(
+                          const Icon(
                             Icons.shopping_bag,
                             color: Colors.black87,
                           ),
-                          SizedBox(width: 8),
+                          const SizedBox(width: 8),
                           Text(
-                            "Wisata Candi Prambanan",
-                            style: TextStyle(
+                            package["nama_paket"],
+                            style: const TextStyle(
                               color: Colors.black87,
                               fontSize: 16,
                               fontWeight: FontWeight.w500,
@@ -727,11 +826,11 @@ class _OrderPackageScreenState extends State<OrderPackageScreen> {
                         ),
                       ),
                       const SizedBox(height: 4),
-                      const Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 8),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 8),
                         child: Text(
-                          "Denis Ivan santoso",
-                          style: TextStyle(
+                          _nameTextController.text,
+                          style: const TextStyle(
                             color: Colors.black87,
                             fontSize: 16,
                             fontWeight: FontWeight.w400,
@@ -749,11 +848,11 @@ class _OrderPackageScreenState extends State<OrderPackageScreen> {
                         ),
                       ),
                       const SizedBox(height: 4),
-                      const Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 8),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 8),
                         child: Text(
-                          "0888 2222 4444",
-                          style: TextStyle(
+                          _phoneTextController.text,
+                          style: const TextStyle(
                             color: Colors.black87,
                             fontSize: 16,
                             fontWeight: FontWeight.w400,
@@ -771,11 +870,11 @@ class _OrderPackageScreenState extends State<OrderPackageScreen> {
                         ),
                       ),
                       const SizedBox(height: 4),
-                      const Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 8),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 8),
                         child: Text(
-                          "dddaasdar@mail.com",
-                          style: TextStyle(
+                          _emailTextController.text,
+                          style: const TextStyle(
                             color: Colors.black87,
                             fontSize: 16,
                             fontWeight: FontWeight.w400,
@@ -793,12 +892,12 @@ class _OrderPackageScreenState extends State<OrderPackageScreen> {
                         ),
                       ),
                       const SizedBox(height: 4),
-                      const Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 8),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 8),
                         child: Text(
-                          "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus est magna, efficitur eu sagittis sit amet, lacinia a enim.",
+                          _noteTextController.text,
                           softWrap: true,
-                          style: TextStyle(
+                          style: const TextStyle(
                             color: Colors.black87,
                             fontSize: 16,
                             fontWeight: FontWeight.w400,
@@ -822,11 +921,11 @@ class _OrderPackageScreenState extends State<OrderPackageScreen> {
                         ),
                       ),
                       const SizedBox(height: 8),
-                      const Row(
+                      Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         crossAxisAlignment: CrossAxisAlignment.end,
                         children: [
-                          Text(
+                          const Text(
                             "Item",
                             style: TextStyle(
                               color: Colors.black54,
@@ -835,8 +934,8 @@ class _OrderPackageScreenState extends State<OrderPackageScreen> {
                             ),
                           ),
                           Text(
-                            "Rp. 1.200.000/orang",
-                            style: TextStyle(
+                            "Rp. ${formatPrice(package["harga"])} / orang",
+                            style: const TextStyle(
                               color: ColourConstant.blue,
                               fontSize: 16,
                               fontWeight: FontWeight.w500,
@@ -845,12 +944,12 @@ class _OrderPackageScreenState extends State<OrderPackageScreen> {
                         ],
                       ),
                       const SizedBox(height: 8),
-                      const Row(
+                      Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         crossAxisAlignment: CrossAxisAlignment.end,
                         children: [
-                          Text(
-                            "Kuantitas (Peserta)",
+                          const Text(
+                            "Jumlah (Peserta)",
                             style: TextStyle(
                               color: Colors.black54,
                               fontSize: 16,
@@ -858,8 +957,8 @@ class _OrderPackageScreenState extends State<OrderPackageScreen> {
                             ),
                           ),
                           Text(
-                            "3",
-                            style: TextStyle(
+                            participant.toString(),
+                            style: const TextStyle(
                               color: ColourConstant.blue,
                               fontSize: 16,
                               fontWeight: FontWeight.w500,
@@ -868,11 +967,11 @@ class _OrderPackageScreenState extends State<OrderPackageScreen> {
                         ],
                       ),
                       const SizedBox(height: 8),
-                      const Row(
+                      Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         crossAxisAlignment: CrossAxisAlignment.end,
                         children: [
-                          Text(
+                          const Text(
                             "Total",
                             style: TextStyle(
                               color: Colors.black87,
@@ -881,8 +980,8 @@ class _OrderPackageScreenState extends State<OrderPackageScreen> {
                             ),
                           ),
                           Text(
-                            "Rp. 3.600.000",
-                            style: TextStyle(
+                            "Rp. ${formatPrice(participant * package_price)}",
+                            style: const TextStyle(
                               color: ColourConstant.blue,
                               fontSize: 20,
                               fontWeight: FontWeight.w900,

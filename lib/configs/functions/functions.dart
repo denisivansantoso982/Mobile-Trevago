@@ -17,13 +17,14 @@ Future<Map> loginAction(
   String password,
 ) async {
   try {
-    final Map response = await api.login(username, password);
+    final Map loginResponse = await api.login(username, password);
+    final Map profileResponse = await api.profile(loginResponse["token"]);
     await preferences.setUserLogin(
-      token: response["token"] ?? "",
-      username: username,
-      phone: response["phone"] ?? "",
-      name: response["name"] ?? "",
-      email: response["email"] ?? "",
+      token: loginResponse["token"] ?? "",
+      username: profileResponse["username"],
+      phone: profileResponse["no_hp"] ?? "",
+      name: profileResponse["nama"] ?? "",
+      email: profileResponse["email"] ?? "",
     );
     final Map userInfo = await preferences.getUserProfile();
     if (userInfo["token"].isEmpty) {
@@ -43,20 +44,9 @@ Future<Map> registerAction(
   String phone,
 ) async {
   try {
-    final Map response =
+    final Map registerResponse =
         await api.register(name, email, password, username, phone);
-    await preferences.setUserLogin(
-      token: response["token"],
-      username: username,
-      phone: phone,
-      name: name,
-      email: email,
-    );
-    final Map userInfo = await preferences.getUserProfile();
-    if (userInfo["token"].isEmpty) {
-      throw "Credentials not match";
-    }
-    return userInfo;
+    return registerResponse;
   } catch (error) {
     return Future.error(error);
   }
@@ -70,54 +60,64 @@ Future<void> logoutAction() async {
   }
 }
 
-Future<List> getCities() async {
+Future<Map> getProfile() async {
   try {
     final Map userInfo = await preferences.getUserProfile();
-    final List cities = await api.getListCities(
-      userInfo["token"],
-      userInfo["token_type"],
-    );
-    return cities;
+    return Future.value(userInfo);
   } catch (error) {
     return Future.error(error);
   }
 }
 
-Future<List> getCustomersOutlets() async {
+Future<List> getTourPackages() async {
   try {
-    final Map userInfo = await preferences.getUserProfile();
-    final List cities = await api.getOutlets(
-      userInfo["token"],
-      userInfo["token_type"],
-    );
-    return cities;
+    final List packages = await api.getListTourPackages();
+    return packages;
   } catch (error) {
     return Future.error(error);
   }
 }
 
-Future<void> addNewOutlet(
-  String outlet_name,
-  String phone,
-  String address,
-  String city,
-  String postal_code,
-  Uint8List photo,
-  String name,
+Future<List> getTransports() async {
+  try {
+    final List transports = await api.getListTransports();
+    return transports;
+  } catch (error) {
+    return Future.error(error);
+  }
+}
+
+Future<void> newTransactionPackage(
+  DateTime order_date,
+  String note,
+  int package,
+  int qty,
+  int price,
+  int subtotal,
 ) async {
   try {
     final Map userInfo = await preferences.getUserProfile();
-    await api.addNewCustomerOutlet(
-      outlet_name,
-      phone,
-      address,
-      postal_code,
-      city,
-      photo,
-      name,
+    await api.addTransactionPackage(
       userInfo["token"],
-      userInfo["token_type"],
+      order_date,
+      note,
+      package,
+      qty,
+      price,
+      subtotal,
     );
+  } catch (error) {
+    return Future.error(error);
+  }
+}
+
+Future<List> getTransactions() async {
+  try {
+    final Map userInfo = await preferences.getUserProfile();
+    final List transports = await api.getListTransaction(
+      userInfo["token"],
+    );
+    return Future.value(transports);
   } catch (error) {
     return Future.error(error);
   }

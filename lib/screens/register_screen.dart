@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:trevago_app/configs/functions/functions.dart';
 import 'package:trevago_app/constants/constant.dart';
-import 'package:trevago_app/screens/dashboard_screen.dart';
+import 'package:trevago_app/screens/login_screen.dart';
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key});
@@ -46,8 +46,12 @@ class _RegisterScreenState extends State<RegisterScreen> {
           _usernameTextContrroller.text,
           _phoneTextContrroller.text,
         );
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+          content: Text("Registrasi berhasil!"),
+          backgroundColor: ColourConstant.blue,
+        ));
         Navigator.of(context).pushNamedAndRemoveUntil(
-          DashboardScreen.route,
+          LoginScreen.route,
           (Route<dynamic> route) => false,
         );
       }

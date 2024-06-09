@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+import 'package:trevago_app/configs/api/api.dart';
 import 'package:trevago_app/constants/constant.dart';
 import 'package:trevago_app/screens/order_package_screen.dart';
 
@@ -12,15 +14,14 @@ class DetailPackageScreen extends StatefulWidget {
 }
 
 class _DetailPackageScreenState extends State<DetailPackageScreen> {
-  final List<String> _images = [
-    "https://i0.wp.com/fahum.umsu.ac.id/wp-content/uploads/2024/02/Sejarah-Candi-Prambanan-serta-Fungsinya.jpg?fit=1366%2C768&ssl=1",
-    "https://fatek.umsu.ac.id/wp-content/uploads/2023/06/Candi-Prambanan-Makna-Yang-Terkandung-di-Dalamnya.jpg",
-    "https://d2ile4x3f22snf.cloudfront.net/wp-content/uploads/sites/210/2017/11/05101015/Candi-Prambanan.jpg",
-    "https://static.promediateknologi.id/crop/0x0:0x0/0x0/webp/photo/p2/22/2024/02/19/candi-prambanan-496431654.jpg",
-  ];
+  static final NumberFormat formatter = NumberFormat("##,000");
+  late Map package;
+
+  String formatPrice(int price) => formatter.format(price).replaceAll(",", ".");
 
   @override
   Widget build(BuildContext context) {
+    package = ModalRoute.of(context)!.settings.arguments as Map;
     double screenWidth = MediaQuery.of(context).size.width;
     return Scaffold(
       body: ListView(
@@ -31,17 +32,26 @@ class _DetailPackageScreenState extends State<DetailPackageScreen> {
             child: Stack(
               fit: StackFit.expand,
               children: [
-                PageView.builder(
-                  itemCount: _images.length,
-                  itemBuilder: (context, index) => ClipRRect(
-                    borderRadius: const BorderRadius.vertical(
-                        bottom: Radius.circular(16)),
-                    child: Image(
-                      image: NetworkImage(_images[index]),
-                      fit: BoxFit.cover,
-                    ),
+                ClipRRect(
+                  borderRadius:
+                      const BorderRadius.vertical(bottom: Radius.circular(16)),
+                  child: Image(
+                    image: NetworkImage(
+                        "${ApiConfig.tour_package_storage}/${package["gambar_wisata"]}"),
+                    fit: BoxFit.cover,
                   ),
                 ),
+                // PageView.builder(
+                //   itemCount: _images.length,
+                //   itemBuilder: (context, index) => ClipRRect(
+                //     borderRadius: const BorderRadius.vertical(
+                //         bottom: Radius.circular(16)),
+                //     child: Image(
+                //       image: NetworkImage(_images[index]),
+                //       fit: BoxFit.cover,
+                //     ),
+                //   ),
+                // ),
                 Positioned(
                   top: 4,
                   left: 0,
@@ -81,7 +91,7 @@ class _DetailPackageScreenState extends State<DetailPackageScreen> {
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
                         Text(
-                          "Wisata Candi Prambanan",
+                          package["nama_paket"],
                           softWrap: true,
                           style: TextStyle(
                             color: Colors.grey[900],
@@ -90,28 +100,28 @@ class _DetailPackageScreenState extends State<DetailPackageScreen> {
                           ),
                         ),
                         const SizedBox(height: 8),
-                        const Row(
+                        Row(
                           children: [
-                            Icon(
+                            const Icon(
                               Icons.location_on,
                               color: ColourConstant.blue,
                             ),
-                            SizedBox(width: 4),
+                            const SizedBox(width: 4),
                             Expanded(
                               child: Text(
-                                "Prambanan, Klaten, Jawa Tengah",
+                                package["lokasi"],
                                 softWrap: true,
-                                style: TextStyle(
+                                style: const TextStyle(
                                   fontSize: 16,
                                   fontWeight: FontWeight.w400,
                                   color: Colors.black87,
                                 ),
                               ),
                             ),
-                            SizedBox(width: 12),
+                            const SizedBox(width: 12),
                             Text(
-                              "Rp. 1.200.000",
-                              style: TextStyle(
+                              "Rp. ${formatPrice(package["harga"])}",
+                              style: const TextStyle(
                                 fontSize: 18,
                                 fontWeight: FontWeight.w700,
                                 color: ColourConstant.blue,
@@ -139,11 +149,11 @@ class _DetailPackageScreenState extends State<DetailPackageScreen> {
             ),
           ),
           const SizedBox(height: 8),
-          const Padding(
-            padding: EdgeInsets.symmetric(horizontal: 12),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 12),
             child: Text(
-              "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam vulputate lorem risus, sit amet faucibus metus viverra ut. In tempor urna sed elit eleifend iaculis. Sed a lectus libero. Phasellus nec posuere quam. Vivamus ut risus a dolor venenatis luctus. Proin tristique orci et risus viverra semper. Sed risus turpis.",
-              style: TextStyle(
+              package["deskripsi"],
+              style: const TextStyle(
                 color: Colors.black54,
                 fontWeight: FontWeight.w400,
                 fontSize: 16,
@@ -156,7 +166,7 @@ class _DetailPackageScreenState extends State<DetailPackageScreen> {
         padding: const EdgeInsets.all(8),
         child: ElevatedButton(
           onPressed: () {
-            Navigator.of(context).pushNamed(OrderPackageScreen.route);
+            Navigator.of(context).pushNamed(OrderPackageScreen.route, arguments: package,);
           },
           style: ElevatedButton.styleFrom(
             backgroundColor: ColourConstant.blue,

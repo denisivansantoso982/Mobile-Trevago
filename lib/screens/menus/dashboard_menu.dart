@@ -1,4 +1,8 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:flutter/material.dart';
+import 'package:trevago_app/configs/api/api.dart';
+import 'package:trevago_app/configs/functions/functions.dart';
 import 'package:trevago_app/constants/constant.dart';
 import 'package:trevago_app/screens/detail_package_screen.dart';
 import 'package:intl/intl.dart';
@@ -8,21 +12,55 @@ class DashboardMenu extends StatelessWidget {
 
   static final NumberFormat formatter = NumberFormat("##,000");
 
-  static Map<String, String> tour = {
-    "image":
-        "https://images.tokopedia.net/img/KRMmCm/2022/6/16/56b7b2bc-aeab-4fe9-bb3b-b97ce6ccef67.jpg",
-    "name": "Tugu Yogya",
-    "location": "Yogyakarta",
-  };
-  static Map<String, dynamic> popularTour = {
-    "image":
-        "https://asset.kompas.com/crops/G6nRAO-qBgTMYJTwr4-KSieBnW0=/1x5:677x455/750x500/data/photo/2023/09/25/65119e9ac2bb8.jpg",
-    "name": "Candi Prambanan",
-    "location": "Prambanan, Klaten, Jawa Tengah",
-    "price": 1200000,
-  };
-
   String formatPrice(int price) => formatter.format(price).replaceAll(",", ".");
+
+  Future<List> retrieveTourPackages(BuildContext context) async {
+    try {
+      final List packages = await getTourPackages();
+      return packages;
+    } catch (error) {
+      showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: const Text("Terjadi Kesalahan!"),
+          content: Text("$error"),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: const Text("OKE"),
+            ),
+          ],
+        ),
+      );
+      return [];
+    }
+  }
+
+  Future<List> retrieveTransports(BuildContext context) async {
+    try {
+      final List packages = await getTransports();
+      return packages;
+    } catch (error) {
+      showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: const Text("Terjadi Kesalahan!"),
+          content: Text("$error"),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: const Text("OKE"),
+            ),
+          ],
+        ),
+      );
+      return [];
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -122,7 +160,7 @@ class DashboardMenu extends StatelessWidget {
                         ),
                         const SizedBox(height: 4),
                         Text(
-                          "Car",
+                          "Transport",
                           style: TextStyle(
                             color: ColourConstant.deepGray.withOpacity(.73),
                             fontWeight: FontWeight.w500,
@@ -152,7 +190,7 @@ class DashboardMenu extends StatelessWidget {
                         ),
                         const SizedBox(height: 4),
                         Text(
-                          "Restaurant",
+                          "Restoran",
                           style: TextStyle(
                             color: ColourConstant.deepGray.withOpacity(.73),
                             fontWeight: FontWeight.w500,
@@ -182,7 +220,7 @@ class DashboardMenu extends StatelessWidget {
                         ),
                         const SizedBox(height: 4),
                         Text(
-                          "Tour Packages",
+                          "Paket Wisata",
                           style: TextStyle(
                             color: ColourConstant.deepGray.withOpacity(.73),
                             fontWeight: FontWeight.w500,
@@ -238,168 +276,209 @@ class DashboardMenu extends StatelessWidget {
             ),
             const SizedBox(height: 12),
             SizedBox(
-              height: 200,
-              child: ListView.builder(
-                padding: const EdgeInsets.symmetric(horizontal: 8),
-                scrollDirection: Axis.horizontal,
-                itemCount: 10,
-                itemBuilder: (context, index) => GestureDetector(
-                  onTap: () {
-                    Navigator.of(context).pushNamed(DetailPackageScreen.route);
-                  },
-                  child: Container(
-                    margin: const EdgeInsets.symmetric(horizontal: 8),
-                    width: 240,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        ClipRRect(
-                          borderRadius: BorderRadius.circular(18),
-                          child: Image(
-                            image: NetworkImage(tour["image"]!),
-                            height: 140,
-                            fit: BoxFit.cover,
-                          ),
-                        ),
-                        Text(
-                          tour["name"]!,
-                          style: const TextStyle(
-                            color: ColourConstant.darkGray,
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        Text(
-                          tour["location"]!,
-                          style: const TextStyle(
-                            color: ColourConstant.darkGray,
-                            fontSize: 14,
-                            fontWeight: FontWeight.w400,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ),
-            ),
-            const SizedBox(height: 32),
-            // *Destinasi populer
-            const Padding(
-              padding: EdgeInsets.symmetric(horizontal: 16),
-              child: Text(
-                "Destinasi populer di Yogyakarta",
-                style: TextStyle(
-                  color: ColourConstant.darkGray,
-                  fontSize: 18,
-                  fontWeight: FontWeight.w700,
-                ),
-              ),
-            ),
-            const SizedBox(height: 12),
-            SizedBox(
-              height: 256,
-              child: ListView.builder(
-                padding: const EdgeInsets.symmetric(horizontal: 8),
-                scrollDirection: Axis.horizontal,
-                itemCount: 10,
-                itemBuilder: (context, index) => GestureDetector(
-                  onTap: () {
-                    Navigator.of(context).pushNamed(DetailPackageScreen.route);
-                  },
-                  child: Container(
-                    margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 4,),
-                    padding: const EdgeInsets.only(bottom: 8),
-                    width: 164,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(12),
-                      color: Colors.white,
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.black.withOpacity(.25),
-                          offset: const Offset(1, 2),
-                          blurRadius: 4,
-                        ),
-                      ],
-                    ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        ClipRRect(
+              height: 240,
+              child: FutureBuilder(
+                future: retrieveTourPackages(context),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return const Center(
+                      child: CircularProgressIndicator(),
+                    );
+                  }
+                  return ListView.builder(
+                    padding: const EdgeInsets.symmetric(horizontal: 8),
+                    scrollDirection: Axis.horizontal,
+                    itemCount: !snapshot.hasData ? 0 : snapshot.data!.length,
+                    itemBuilder: (context, index) => GestureDetector(
+                      onTap: () {
+                        Navigator.of(context).pushNamed(
+                          DetailPackageScreen.route,
+                          arguments: snapshot.data!.elementAt(index),
+                        );
+                      },
+                      child: Container(
+                        margin: const EdgeInsets.symmetric(horizontal: 8),
+                        padding: const EdgeInsets.only(bottom: 12),
+                        width: 180,
+                        decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(12),
-                          child: Image(
-                            image: NetworkImage(popularTour["image"]!),
-                            height: 138,
-                            fit: BoxFit.cover,
-                          ),
+                          color: Colors.white,
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black.withOpacity(.25),
+                              blurRadius: 4,
+                              offset: const Offset(1, 2),
+                            ),
+                          ],
                         ),
-                        Flexible(
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 4),
-                            child: Text(
-                              popularTour["name"]!,
-                              softWrap: false,
-                              overflow: TextOverflow.fade,
-                              style: const TextStyle(
-                                color: ColourConstant.darkGray,
-                                fontSize: 16,
-                                fontWeight: FontWeight.bold,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            ClipRRect(
+                              borderRadius: const BorderRadius.vertical(
+                                  top: Radius.circular(12)),
+                              child: Image(
+                                image: NetworkImage(
+                                  '${ApiConfig.tour_package_storage}/${snapshot.data!.elementAt(index)["gambar_wisata"]!}',
+                                ),
+                                height: 150,
+                                fit: BoxFit.cover,
                               ),
                             ),
-                          ),
-                        ),
-                        Flexible(
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 4),
-                            child: Row(
-                              children: [
-                                const Icon(
-                                  Icons.place,
-                                  color: Colors.black,
-                                  size: 10,
+                            Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 8),
+                              child: Text(
+                                snapshot.data!.elementAt(index)["nama_paket"],
+                                overflow: TextOverflow.ellipsis,
+                                softWrap: true,
+                                maxLines: 2,
+                                style: const TextStyle(
+                                  color: ColourConstant.darkGray,
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.w400,
                                 ),
-                                const SizedBox(width: 4),
-                                Expanded(
-                                  child: Text(
-                                    popularTour["location"]!,
-                                    overflow: TextOverflow.fade,
-                                    softWrap: false,
-                                    style: const TextStyle(
-                                      color: ColourConstant.darkGray,
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.w400,
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                        Flexible(
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 4),
-                            child: Text(
-                              "Rp. ${formatPrice(popularTour['price']!)}",
-                              overflow: TextOverflow.fade,
-                              style: const TextStyle(
-                                color: ColourConstant.blue,
-                                fontSize: 18,
-                                fontWeight: FontWeight.w700,
                               ),
                             ),
-                          ),
+                            Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 8),
+                              child: Text(
+                                "Rp. ${formatPrice(snapshot.data!.elementAt(index)["harga"])}",
+                                overflow: TextOverflow.ellipsis,
+                                softWrap: false,
+                                style: const TextStyle(
+                                  color: ColourConstant.blue,
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.w700,
+                                ),
+                              ),
+                            ),
+                          ],
                         ),
-                      ],
+                      ),
                     ),
-                  ),
-                ),
+                  );
+                },
               ),
             ),
+            // const SizedBox(height: 32),
+            // *Destinasi populer
+            // const Padding(
+            //   padding: EdgeInsets.symmetric(horizontal: 16),
+            //   child: Text(
+            //     "Destinasi populer di Yogyakarta",
+            //     style: TextStyle(
+            //       color: ColourConstant.darkGray,
+            //       fontSize: 18,
+            //       fontWeight: FontWeight.w700,
+            //     ),
+            //   ),
+            // ),
+            // const SizedBox(height: 12),
+            // SizedBox(
+            //   height: 256,
+            //   child: ListView.builder(
+            //     padding: const EdgeInsets.symmetric(horizontal: 8),
+            //     scrollDirection: Axis.horizontal,
+            //     itemCount: 10,
+            //     itemBuilder: (context, index) => GestureDetector(
+            //       onTap: () {
+            //         Navigator.of(context).pushNamed(DetailPackageScreen.route);
+            //       },
+            //       child: Container(
+            //         margin: const EdgeInsets.symmetric(
+            //           horizontal: 8,
+            //           vertical: 4,
+            //         ),
+            //         padding: const EdgeInsets.only(bottom: 8),
+            //         width: 164,
+            //         decoration: BoxDecoration(
+            //           borderRadius: BorderRadius.circular(12),
+            //           color: Colors.white,
+            //           boxShadow: [
+            //             BoxShadow(
+            //               color: Colors.black.withOpacity(.25),
+            //               offset: const Offset(1, 2),
+            //               blurRadius: 4,
+            //             ),
+            //           ],
+            //         ),
+            //         child: Column(
+            //           crossAxisAlignment: CrossAxisAlignment.stretch,
+            //           mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            //           children: [
+            //             ClipRRect(
+            //               borderRadius: BorderRadius.circular(12),
+            //               child: Image(
+            //                 image: NetworkImage(popularTour["image"]!),
+            //                 height: 138,
+            //                 fit: BoxFit.cover,
+            //               ),
+            //             ),
+            //             Flexible(
+            //               child: Padding(
+            //                 padding: const EdgeInsets.symmetric(horizontal: 4),
+            //                 child: Text(
+            //                   popularTour["name"]!,
+            //                   softWrap: false,
+            //                   overflow: TextOverflow.fade,
+            //                   style: const TextStyle(
+            //                     color: ColourConstant.darkGray,
+            //                     fontSize: 16,
+            //                     fontWeight: FontWeight.bold,
+            //                   ),
+            //                 ),
+            //               ),
+            //             ),
+            //             Flexible(
+            //               child: Padding(
+            //                 padding: const EdgeInsets.symmetric(horizontal: 4),
+            //                 child: Row(
+            //                   children: [
+            //                     const Icon(
+            //                       Icons.place,
+            //                       color: Colors.black,
+            //                       size: 10,
+            //                     ),
+            //                     const SizedBox(width: 4),
+            //                     Expanded(
+            //                       child: Text(
+            //                         popularTour["location"]!,
+            //                         overflow: TextOverflow.fade,
+            //                         softWrap: false,
+            //                         style: const TextStyle(
+            //                           color: ColourConstant.darkGray,
+            //                           fontSize: 14,
+            //                           fontWeight: FontWeight.w400,
+            //                         ),
+            //                       ),
+            //                     ),
+            //                   ],
+            //                 ),
+            //               ),
+            //             ),
+            //             Flexible(
+            //               child: Padding(
+            //                 padding: const EdgeInsets.symmetric(horizontal: 4),
+            //                 child: Text(
+            //                   "Rp. ${formatPrice(popularTour['price']!)}",
+            //                   overflow: TextOverflow.fade,
+            //                   style: const TextStyle(
+            //                     color: ColourConstant.blue,
+            //                     fontSize: 18,
+            //                     fontWeight: FontWeight.w700,
+            //                   ),
+            //                 ),
+            //               ),
+            //             ),
+            //           ],
+            //         ),
+            //       ),
+            //     ),
+            //   ),
+            // ),
             // *Car
             const SizedBox(height: 32),
             Padding(
@@ -430,152 +509,92 @@ class DashboardMenu extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 12),
-            ListView(
-              physics: const ScrollPhysics(),
-              shrinkWrap: true,
-              padding: const EdgeInsets.symmetric(horizontal: 16),
-              children: [
-                GestureDetector(
-                  onTap: () {},
-                  child: Container(
-                    margin: const EdgeInsets.only(bottom: 8),
-                    height: 84,
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(12),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.black.withOpacity(.25),
-                          blurRadius: 4,
-                          offset: const Offset(.5, 1),
-                        ),
-                      ],
-                    ),
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        ClipRRect(
+            FutureBuilder(
+              future: retrieveTransports(context),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const Center(
+                    child: CircularProgressIndicator(),
+                  );
+                }
+                return ListView.builder(
+                  physics: const ScrollPhysics(),
+                  shrinkWrap: true,
+                  itemCount: !snapshot.hasData ? 0 : snapshot.data!.length,
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                  itemBuilder: (context, index) => GestureDetector(
+                      onTap: () {},
+                      child: Container(
+                        margin: const EdgeInsets.only(bottom: 8),
+                        height: 84,
+                        decoration: BoxDecoration(
+                          color: Colors.white,
                           borderRadius: BorderRadius.circular(12),
-                          child: const Image(
-                            image: NetworkImage(
-                                "https://asset.kompas.com/crops/aDLG0yHaT9XzO9BMQef0vjDqa0Y=/0x123:1080x843/1200x800/data/photo/2023/02/03/63dcc27c29534.jpg"),
-                            height: 84,
-                            width: 84,
-                            fit: BoxFit.cover,
-                          ),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black.withOpacity(.25),
+                              blurRadius: 4,
+                              offset: const Offset(.5, 1),
+                            ),
+                          ],
                         ),
-                        const SizedBox(width: 8),
-                        const Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: [
-                              Text(
-                                "Toyota Avanza Hybrid",
-                                style: TextStyle(
-                                  color: Colors.black87,
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w500,
-                                ),
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            ClipRRect(
+                              borderRadius: BorderRadius.circular(12),
+                              child: Image(
+                                image: NetworkImage(
+                                    '${ApiConfig.transport_storage}/${snapshot.data!.elementAt(index)["gambar_kendaraan"]!}'),
+                                height: 84,
+                                width: 84,
+                                fit: BoxFit.cover,
                               ),
-                              Row(
+                            ),
+                            const SizedBox(width: 8),
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                 children: [
                                   Text(
-                                    "Rp. 200.000",
-                                    style: TextStyle(
-                                      color: ColourConstant.purple,
+                                    snapshot.data!
+                                        .elementAt(index)["nama_kendaraan"]!,
+                                    style: const TextStyle(
+                                      color: Colors.black87,
                                       fontSize: 16,
-                                      fontWeight: FontWeight.w700,
+                                      fontWeight: FontWeight.w500,
                                     ),
                                   ),
-                                  Text(
-                                    " / hari",
-                                    style: TextStyle(
-                                      color: ColourConstant.gray,
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.w400,
-                                    ),
+                                  Row(
+                                    children: [
+                                      Text(
+                                        "Rp. ${formatPrice(snapshot.data!.elementAt(index)["harga_sewa"])}",
+                                        style: const TextStyle(
+                                          color: ColourConstant.purple,
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.w700,
+                                        ),
+                                      ),
+                                      const Text(
+                                        " / hari",
+                                        style: TextStyle(
+                                          color: ColourConstant.gray,
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.w400,
+                                        ),
+                                      ),
+                                    ],
                                   ),
                                 ],
                               ),
-                            ],
-                          ),
+                            ),
+                          ],
                         ),
-                      ],
+                      ),
                     ),
-                  ),
-                ),
-                GestureDetector(
-                  onTap: () {},
-                  child: Container(
-                    margin: const EdgeInsets.only(bottom: 8),
-                    height: 84,
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(12),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.black.withOpacity(.25),
-                          blurRadius: 4,
-                          offset: const Offset(.5, 1),
-                        ),
-                      ],
-                    ),
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        ClipRRect(
-                          borderRadius: BorderRadius.circular(12),
-                          child: const Image(
-                            image: NetworkImage(
-                                "https://asset.kompas.com/crops/aDLG0yHaT9XzO9BMQef0vjDqa0Y=/0x123:1080x843/1200x800/data/photo/2023/02/03/63dcc27c29534.jpg"),
-                            height: 84,
-                            width: 84,
-                            fit: BoxFit.cover,
-                          ),
-                        ),
-                        const SizedBox(width: 8),
-                        const Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: [
-                              Text(
-                                "Toyota Avanza Hybrid",
-                                style: TextStyle(
-                                  color: Colors.black87,
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w500,
-                                ),
-                              ),
-                              Row(
-                                children: [
-                                  Text(
-                                    "Rp. 200.000",
-                                    style: TextStyle(
-                                      color: ColourConstant.purple,
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.w700,
-                                    ),
-                                  ),
-                                  Text(
-                                    " / hari",
-                                    style: TextStyle(
-                                      color: ColourConstant.gray,
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.w400,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ],
+                );
+              }
             ),
           ],
         ),
