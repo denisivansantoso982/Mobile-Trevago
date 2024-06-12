@@ -6,6 +6,7 @@ import 'package:trevago_app/configs/functions/functions.dart';
 import 'package:trevago_app/constants/constant.dart';
 import 'package:trevago_app/screens/detail_package_screen.dart';
 import 'package:intl/intl.dart';
+import 'package:trevago_app/screens/detail_transport_screen.dart';
 
 class DashboardMenu extends StatelessWidget {
   const DashboardMenu({super.key});
@@ -510,20 +511,25 @@ class DashboardMenu extends StatelessWidget {
             ),
             const SizedBox(height: 12),
             FutureBuilder(
-              future: retrieveTransports(context),
-              builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return const Center(
-                    child: CircularProgressIndicator(),
-                  );
-                }
-                return ListView.builder(
-                  physics: const ScrollPhysics(),
-                  shrinkWrap: true,
-                  itemCount: !snapshot.hasData ? 0 : snapshot.data!.length,
-                  padding: const EdgeInsets.symmetric(horizontal: 16),
-                  itemBuilder: (context, index) => GestureDetector(
-                      onTap: () {},
+                future: retrieveTransports(context),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return const Center(
+                      child: CircularProgressIndicator(),
+                    );
+                  }
+                  return ListView.builder(
+                    physics: const ScrollPhysics(),
+                    shrinkWrap: true,
+                    itemCount: !snapshot.hasData ? 0 : snapshot.data!.length,
+                    padding: const EdgeInsets.symmetric(horizontal: 16),
+                    itemBuilder: (context, index) => GestureDetector(
+                      onTap: () {
+                        Navigator.of(context).pushNamed(
+                          DetailTransportScreen.route,
+                          arguments: snapshot.data![index],
+                        );
+                      },
                       child: Container(
                         margin: const EdgeInsets.only(bottom: 8),
                         height: 84,
@@ -555,7 +561,8 @@ class DashboardMenu extends StatelessWidget {
                             Expanded(
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
-                                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
                                 children: [
                                   Text(
                                     snapshot.data!
@@ -593,9 +600,8 @@ class DashboardMenu extends StatelessWidget {
                         ),
                       ),
                     ),
-                );
-              }
-            ),
+                  );
+                }),
           ],
         ),
       ),

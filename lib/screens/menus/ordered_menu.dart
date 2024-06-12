@@ -19,7 +19,7 @@ class _OrderedMenuState extends State<OrderedMenu> {
 
   Future<List> retrieveTransactions() async {
     try {
-      final List transactions = await getTransactions();
+      final List transactions = await getTransactionsPackage();
       return transactions;
     } catch (error) {
       showDialog(

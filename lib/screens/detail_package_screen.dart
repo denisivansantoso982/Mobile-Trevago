@@ -140,7 +140,7 @@ class _DetailPackageScreenState extends State<DetailPackageScreen> {
           const Padding(
             padding: EdgeInsets.symmetric(horizontal: 12),
             child: Text(
-              "informasi Wisata",
+              "Informasi Wisata",
               style: TextStyle(
                 color: Colors.black87,
                 fontWeight: FontWeight.w700,

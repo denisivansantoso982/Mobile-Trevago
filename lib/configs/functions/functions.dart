@@ -1,6 +1,5 @@
 // ignore_for_file: non_constant_identifier_names
 
-import 'package:flutter/services.dart';
 import 'package:trevago_app/configs/api/api.dart';
 import 'package:trevago_app/configs/preferences/preferences.dart';
 
@@ -111,10 +110,36 @@ Future<void> newTransactionPackage(
   }
 }
 
-Future<List> getTransactions() async {
+Future<void> newTransactionTransport(
+  String note,
+  int transport,
+  int duration,
+  int price,
+  int subtotal,
+  String location,
+  DateTime rent_date,
+) async {
   try {
     final Map userInfo = await preferences.getUserProfile();
-    final List transports = await api.getListTransaction(
+    await api.addTransactionTransport(
+      userInfo["token"],
+      note,
+      transport,
+      duration,
+      price,
+      subtotal,
+      location,
+      rent_date,
+    );
+  } catch (error) {
+    return Future.error(error);
+  }
+}
+
+Future<List> getTransactionsPackage() async {
+  try {
+    final Map userInfo = await preferences.getUserProfile();
+    final List transports = await api.getListTransactionPackage(
       userInfo["token"],
     );
     return Future.value(transports);
