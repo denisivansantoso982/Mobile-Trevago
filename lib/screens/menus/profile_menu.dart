@@ -3,8 +3,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:trevago_app/configs/functions/functions.dart';
-import 'package:trevago_app/constants/constant.dart';
-import 'package:trevago_app/screens/login_screen.dart';
+import 'package:trevago_app/utils/utils.dart';
+import 'package:trevago_app/models/users.dart';
+import 'package:trevago_app/screens/auth/login_screen.dart';
 
 class ProfileMenu extends StatefulWidget {
   const ProfileMenu({super.key});
@@ -27,9 +28,9 @@ class _ProfileMenuState extends State<ProfileMenu> {
     );
   }
 
-  Future<Map> retrieveUserProfile(context) async {
+  Future<Users?> retrieveUserProfile(context) async {
     try {
-      final Map profile = await getProfile();
+      final Users profile = await getProfile();
       return profile;
     } catch (error) {
       showDialog(
@@ -47,7 +48,7 @@ class _ProfileMenuState extends State<ProfileMenu> {
           ],
         ),
       );
-      return {};
+      return null;
     }
   }
 
@@ -72,10 +73,10 @@ class _ProfileMenuState extends State<ProfileMenu> {
                   child: CircularProgressIndicator(),
                 );
               }
-              _nameTextController.text = snapshot.data!["name"];
-              _phoneTextController.text = snapshot.data!["phone"];
-              _emailTextController.text = snapshot.data!["email"];
-              _usernameTextController.text = snapshot.data!["username"];
+              _nameTextController.text = snapshot.hasData ? snapshot.data!.name : "";
+              _phoneTextController.text = snapshot.hasData ? snapshot.data!.phone : "";
+              _emailTextController.text = snapshot.hasData ? snapshot.data!.email : "";
+              _usernameTextController.text = snapshot.hasData ? snapshot.data!.username : "";
               return Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -101,7 +102,7 @@ class _ProfileMenuState extends State<ProfileMenu> {
                     inputFormatters: [
                       LengthLimitingTextInputFormatter(100),
                     ],
-                    cursorColor: ColourConstant.blue,
+                    cursorColor: ColourUtils.blue,
                     decoration: InputDecoration(
                       isDense: true,
                       hintText: "Nama",
@@ -110,7 +111,7 @@ class _ProfileMenuState extends State<ProfileMenu> {
                         vertical: 12,
                       ),
                       focusedBorder: const OutlineInputBorder(
-                        borderSide: BorderSide(color: ColourConstant.blue),
+                        borderSide: BorderSide(color: ColourUtils.blue),
                       ),
                       border: OutlineInputBorder(
                         borderSide: BorderSide(color: Colors.grey.shade300),
@@ -141,7 +142,7 @@ class _ProfileMenuState extends State<ProfileMenu> {
                       LengthLimitingTextInputFormatter(15),
                       FilteringTextInputFormatter.digitsOnly,
                     ],
-                    cursorColor: ColourConstant.blue,
+                    cursorColor: ColourUtils.blue,
                     decoration: InputDecoration(
                       isDense: true,
                       hintText: "Nomor Telepon",
@@ -150,7 +151,7 @@ class _ProfileMenuState extends State<ProfileMenu> {
                         vertical: 12,
                       ),
                       focusedBorder: const OutlineInputBorder(
-                        borderSide: BorderSide(color: ColourConstant.blue),
+                        borderSide: BorderSide(color: ColourUtils.blue),
                       ),
                       border: OutlineInputBorder(
                         borderSide: BorderSide(color: Colors.grey.shade300),
@@ -180,7 +181,7 @@ class _ProfileMenuState extends State<ProfileMenu> {
                     inputFormatters: [
                       LengthLimitingTextInputFormatter(100),
                     ],
-                    cursorColor: ColourConstant.blue,
+                    cursorColor: ColourUtils.blue,
                     decoration: InputDecoration(
                       isDense: true,
                       hintText: "Email",
@@ -189,7 +190,7 @@ class _ProfileMenuState extends State<ProfileMenu> {
                         vertical: 12,
                       ),
                       focusedBorder: const OutlineInputBorder(
-                        borderSide: BorderSide(color: ColourConstant.blue),
+                        borderSide: BorderSide(color: ColourUtils.blue),
                       ),
                       border: OutlineInputBorder(
                         borderSide: BorderSide(color: Colors.grey.shade300),
@@ -219,7 +220,7 @@ class _ProfileMenuState extends State<ProfileMenu> {
                     inputFormatters: [
                       LengthLimitingTextInputFormatter(50),
                     ],
-                    cursorColor: ColourConstant.blue,
+                    cursorColor: ColourUtils.blue,
                     decoration: InputDecoration(
                       isDense: true,
                       hintText: "Username",
@@ -228,7 +229,7 @@ class _ProfileMenuState extends State<ProfileMenu> {
                         vertical: 12,
                       ),
                       focusedBorder: const OutlineInputBorder(
-                        borderSide: BorderSide(color: ColourConstant.blue),
+                        borderSide: BorderSide(color: ColourUtils.blue),
                       ),
                       border: OutlineInputBorder(
                         borderSide: BorderSide(color: Colors.grey.shade300),
@@ -247,7 +248,7 @@ class _ProfileMenuState extends State<ProfileMenu> {
             child: const Text(
               "Logout",
               style: TextStyle(
-                color: ColourConstant.blue,
+                color: ColourUtils.blue,
                 fontSize: 16,
                 fontWeight: FontWeight.w700,
               ),

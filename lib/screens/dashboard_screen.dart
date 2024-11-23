@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:trevago_app/constants/constant.dart';
+import 'package:trevago_app/utils/utils.dart';
 import 'package:trevago_app/screens/menus/dashboard_menu.dart';
 import 'package:trevago_app/screens/menus/ordered_menu.dart';
 import 'package:trevago_app/screens/menus/profile_menu.dart';
@@ -36,20 +36,12 @@ class _DashboardScreenState extends State<DashboardScreen> {
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: currentIndex,
         backgroundColor: Colors.white,
-        selectedItemColor: Colors.black,
-        unselectedItemColor: Colors.black,
+        selectedItemColor: ColourUtils.blue,
+        unselectedItemColor: ColourUtils.gray,
         showUnselectedLabels: true,
         elevation: 16,
-        selectedLabelStyle: const TextStyle(
-          color: ColourConstant.lightBlue,
-          fontWeight: FontWeight.w600,
-          fontSize: 16,
-        ),
-        unselectedLabelStyle: const TextStyle(
-          color: ColourConstant.lightBlue,
-          fontWeight: FontWeight.w400,
-          fontSize: 14,
-        ),
+        selectedLabelStyle: TextStyleUtils.mediumBlue(16),
+        unselectedLabelStyle: TextStyleUtils.regularGray(14),
         onTap: (index) {
           setState(() {
             currentIndex = index;
@@ -57,19 +49,19 @@ class _DashboardScreenState extends State<DashboardScreen> {
         },
         items: const [
           BottomNavigationBarItem(
-            icon: Icon(Icons.home_outlined),
-            activeIcon: Icon(Icons.home),
+            icon: Icon(Icons.home_outlined, color: ColourUtils.lightGray,),
+            activeIcon: Icon(Icons.home, color: ColourUtils.blue,),
             label: "Beranda",
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.list_alt_outlined),
-            activeIcon: Icon(Icons.list),
+            icon: Icon(Icons.list_alt_outlined, color: ColourUtils.lightGray,),
+            activeIcon: Icon(Icons.list, color: ColourUtils.blue,),
             label: "Pesanan",
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.person_outlined),
-            activeIcon: Icon(Icons.person),
-            label: "Profile",
+            icon: Icon(Icons.person_outlined, color: ColourUtils.lightGray,),
+            activeIcon: Icon(Icons.person, color: ColourUtils.blue,),
+            label: "Saya",
           ),
         ],
       ),

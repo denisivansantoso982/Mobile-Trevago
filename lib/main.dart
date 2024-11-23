@@ -1,13 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:trevago_app/constants/constant.dart';
+import 'package:trevago_app/screens/tours/tours_screen.dart';
+import 'package:trevago_app/utils/utils.dart';
 import 'package:trevago_app/screens/dashboard_screen.dart';
-import 'package:trevago_app/screens/detail_package_screen.dart';
-import 'package:trevago_app/screens/detail_transport_screen.dart';
-import 'package:trevago_app/screens/login_screen.dart';
-import 'package:trevago_app/screens/order_package_screen.dart';
-import 'package:trevago_app/screens/order_transport_screen.dart';
-import 'package:trevago_app/screens/register_screen.dart';
+import 'package:trevago_app/screens/tour_packages/detail_order_package_screen.dart';
+import 'package:trevago_app/screens/tour_packages/detail_package_screen.dart';
+import 'package:trevago_app/screens/transports/detail_transport_screen.dart';
+import 'package:trevago_app/screens/auth/login_screen.dart';
+import 'package:trevago_app/screens/tour_packages/order_package_screen.dart';
+import 'package:trevago_app/screens/transports/order_transport_screen.dart';
+import 'package:trevago_app/screens/tour_packages/packages_screen.dart';
+import 'package:trevago_app/screens/auth/register_screen.dart';
 import 'package:trevago_app/screens/splash_screen.dart';
+import 'package:trevago_app/screens/welcome_screen.dart';
 
 void main() {
   runApp(const MyApp());
@@ -22,15 +26,18 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Travego',
       theme: ThemeData(
+        scaffoldBackgroundColor: Colors.white,
         colorScheme: ColorScheme.fromSeed(
-          seedColor: ColourConstant.lightBlue,
-          secondary: ColourConstant.lightBlue,
+          seedColor: ColourUtils.blue,
+          secondary: ColourUtils.blue,
+          primary: ColourUtils.blue,
         ),
         useMaterial3: true,
       ),
       initialRoute: SplashScreen.route,
       routes: {
         SplashScreen.route: (context) => const SplashScreen(),
+        WelcomeScreen.route: (context) => const WelcomeScreen(),
         LoginScreen.route: (context) => const LoginScreen(),
         RegisterScreen.route: (context) => const RegisterScreen(),
         DashboardScreen.route: (context) => const DashboardScreen(),
@@ -38,6 +45,9 @@ class MyApp extends StatelessWidget {
         OrderPackageScreen.route: (context) => const OrderPackageScreen(),
         OrderTransportScreen.route: (context) => const OrderTransportScreen(),
         DetailTransportScreen.route: (context) => const DetailTransportScreen(),
+        DetailOrderPackageScreen.route: (context) => DetailOrderPackageScreen(),
+        PackagesScreen.route: (context) => const PackagesScreen(),
+        ToursScreen.route: (context) => const ToursScreen(),
       },
     );
   }

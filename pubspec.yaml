@@ -38,6 +38,7 @@ dependencies:
   shared_preferences: ^2.2.3
   intl: ^0.19.0
   http: ^1.2.1
+  provider: ^6.1.2
 
 dev_dependencies:
   flutter_test:
@@ -48,7 +49,7 @@ dev_dependencies:
   # activated in the `analysis_options.yaml` file located at the root of your
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
-  flutter_lints: ^3.0.0
+  flutter_lints: ^4.0.0
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
@@ -78,17 +79,20 @@ flutter:
   # list giving the asset and other descriptors for the font. For
   # example:
   fonts:
-    - family: Inter
+    - family: OpenSans
       fonts:
-        - asset: lib/assets/fonts/Inter-Black.ttf
-        - asset: lib/assets/fonts/Inter-Bold.ttf
-        - asset: lib/assets/fonts/Inter-ExtraBold.ttf
-        - asset: lib/assets/fonts/Inter-ExtraLight.ttf
-        - asset: lib/assets/fonts/Inter-Light.ttf
-        - asset: lib/assets/fonts/Inter-Medium.ttf
-        - asset: lib/assets/fonts/Inter-Regular.ttf
-        - asset: lib/assets/fonts/Inter-SemiBold.ttf
-        - asset: lib/assets/fonts/Inter-Thin.ttf
+        - asset: lib/assets/fonts/OpenSans-Light.ttf
+        - asset: lib/assets/fonts/OpenSans-Regular.ttf
+        - asset: lib/assets/fonts/OpenSans-Medium.ttf
+        - asset: lib/assets/fonts/OpenSans-SemiBold.ttf
+        - asset: lib/assets/fonts/OpenSans-Bold.ttf
+        - asset: lib/assets/fonts/OpenSans-ExtraBold.ttf
+        - asset: lib/assets/fonts/OpenSans-LightItalic.ttf
+        - asset: lib/assets/fonts/OpenSans-Italic.ttf
+        - asset: lib/assets/fonts/OpenSans-MediumItalic.ttf
+        - asset: lib/assets/fonts/OpenSans-SemiBoldItalic.ttf
+        - asset: lib/assets/fonts/OpenSans-BoldItalic.ttf
+        - asset: lib/assets/fonts/OpenSans-ExtraBoldItalic.ttf
           style: italic
   #   - family: Trajan Pro
   #     fonts:

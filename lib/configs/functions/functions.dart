@@ -2,31 +2,32 @@
 
 import 'package:trevago_app/configs/api/api.dart';
 import 'package:trevago_app/configs/preferences/preferences.dart';
+import 'package:trevago_app/models/users.dart';
 
 Preferences preferences = Preferences();
 ApiConfig api = ApiConfig();
 
-Future<Map> getExistingUser() async {
-  final Map userInfo = await preferences.getUserProfile();
+Future<Users> getExistingUser() async {
+  final Users userInfo = await preferences.getUserProfile();
   return userInfo;
 }
 
-Future<Map> loginAction(
+Future<Users> loginAction(
   String username,
   String password,
 ) async {
   try {
     final Map loginResponse = await api.login(username, password);
     final Map profileResponse = await api.profile(loginResponse["token"]);
-    await preferences.setUserLogin(
+    await preferences.setUserLogin(Users(
       token: loginResponse["token"] ?? "",
       username: profileResponse["username"],
       phone: profileResponse["no_hp"] ?? "",
       name: profileResponse["nama"] ?? "",
       email: profileResponse["email"] ?? "",
-    );
-    final Map userInfo = await preferences.getUserProfile();
-    if (userInfo["token"].isEmpty) {
+    ));
+    final Users userInfo = await preferences.getUserProfile();
+    if (userInfo.token.isEmpty) {
       throw "Credentials not match";
     }
     return userInfo;
@@ -59,9 +60,9 @@ Future<void> logoutAction() async {
   }
 }
 
-Future<Map> getProfile() async {
+Future<Users> getProfile() async {
   try {
-    final Map userInfo = await preferences.getUserProfile();
+    final Users userInfo = await preferences.getUserProfile();
     return Future.value(userInfo);
   } catch (error) {
     return Future.error(error);
@@ -71,6 +72,15 @@ Future<Map> getProfile() async {
 Future<List> getTourPackages() async {
   try {
     final List packages = await api.getListTourPackages();
+    return packages;
+  } catch (error) {
+    return Future.error(error);
+  }
+}
+
+Future<List> getTours() async {
+  try {
+    final List packages = await api.getListTours();
     return packages;
   } catch (error) {
     return Future.error(error);
@@ -95,9 +105,9 @@ Future<void> newTransactionPackage(
   int subtotal,
 ) async {
   try {
-    final Map userInfo = await preferences.getUserProfile();
+    final Users userInfo = await preferences.getUserProfile();
     await api.addTransactionPackage(
-      userInfo["token"],
+      userInfo.token,
       order_date,
       note,
       package,
@@ -120,9 +130,9 @@ Future<void> newTransactionTransport(
   DateTime rent_date,
 ) async {
   try {
-    final Map userInfo = await preferences.getUserProfile();
+    final Users userInfo = await preferences.getUserProfile();
     await api.addTransactionTransport(
-      userInfo["token"],
+      userInfo.token,
       note,
       transport,
       duration,
@@ -138,9 +148,9 @@ Future<void> newTransactionTransport(
 
 Future<List> getTransactionsPackage() async {
   try {
-    final Map userInfo = await preferences.getUserProfile();
+    final Users userInfo = await preferences.getUserProfile();
     final List transports = await api.getListTransactionPackage(
-      userInfo["token"],
+      userInfo.token,
     );
     return Future.value(transports);
   } catch (error) {

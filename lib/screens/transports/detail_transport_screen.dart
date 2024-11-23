@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:trevago_app/configs/api/api.dart';
-import 'package:trevago_app/constants/constant.dart';
-import 'package:trevago_app/screens/order_transport_screen.dart';
+import 'package:trevago_app/utils/utils.dart';
+import 'package:trevago_app/screens/transports/order_transport_screen.dart';
 
 class DetailTransportScreen extends StatefulWidget {
   const DetailTransportScreen({super.key});
@@ -106,7 +106,7 @@ class _DetailTransportScreenState extends State<DetailTransportScreen> {
                           style: const TextStyle(
                             fontSize: 18,
                             fontWeight: FontWeight.w700,
-                            color: ColourConstant.blue,
+                            color: ColourUtils.blue,
                           ),
                         ),
                       ],
@@ -214,7 +214,7 @@ class _DetailTransportScreenState extends State<DetailTransportScreen> {
             Navigator.of(context).pushNamed(OrderTransportScreen.route, arguments: transport,);
           },
           style: ElevatedButton.styleFrom(
-            backgroundColor: ColourConstant.blue,
+            backgroundColor: ColourUtils.blue,
             shape:
                 RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
           ),

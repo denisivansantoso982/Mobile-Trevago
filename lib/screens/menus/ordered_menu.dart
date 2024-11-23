@@ -3,7 +3,9 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:trevago_app/configs/functions/functions.dart';
-import 'package:trevago_app/constants/constant.dart';
+import 'package:trevago_app/utils/utils.dart';
+import 'package:trevago_app/screens/tour_packages/detail_order_package_screen.dart';
+import 'package:trevago_app/screens/auth/login_screen.dart';
 
 class OrderedMenu extends StatefulWidget {
   const OrderedMenu({super.key});
@@ -29,8 +31,16 @@ class _OrderedMenuState extends State<OrderedMenu> {
           content: Text("$error"),
           actions: [
             TextButton(
-              onPressed: () {
-                Navigator.of(context).pop();
+              onPressed: () async {
+                if (error.toString().contains("Forbidden")) {
+                  await logoutAction();
+                  Navigator.of(context).pushNamedAndRemoveUntil(
+                    LoginScreen.route,
+                    (route) => false,
+                  );
+                } else {
+                  Navigator.of(context).pop();
+                }
               },
               child: const Text("OKE"),
             ),
@@ -46,9 +56,7 @@ class _OrderedMenuState extends State<OrderedMenu> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,
-        title: const Text(
-          "Daftar Pesanan"
-        ),
+        title: const Text("Daftar Pesanan"),
       ),
       body: FutureBuilder(
         future: retrieveTransactions(),
@@ -59,12 +67,25 @@ class _OrderedMenuState extends State<OrderedMenu> {
             );
           }
           return ListView.builder(
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 20,),
+            padding: const EdgeInsets.symmetric(
+              horizontal: 16,
+              vertical: 20,
+            ),
             itemCount: snapshot.data!.length,
-            itemBuilder: (context, index) => Container(
+            itemBuilder: (context, index) => GestureDetector(
+              onTap: () {
+                Navigator.of(context).pushNamed(
+                  DetailOrderPackageScreen.route,
+                  arguments: snapshot.data![index],
+                );
+              },
+              child: Container(
                 margin: const EdgeInsets.symmetric(vertical: 4),
                 decoration: BoxDecoration(
-                  border: Border.all(width: .5, color: Colors.black38,),
+                  border: Border.all(
+                    width: .5,
+                    color: Colors.black38,
+                  ),
                   color: Colors.white,
                   borderRadius: BorderRadius.circular(8),
                   boxShadow: [
@@ -101,7 +122,7 @@ class _OrderedMenuState extends State<OrderedMenu> {
                               overflow: TextOverflow.ellipsis,
                               textAlign: TextAlign.end,
                               style: const TextStyle(
-                                color: ColourConstant.blue,
+                                color: ColourUtils.blue,
                                 fontSize: 18,
                                 fontWeight: FontWeight.w600,
                               ),
@@ -112,10 +133,10 @@ class _OrderedMenuState extends State<OrderedMenu> {
                     ),
                     Container(
                       padding: const EdgeInsets.all(12),
-                      color: ColourConstant.lightGray,
+                      color: ColourUtils.lightGray,
                       child: Row(
                         children: [
-                          const Icon( Icons.landscape),
+                          const Icon(Icons.landscape),
                           const SizedBox(width: 8),
                           Text(
                             snapshot.data![index]["nama_paket"],
@@ -139,7 +160,7 @@ class _OrderedMenuState extends State<OrderedMenu> {
                               softWrap: false,
                               overflow: TextOverflow.ellipsis,
                               style: TextStyle(
-                                color: ColourConstant.blue,
+                                color: ColourUtils.blue,
                                 fontSize: 16,
                                 fontWeight: FontWeight.w600,
                               ),
@@ -151,6 +172,7 @@ class _OrderedMenuState extends State<OrderedMenu> {
                   ],
                 ),
               ),
+            ),
           );
         },
       ),

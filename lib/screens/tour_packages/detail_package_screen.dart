@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:trevago_app/configs/api/api.dart';
-import 'package:trevago_app/constants/constant.dart';
-import 'package:trevago_app/screens/order_package_screen.dart';
+import 'package:trevago_app/models/tour_package_model.dart';
+import 'package:trevago_app/utils/utils.dart';
+import 'package:trevago_app/screens/tour_packages/order_package_screen.dart';
 
 class DetailPackageScreen extends StatefulWidget {
   const DetailPackageScreen({super.key});
@@ -15,13 +16,13 @@ class DetailPackageScreen extends StatefulWidget {
 
 class _DetailPackageScreenState extends State<DetailPackageScreen> {
   static final NumberFormat formatter = NumberFormat("##,000");
-  late Map package;
+  late TourPackageModel package;
 
   String formatPrice(int price) => formatter.format(price).replaceAll(",", ".");
 
   @override
   Widget build(BuildContext context) {
-    package = ModalRoute.of(context)!.settings.arguments as Map;
+    package = ModalRoute.of(context)!.settings.arguments as TourPackageModel;
     double screenWidth = MediaQuery.of(context).size.width;
     return Scaffold(
       body: ListView(
@@ -37,7 +38,7 @@ class _DetailPackageScreenState extends State<DetailPackageScreen> {
                       const BorderRadius.vertical(bottom: Radius.circular(16)),
                   child: Image(
                     image: NetworkImage(
-                        "${ApiConfig.tour_package_storage}/${package["gambar_wisata"]}"),
+                        "${ApiConfig.tour_package_storage}/${package.tour.image}"),
                     fit: BoxFit.cover,
                   ),
                 ),
@@ -58,11 +59,11 @@ class _DetailPackageScreenState extends State<DetailPackageScreen> {
                   child: ElevatedButton(
                     onPressed: () => Navigator.of(context).pop(),
                     style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.white,
+                        backgroundColor: Colors.white.withOpacity(.8),
                         shape: const CircleBorder()),
                     child: const Icon(
                       Icons.chevron_left,
-                      color: Colors.black,
+                      color: ColourUtils.blue,
                     ),
                   ),
                 ),
@@ -91,7 +92,7 @@ class _DetailPackageScreenState extends State<DetailPackageScreen> {
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
                         Text(
-                          package["nama_paket"],
+                          package.title,
                           softWrap: true,
                           style: TextStyle(
                             color: Colors.grey[900],
@@ -104,12 +105,12 @@ class _DetailPackageScreenState extends State<DetailPackageScreen> {
                           children: [
                             const Icon(
                               Icons.location_on,
-                              color: ColourConstant.blue,
+                              color: ColourUtils.blue,
                             ),
                             const SizedBox(width: 4),
                             Expanded(
                               child: Text(
-                                package["lokasi"],
+                                package.tour.location,
                                 softWrap: true,
                                 style: const TextStyle(
                                   fontSize: 16,
@@ -120,11 +121,11 @@ class _DetailPackageScreenState extends State<DetailPackageScreen> {
                             ),
                             const SizedBox(width: 12),
                             Text(
-                              "Rp. ${formatPrice(package["harga"])}",
+                              "Rp. ${formatPrice(package.price)}",
                               style: const TextStyle(
                                 fontSize: 18,
                                 fontWeight: FontWeight.w700,
-                                color: ColourConstant.blue,
+                                color: ColourUtils.blue,
                               ),
                             ),
                           ],
@@ -152,7 +153,7 @@ class _DetailPackageScreenState extends State<DetailPackageScreen> {
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 12),
             child: Text(
-              package["deskripsi"],
+              package.description,
               style: const TextStyle(
                 color: Colors.black54,
                 fontWeight: FontWeight.w400,
@@ -169,7 +170,7 @@ class _DetailPackageScreenState extends State<DetailPackageScreen> {
             Navigator.of(context).pushNamed(OrderPackageScreen.route, arguments: package,);
           },
           style: ElevatedButton.styleFrom(
-            backgroundColor: ColourConstant.blue,
+            backgroundColor: ColourUtils.blue,
             shape:
                 RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
           ),
