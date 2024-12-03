@@ -4,6 +4,7 @@ class TourModel {
     required this.title,
     required this.location,
     required this.price,
+    required this.description,
     required this.image,
   });
 
@@ -11,5 +12,6 @@ class TourModel {
   final String title;
   final String location;
   final int price;
+  final String description;
   final String image;
 }

@@ -6,7 +6,8 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:trevago_app/configs/api/api.dart';
 import 'package:trevago_app/configs/functions/functions.dart';
-import 'package:trevago_app/screens/tour_packages/detail_package_screen.dart';
+import 'package:trevago_app/models/tour_model.dart';
+import 'package:trevago_app/screens/tours/detail_tour_screen.dart';
 import 'package:trevago_app/utils/utils.dart';
 import 'package:trevago_app/widgets/list_tour_card_widget.dart';
 
@@ -21,23 +22,26 @@ class ToursScreen extends StatefulWidget {
 
 class _ToursScreenState extends State<ToursScreen> {
   final TextEditingController _searchController = TextEditingController();
-  late StreamController<List> _streamController;
 
   static final NumberFormat formatter = NumberFormat("##,000");
 
   String formatPrice(int price) => formatter.format(price).replaceAll(",", ".");
 
-  @override
-  void initState() {
-    super.initState();
-    _streamController = StreamController<List>();
-    retrieveTours(_searchController.text);
-  }
-
-  Future<void> retrieveTours(String search) async {
+  Future<List<TourModel>> retrieveTours(BuildContext context) async {
     try {
-      final List packages = await getTours();
-      _streamController.sink.add(packages);
+      final List tours = await getTours();
+      final List<TourModel> listTour = [];
+      for (var element in tours) {
+        listTour.add(TourModel(
+          id: element["id_wisata"],
+          title: element["nama_wisata"],
+          location: element["lokasi"],
+          price: element["harga_tiket"],
+          description: element["deskripsi_wisata"],
+          image: element["gambar_wisata"],
+        ));
+      }
+      return Future.value(listTour);
     } catch (error) {
       showDialog(
         context: context,
@@ -54,12 +58,12 @@ class _ToursScreenState extends State<ToursScreen> {
           ],
         ),
       );
+      return Future.error(error);
     }
   }
 
   @override
   void dispose() {
-    _streamController.close();
     _searchController.dispose();
     super.dispose();
   }
@@ -100,8 +104,8 @@ class _ToursScreenState extends State<ToursScreen> {
           ),
         ],
       ),
-      body: StreamBuilder<List>(
-        stream: _streamController.stream,
+      body: FutureBuilder<List<TourModel>>(
+        future: retrieveTours(context),
         builder: (context, snapshot) {
           // print(snapshot.data);
           if (snapshot.connectionState == ConnectionState.waiting) {
@@ -109,28 +113,21 @@ class _ToursScreenState extends State<ToursScreen> {
               child: CircularProgressIndicator(),
             );
           } else if (snapshot.hasError) {
-            return Padding(
+            return Container(
               padding: const EdgeInsets.all(16.0),
+              alignment: Alignment.center,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const Text(
+                  Text(
                     "Terjadi kesalahan!",
-                    style: TextStyle(
-                      fontSize: 16,
-                      color: Colors.black87,
-                      fontWeight: FontWeight.w600,
-                    ),
+                    style: TextStyleUtils.mediumDarkGray(16),
                   ),
                   const SizedBox(height: 4),
                   Text(
                     snapshot.error.toString(),
                     softWrap: true,
-                    style: const TextStyle(
-                      fontSize: 16,
-                      color: Colors.black87,
-                      fontWeight: FontWeight.w600,
-                    ),
+                    style: TextStyleUtils.regularGray(14),
                   ),
                 ],
               ),
@@ -145,7 +142,6 @@ class _ToursScreenState extends State<ToursScreen> {
               ),
             );
           }
-          // return Text(snapshot.data.toString());
           return ListView.builder(
             padding: const EdgeInsets.all(24),
             itemCount: snapshot.data!.length,
@@ -153,18 +149,18 @@ class _ToursScreenState extends State<ToursScreen> {
               return GestureDetector(
                 onTap: () {
                   Navigator.of(context).pushNamed(
-                    DetailPackageScreen.route,
+                    DetailTourScreen.route,
                     arguments: snapshot.data!.elementAt(index),
                   );
                 },
                 child: Container(
-                  height: 240,
+                  height: 200,
                   margin: const EdgeInsets.only(bottom: 20),
                   child: ListTourCardWidget(
                     imageUrl:
-                        '${ApiConfig.tour_package_storage}/${snapshot.data!.elementAt(index)["gambar_wisata"]!}',
-                    title: snapshot.data!.elementAt(index)["nama_wisata"],
-                    location: snapshot.data!.elementAt(index)["lokasi"],
+                        '${ApiConfig.tour_package_storage}/${snapshot.data!.elementAt(index).image}',
+                    title: snapshot.data!.elementAt(index).title,
+                    location: snapshot.data!.elementAt(index).location,
                   ),
                 ),
               );

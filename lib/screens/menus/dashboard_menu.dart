@@ -9,7 +9,9 @@ import 'package:trevago_app/models/users.dart';
 import 'package:trevago_app/models/tour_package_model.dart';
 import 'package:trevago_app/models/tour_model.dart';
 import 'package:trevago_app/models/transport_model.dart';
+import 'package:trevago_app/screens/tours/detail_tour_screen.dart';
 import 'package:trevago_app/screens/tours/tours_screen.dart';
+import 'package:trevago_app/screens/transports/transports_screen.dart';
 import 'package:trevago_app/utils/utils.dart';
 import 'package:trevago_app/screens/tour_packages/detail_package_screen.dart';
 import 'package:intl/intl.dart';
@@ -39,7 +41,7 @@ class _DashboardMenuState extends State<DashboardMenu> {
       "image": ImageUtils.destination,
     },
     {
-      "navigate_to": "",
+      "navigate_to": TransportsScreen.route,
       "title": "Transportasi",
       "image": ImageUtils.transport,
     },
@@ -107,6 +109,7 @@ class _DashboardMenuState extends State<DashboardMenu> {
             title: element["nama_wisata"],
             location: element["lokasi"],
             price: element["harga_tiket"],
+            description: element["deskripsi_wisata"],
             image: element["gambar_wisata"],
           ),
         ));
@@ -151,6 +154,7 @@ class _DashboardMenuState extends State<DashboardMenu> {
             title: element["nama_wisata"],
             location: element["lokasi"],
             price: element["harga_tiket"],
+            description: element["deskripsi_wisata"],
             image: element["gambar_wisata"],
           ),
         );
@@ -482,7 +486,7 @@ class _DashboardMenuState extends State<DashboardMenu> {
                     itemBuilder: (context, index) => GestureDetector(
                       onTap: () {
                         Navigator.of(context).pushNamed(
-                          DetailPackageScreen.route,
+                          DetailTourScreen.route,
                           arguments: snapshot.data!.elementAt(index),
                         );
                       },

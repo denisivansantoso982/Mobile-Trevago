@@ -32,6 +32,7 @@ class ColourUtils {
   static const Color lightGray = Color.fromRGBO(196, 196, 196, 1);
   static const Color deepGray = Color.fromRGBO(106, 106, 106, 1);
   static const Color violet = Color.fromRGBO(219, 0, 255, 1);
+  static const Color redCherry = Color.fromRGBO(217, 66, 66, 1);
   static const Color darkGray = Color.fromRGBO(58, 58, 58, 1);
 }
 
@@ -62,6 +63,11 @@ class TextStyleUtils {
   static TextStyle boldBlack(double size) => TextStyle(
         fontWeight: FontWeight.bold,
         color: Colors.black,
+        fontSize: size,
+      );
+  static TextStyle boldRedCherry(double size) => TextStyle(
+        fontWeight: FontWeight.bold,
+        color: ColourUtils.redCherry,
         fontSize: size,
       );
 
@@ -96,6 +102,11 @@ class TextStyleUtils {
         color: Colors.black,
         fontSize: size,
       );
+  static TextStyle semiboldRedCherry(double size) => TextStyle(
+        fontWeight: FontWeight.w600,
+        color: ColourUtils.redCherry,
+        fontSize: size,
+      );
 
   // medium
   static TextStyle mediumDarkGray(double size) => TextStyle(
@@ -128,6 +139,11 @@ class TextStyleUtils {
         color: Colors.black,
         fontSize: size,
       );
+  static TextStyle mediumRedCherry(double size) => TextStyle(
+        fontWeight: FontWeight.w500,
+        color: ColourUtils.redCherry,
+        fontSize: size,
+      );
 
   // regular
   static TextStyle regularDarkGray(double size) => TextStyle(
@@ -158,6 +174,11 @@ class TextStyleUtils {
   static TextStyle regularBlack(double size) => TextStyle(
         fontWeight: FontWeight.w400,
         color: Colors.black,
+        fontSize: size,
+      );
+  static TextStyle regularRedCherry(double size) => TextStyle(
+        fontWeight: FontWeight.w400,
+        color: ColourUtils.redCherry,
         fontSize: size,
       );
 }

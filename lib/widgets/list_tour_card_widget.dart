@@ -47,7 +47,7 @@ class ListTourCardWidget extends StatelessWidget {
                 Container(
                   width: double.infinity,
                   padding: const EdgeInsets.all(8),
-                  height: 96,
+                  height: 72,
                   color: Colors.white,
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -56,9 +56,8 @@ class ListTourCardWidget extends StatelessWidget {
                       Text(
                         title,
                         overflow: TextOverflow.ellipsis,
-                        softWrap: true,
-                        maxLines: 2,
-                        style: TextStyleUtils.semiboldDarkGray(22),
+                        softWrap: false,
+                        style: TextStyleUtils.mediumDarkGray(22),
                       ),
                       const SizedBox(height: 4),
                       Row(

@@ -98,7 +98,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
         backgroundColor: Colors.red,
       ));
       return false;
-    } else if (_emailTextController.text.contains("@")) {
+    } else if (!_emailTextController.text.contains("@")) {
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
         content: Text("Email tidak sesuai!"),
         backgroundColor: Colors.red,

@@ -44,6 +44,7 @@ class _PackagesScreenState extends State<PackagesScreen> {
             title: element["nama_wisata"],
             location: element["lokasi"],
             price: element["harga_tiket"],
+            description: element["deskripsi_wisata"],
             image: element["gambar_wisata"],
           ),
         ));
@@ -120,28 +121,21 @@ class _PackagesScreenState extends State<PackagesScreen> {
               child: CircularProgressIndicator(),
             );
           } else if (snapshot.hasError) {
-            return Padding(
+            return Container(
               padding: const EdgeInsets.all(16.0),
+              alignment: Alignment.center,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const Text(
+                  Text(
                     "Terjadi kesalahan!",
-                    style: TextStyle(
-                      fontSize: 16,
-                      color: Colors.black87,
-                      fontWeight: FontWeight.w600,
-                    ),
+                    style: TextStyleUtils.mediumDarkGray(16),
                   ),
                   const SizedBox(height: 4),
                   Text(
                     snapshot.error.toString(),
                     softWrap: true,
-                    style: const TextStyle(
-                      fontSize: 16,
-                      color: Colors.black87,
-                      fontWeight: FontWeight.w600,
-                    ),
+                    style: TextStyleUtils.regularGray(14),
                   ),
                 ],
               ),

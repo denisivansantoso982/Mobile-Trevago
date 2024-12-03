@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:trevago_app/configs/functions/functions.dart';
+import 'package:trevago_app/screens/welcome_screen.dart';
 import 'package:trevago_app/utils/utils.dart';
 import 'package:trevago_app/screens/tour_packages/detail_order_package_screen.dart';
 import 'package:trevago_app/screens/auth/login_screen.dart';
@@ -35,7 +36,7 @@ class _OrderedMenuState extends State<OrderedMenu> {
                 if (error.toString().contains("Forbidden")) {
                   await logoutAction();
                   Navigator.of(context).pushNamedAndRemoveUntil(
-                    LoginScreen.route,
+                    WelcomeScreen.route,
                     (route) => false,
                   );
                 } else {

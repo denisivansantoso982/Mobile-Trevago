@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:trevago_app/configs/api/api.dart';
+import 'package:trevago_app/models/transport_model.dart';
 import 'package:trevago_app/utils/utils.dart';
 import 'package:trevago_app/screens/transports/order_transport_screen.dart';
 
@@ -15,203 +16,55 @@ class DetailTransportScreen extends StatefulWidget {
 
 class _DetailTransportScreenState extends State<DetailTransportScreen> {
   static final NumberFormat formatter = NumberFormat("##,000");
-  late Map transport;
+  late TransportModel transport;
 
   String formatPrice(int price) => formatter.format(price).replaceAll(",", ".");
 
   @override
   Widget build(BuildContext context) {
-    transport = ModalRoute.of(context)!.settings.arguments as Map;
-    double screenWidth = MediaQuery.of(context).size.width;
+    transport = ModalRoute.of(context)!.settings.arguments as TransportModel;
     return Scaffold(
-      body: ListView(
-        children: [
-          // *Images
-          SizedBox(
-            height: 300,
-            child: Stack(
-              fit: StackFit.expand,
-              children: [
-                ClipRRect(
-                  borderRadius:
-                      const BorderRadius.vertical(bottom: Radius.circular(16)),
-                  child: Image(
-                    image: NetworkImage(
-                        "${ApiConfig.transport_storage}/${transport["gambar_kendaraan"]}"),
-                    fit: BoxFit.cover,
-                  ),
-                ),
-                // PageView.builder(
-                //   itemCount: _images.length,
-                //   itemBuilder: (context, index) => ClipRRect(
-                //     borderRadius: const BorderRadius.vertical(
-                //         bottom: Radius.circular(16)),
-                //     child: Image(
-                //       image: NetworkImage(_images[index]),
-                //       fit: BoxFit.cover,
-                //     ),
-                //   ),
-                // ),
-                Positioned(
-                  top: 4,
-                  left: 0,
-                  child: ElevatedButton(
-                    onPressed: () => Navigator.of(context).pop(),
-                    style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.white,
-                        shape: const CircleBorder()),
-                    child: const Icon(
-                      Icons.chevron_left,
-                      color: Colors.black,
-                    ),
-                  ),
-                ),
-                Positioned(
-                  bottom: 8,
-                  left: 0,
-                  child: Container(
-                    width: screenWidth - 24,
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 12,
-                      vertical: 24,
-                    ),
-                    margin: const EdgeInsets.symmetric(horizontal: 12),
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(16),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.black.withOpacity(0.25),
-                          offset: const Offset(1, 1),
-                          blurRadius: 4,
-                        ),
-                      ],
-                    ),
-                    child: Row(
-                      children: [
-                        Expanded(
-                          child: Text(
-                            transport["nama_kendaraan"],
-                            softWrap: true,
-                            style: TextStyle(
-                              color: Colors.grey[900],
-                              fontSize: 20,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ),
-                        const SizedBox(width: 12),
-                        Text(
-                          "Rp. ${formatPrice(transport["harga_sewa"])}",
-                          style: const TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.w700,
-                            color: ColourUtils.blue,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ],
-            ),
+      appBar: AppBar(
+        backgroundColor: ColourUtils.blue,
+        leading: IconButton(
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+          icon: const Icon(
+            Icons.chevron_left,
+            color: Colors.white,
           ),
-          const SizedBox(height: 16),
-          const Padding(
-            padding: EdgeInsets.symmetric(horizontal: 12),
-            child: Text(
-              "Informasi Transportasi",
-              style: TextStyle(
-                color: Colors.black87,
-                fontWeight: FontWeight.w700,
-                fontSize: 18,
+        ),
+        title: Text(
+          "Transportasi",
+          style: TextStyleUtils.mediumWhite(20),
+        ),
+      ),
+      body: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 32, horizontal: 40,),
+        child: Container(
+          padding: const EdgeInsets.all(24),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(8),
+            boxShadow: [
+              BoxShadow(
+                offset: const Offset(0, 1),
+                color: Colors.black.withOpacity(.25),
+                blurRadius: 4,
               ),
-            ),
+            ],
           ),
-          const SizedBox(height: 12),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 24),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    const Text(
-                      "Nomor Polisi",
-                      style: TextStyle(
-                        color: Colors.black54,
-                        fontWeight: FontWeight.w400,
-                        fontSize: 16,
-                      ),
-                    ),
-                    Text(
-                      transport["no_kendaraan"],
-                      style: const TextStyle(
-                        color: Colors.black87,
-                        fontWeight: FontWeight.w600,
-                        fontSize: 16,
-                      ),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 8),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    const Text(
-                      "Tipe Kendaraan",
-                      style: TextStyle(
-                        color: Colors.black54,
-                        fontWeight: FontWeight.w400,
-                        fontSize: 16,
-                      ),
-                    ),
-                    Text(
-                      "${transport["tipe_kendaraan"]}",
-                      style: const TextStyle(
-                        color: Colors.black87,
-                        fontWeight: FontWeight.w600,
-                        fontSize: 16,
-                      ),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 8),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    const Text(
-                      "Kapasitas",
-                      style: TextStyle(
-                        color: Colors.black54,
-                        fontWeight: FontWeight.w400,
-                        fontSize: 16,
-                      ),
-                    ),
-                    Text(
-                      "${transport["jumlah_seat"]} Orang",
-                      style: const TextStyle(
-                        color: Colors.black87,
-                        fontWeight: FontWeight.w600,
-                        fontSize: 16,
-                      ),
-                    ),
-                  ],
-                ),
-              ],
-            ),
-          )
-        ],
+        ),
       ),
       bottomNavigationBar: Container(
         padding: const EdgeInsets.all(8),
         child: ElevatedButton(
           onPressed: () {
-            Navigator.of(context).pushNamed(OrderTransportScreen.route, arguments: transport,);
+            Navigator.of(context).pushNamed(
+              OrderTransportScreen.route,
+              arguments: transport,
+            );
           },
           style: ElevatedButton.styleFrom(
             backgroundColor: ColourUtils.blue,
