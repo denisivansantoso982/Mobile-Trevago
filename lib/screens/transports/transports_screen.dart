@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:trevago_app/configs/functions/functions.dart';
 import 'package:trevago_app/models/transport_model.dart';
+import 'package:trevago_app/screens/transports/detail_transport_screen.dart';
 import 'package:trevago_app/utils/utils.dart';
 import 'package:trevago_app/widgets/list_transport_card_widget.dart';
 
@@ -99,10 +100,10 @@ class _TransportsScreenState extends State<TransportsScreen> {
             itemBuilder: (context, index) {
               return GestureDetector(
                 onTap: () {
-                  // Navigator.of(context).pushNamed(
-                  //   DetailPackageScreen.route,
-                  //   arguments: snapshot.data!.elementAt(index),
-                  // );
+                  Navigator.of(context).pushNamed(
+                    DetailTransportScreen.route,
+                    arguments: snapshot.data![index],
+                  );
                 },
                 child: ListTransportCardWidget(
                   transport: snapshot.data![index],

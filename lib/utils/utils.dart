@@ -304,4 +304,26 @@ class InputDecorationUtils {
           borderSide: BorderSide(color: ColourUtils.blue),
         ),
       );
+
+  static InputDecoration noBorder(
+    String hintText, {
+    Widget? suffix,
+    Widget? prefix,
+    TextStyle? hintStyle,
+    EdgeInsetsGeometry? contentPadding,
+  }) =>
+      InputDecoration(
+        isDense: true,
+        suffix: suffix,
+        prefix: prefix,
+        hintStyle: hintStyle ?? TextStyleUtils.mediumLightGray(16),
+        contentPadding: contentPadding ??
+            const EdgeInsets.symmetric(
+              horizontal: 4,
+              vertical: 2,
+            ),
+        hintText: hintText,
+        enabledBorder: InputBorder.none,
+        focusedBorder: InputBorder.none,
+      );
 }
