@@ -2,7 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:trevago_app/configs/functions/functions.dart';
-import 'package:trevago_app/screens/auth/login_screen.dart';
+import 'package:trevago_app/screens/welcome_screen.dart';
 
 class CustomDialogWidget {
   const CustomDialogWidget();
@@ -33,7 +33,7 @@ class CustomDialogWidget {
               if (errorMessage.contains("Forbidden")) {
                 await logoutAction();
                 Navigator.of(context).pushNamedAndRemoveUntil(
-                  LoginScreen.route,
+                  WelcomeScreen.route,
                   (route) => false,
                 );
               } else {

@@ -1,6 +1,8 @@
+// ignore_for_file: unused_element
+
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:trevago_app/configs/api/api.dart';
 import 'package:trevago_app/models/transport_model.dart';
 import 'package:trevago_app/utils/utils.dart';
 import 'package:trevago_app/screens/transports/order_transport_screen.dart';
@@ -21,6 +23,7 @@ class _DetailTransportScreenState extends State<DetailTransportScreen> {
   late TextEditingController bookingTimeController;
   late TextEditingController bookingLocationController;
   DateTime bookingDate = DateTime.now();
+  DateTime bookingTime = DateTime.now();
 
   @override
   void initState() {
@@ -28,11 +31,149 @@ class _DetailTransportScreenState extends State<DetailTransportScreen> {
     bookingDateController = TextEditingController(
         text: DateFormat("dd MMMM yyyy").format(bookingDate));
     bookingTimeController =
-        TextEditingController(text: DateFormat("mm:hh").format(bookingDate));
+        TextEditingController(text: DateFormat("HH:mm").format(bookingDate));
     bookingLocationController = TextEditingController();
   }
 
   String formatPrice(int price) => formatter.format(price).replaceAll(",", ".");
+
+  Future<void> _showTimePicker() async {
+    TimeOfDay? selectedTime;
+    await showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text(
+          "Pilih Waktu Penjemputan",
+          style: TextStyleUtils.mediumDarkGray(20),
+        ),
+        content: SizedBox(
+          height: 200,
+          child: CupertinoApp(
+            debugShowCheckedModeBanner: false,
+            color: Colors.white,
+            theme: CupertinoThemeData(
+              barBackgroundColor: Colors.white,
+              brightness: Brightness.light,
+              textTheme: CupertinoTextThemeData(
+                dateTimePickerTextStyle: TextStyleUtils.mediumBlue(16),
+              ),
+            ),
+            builder: (context, child) => CupertinoDatePicker(
+              mode: CupertinoDatePickerMode.time,
+              use24hFormat: true,
+              onDateTimeChanged: (time) {
+                selectedTime = TimeOfDay(hour: time.hour, minute: time.minute);
+              },
+            ),
+          ),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+            child: Text(
+              "Batal",
+              style: TextStyleUtils.mediumBlue(16),
+            ),
+          ),
+          ElevatedButton(
+            onPressed: () {
+              if (selectedTime != null) {
+                setState(() {
+                  bookingTime = DateTime(
+                    bookingTime.year,
+                    bookingTime.month,
+                    bookingTime.day,
+                    selectedTime!.hour,
+                    selectedTime!.minute,
+                  );
+                  bookingTimeController.text =
+                      DateFormat("HH:mm").format(bookingTime);
+                });
+              }
+              Navigator.of(context).pop();
+            },
+            style: ButtonStyleUtils.activeButton,
+            child: Text(
+              "Selesai",
+              style: TextStyleUtils.mediumWhite(16),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Future<void> _showDatePicker() async {
+    DateTime? selectedDate;
+    await showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text(
+          "Pilih Tanggal Penjemputan",
+          style: TextStyleUtils.mediumDarkGray(20),
+        ),
+        content: SizedBox(
+          height: 200,
+          child: CupertinoApp(
+            debugShowCheckedModeBanner: false,
+            color: Colors.white,
+            theme: CupertinoThemeData(
+              barBackgroundColor: Colors.white,
+              brightness: Brightness.light,
+              textTheme: CupertinoTextThemeData(
+                dateTimePickerTextStyle: TextStyleUtils.mediumBlue(16),
+              ),
+            ),
+            builder: (context, child) => CupertinoDatePicker(
+              dateOrder: DatePickerDateOrder.dmy,
+              mode: CupertinoDatePickerMode.date,
+              minimumDate: bookingDate,
+              initialDateTime: bookingDate,
+              onDateTimeChanged: (date) {
+                selectedDate = DateTime(date.year, date.month, date.day);
+              },
+            ),
+          ),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+            child: Text(
+              "Batal",
+              style: TextStyleUtils.mediumBlue(16),
+            ),
+          ),
+          ElevatedButton(
+            onPressed: () {
+              if (selectedDate != null) {
+                setState(() {
+                  bookingDate = DateTime(
+                    selectedDate!.year,
+                    selectedDate!.month,
+                    selectedDate!.day,
+                    bookingDate.hour,
+                    bookingDate.minute,
+                  );
+                  bookingDateController.text =
+                      DateFormat("dd MMMM yyyy").format(bookingDate);
+                });
+              }
+              Navigator.of(context).pop();
+            },
+            style: ButtonStyleUtils.activeButton,
+            child: Text(
+              "Selesai",
+              style: TextStyleUtils.mediumWhite(16),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -55,10 +196,7 @@ class _DetailTransportScreenState extends State<DetailTransportScreen> {
         ),
       ),
       body: ListView(
-        padding: const EdgeInsets.symmetric(
-          vertical: 32,
-          horizontal: 40,
-        ),
+        padding: const EdgeInsets.all(32),
         children: [
           Container(
             padding: const EdgeInsets.all(24),
@@ -111,7 +249,10 @@ class _DetailTransportScreenState extends State<DetailTransportScreen> {
                               onTap: () {},
                               decoration: InputDecorationUtils.noBorder(
                                 "Tentukan Lokasi Penjemputan",
-                                contentPadding: const EdgeInsets.only(top: 8, bottom: 4,),
+                                contentPadding: const EdgeInsets.only(
+                                  top: 8,
+                                  bottom: 4,
+                                ),
                               ),
                             ),
                           ],
@@ -153,7 +294,9 @@ class _DetailTransportScreenState extends State<DetailTransportScreen> {
                               controller: bookingDateController,
                               readOnly: true,
                               style: TextStyleUtils.boldDarkGray(16),
-                              onTap: () {},
+                              onTap: () {
+                                _showDatePicker();
+                              },
                               decoration: InputDecorationUtils.noBorder(
                                 "Tentukan Tanggal Penjemputan",
                                 contentPadding: const EdgeInsets.only(
@@ -201,7 +344,9 @@ class _DetailTransportScreenState extends State<DetailTransportScreen> {
                               controller: bookingTimeController,
                               readOnly: true,
                               style: TextStyleUtils.boldDarkGray(16),
-                              onTap: () {},
+                              onTap: () {
+                                _showTimePicker();
+                              },
                               decoration: InputDecorationUtils.noBorder(
                                 "Tentukan Waktu Penjemputan",
                                 contentPadding: const EdgeInsets.only(
@@ -219,7 +364,22 @@ class _DetailTransportScreenState extends State<DetailTransportScreen> {
                 const SizedBox(height: 28),
                 // * Button
                 ElevatedButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.of(context).pushNamed(
+                      OrderTransportScreen.route,
+                      arguments: <String, dynamic>{
+                        "transport": transport,
+                        "location": bookingLocationController.text,
+                        "pickup_time": DateTime(
+                          bookingDate.year,
+                          bookingDate.month,
+                          bookingDate.day,
+                          bookingTime.hour,
+                          bookingTime.minute,
+                        ),
+                      },
+                    );
+                  },
                   style: ButtonStyleUtils.activeButton,
                   child: Text(
                     "Pesan",

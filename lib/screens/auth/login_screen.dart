@@ -237,6 +237,20 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                   ),
                 ),
+                const SizedBox(height: 8),
+                // *Back Button
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 24),
+                  child: TextButton(
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                    child: Text(
+                      "KEMBALI",
+                      style: TextStyleUtils.semiboldGray(16),
+                    ),
+                  ),
+                ),
               ],
             ),
           ),

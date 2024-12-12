@@ -6,13 +6,13 @@ import 'package:http/http.dart' as http;
 
 class ApiConfig {
   // ! pastikan untuk mengubah IP ini dengan IP server
-  static const String url = "http://192.168.1.23:5001/api";
+  static const String url = "http://192.168.43.59:5001/api";
   static const String tour_package_storage =
-      "http://192.168.1.23:5001/storage/wisata";
+      "http://192.168.43.59:5001/storage/wisata";
   static const String transport_storage =
-      "http://192.168.1.23:5001/storage/transport";
+      "http://192.168.43.59:5001/storage/transport";
   static const String restaurant_storage =
-      "http://192.168.1.23:5001/storage/restaurant";
+      "http://192.168.43.59:5001/storage/restaurant";
 
   late http.Client client;
 

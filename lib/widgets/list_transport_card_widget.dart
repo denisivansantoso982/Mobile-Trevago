@@ -8,17 +8,19 @@ class ListTransportCardWidget extends StatelessWidget {
   const ListTransportCardWidget({
     super.key,
     required this.transport,
+    this.height,
   });
 
   static final NumberFormat formatter = NumberFormat("##,000");
   final TransportModel transport;
+  final double? height;
 
   String formatPrice(int price) => formatter.format(price).replaceAll(",", ".");
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 148,
+      height: height ?? 148,
       margin: const EdgeInsets.only(bottom: 20),
       padding: const EdgeInsets.symmetric(
         horizontal: 8,
@@ -37,7 +39,12 @@ class ListTransportCardWidget extends StatelessWidget {
       ),
       child: Row(
         children: [
-          Image(image: NetworkImage('${ApiConfig.transport_storage}/${transport.image}'), width: 120, fit: BoxFit.cover,),
+          Image(
+            image: NetworkImage(
+                '${ApiConfig.transport_storage}/${transport.image}'),
+            width: 120,
+            fit: BoxFit.cover,
+          ),
           const SizedBox(width: 32),
           Expanded(
             child: Column(

@@ -20,8 +20,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
   final TextEditingController _emailTextController = TextEditingController();
   final TextEditingController _usernameTextController = TextEditingController();
   final TextEditingController _phoneTextController = TextEditingController();
-  final TextEditingController _passwordTextController =
-      TextEditingController();
+  final TextEditingController _passwordTextController = TextEditingController();
   final TextEditingController _confirmPassTextController =
       TextEditingController();
   bool securePass = true;
@@ -104,7 +103,13 @@ class _RegisterScreenState extends State<RegisterScreen> {
         backgroundColor: Colors.red,
       ));
       return false;
-    } else if (_passwordTextController.text.length < 8) {
+    }  else if (_phoneTextController.text.length < 8) {
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+        content: Text("Nomor HP tidak sesuai!"),
+        backgroundColor: Colors.red,
+      ));
+      return false;
+    }else if (_passwordTextController.text.length < 8) {
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
         content: Text("Password harus memiliki minimal 8 karakter!"),
         backgroundColor: Colors.red,
@@ -214,8 +219,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             FilteringTextInputFormatter.deny(RegExp(r"\s+")),
                           ],
                           style: TextStyleUtils.semiboldBlue(16),
-                          decoration:
-                              InputDecorationUtils.outlinedBlueBorder("Username"),
+                          decoration: InputDecorationUtils.outlinedBlueBorder(
+                              "Username"),
                         ),
                       ),
                     ],
@@ -250,6 +255,43 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           style: TextStyleUtils.semiboldBlue(16),
                           decoration:
                               InputDecorationUtils.outlinedBlueBorder("Email"),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                const SizedBox(height: 16),
+                // *Phone
+                Container(
+                  margin: const EdgeInsets.symmetric(horizontal: 24),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 8,
+                    vertical: 2,
+                  ),
+                  decoration: BoxDecoration(
+                    border: Border.all(
+                      width: 1,
+                      color: ColourUtils.blue,
+                    ),
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  child: Row(
+                    children: [
+                      const Icon(
+                        Icons.phone,
+                        color: ColourUtils.lightGray,
+                      ),
+                      const SizedBox(width: 8),
+                      Expanded(
+                        child: TextFormField(
+                          controller: _phoneTextController,
+                          keyboardType: TextInputType.phone,
+                          style: TextStyleUtils.semiboldBlue(16),
+                          inputFormatters: [
+                            FilteringTextInputFormatter.digitsOnly,
+                          ],
+                          decoration: InputDecorationUtils.outlinedBlueBorder(
+                              "08xxxxxxxxxx"),
                         ),
                       ),
                     ],
@@ -342,7 +384,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             IconButton.styleFrom(fixedSize: const Size(20, 20)),
                         padding: const EdgeInsets.all(4),
                         icon: Icon(
-                          !secureConfirmPass ? Icons.visibility : Icons.visibility_off,
+                          !secureConfirmPass
+                              ? Icons.visibility
+                              : Icons.visibility_off,
                           color: ColourUtils.lightGray,
                         ),
                       ),
@@ -375,7 +419,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   ),
                 ),
                 const SizedBox(height: 40),
-                // *Sign In Button
+                // *Register Button
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 24),
                   child: ElevatedButton(
@@ -386,6 +430,20 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     child: Text(
                       "BUAT AKUN",
                       style: TextStyleUtils.semiboldWhite(16),
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 8),
+                // *Back Button
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 24),
+                  child: TextButton(
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                    child: Text(
+                      "KEMBALI",
+                      style: TextStyleUtils.semiboldGray(16),
                     ),
                   ),
                 ),
