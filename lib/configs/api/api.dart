@@ -12,7 +12,7 @@ class ApiConfig {
   static const String transport_storage =
       "http://192.168.43.59:5001/storage/transport";
   static const String restaurant_storage =
-      "http://192.168.43.59:5001/storage/restaurant";
+      "http://192.168.43.59:5001/storage/rumahmakan";
 
   late http.Client client;
 
@@ -117,7 +117,7 @@ class ApiConfig {
     }
   }
 
-  // ? Get Tour Packages
+  // ? Get Tours
   Future<List> getListTours() async {
     try {
       client = http.Client();
@@ -143,6 +143,25 @@ class ApiConfig {
       http.Response response = await client.get(
         Uri.parse("${url}/user/getkendaraan"),
       ).timeout(const Duration(seconds: 30));
+      if (response.statusCode == 200) {
+        List result = jsonDecode(response.body);
+        return Future.value(result);
+      }
+      throw Exception(response.body);
+    } catch (error) {
+      return Future.error(error);
+    }
+  }
+
+  // ? Get Restaurants
+  Future<List> getListRestaurants() async {
+    try {
+      client = http.Client();
+      http.Response response = await client
+          .get(
+            Uri.parse("${url}/user/getrumahmakan"),
+          )
+          .timeout(const Duration(seconds: 30));
       if (response.statusCode == 200) {
         List result = jsonDecode(response.body);
         return Future.value(result);

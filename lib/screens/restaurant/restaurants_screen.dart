@@ -4,45 +4,48 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:trevago_app/configs/api/api.dart';
 import 'package:trevago_app/configs/functions/functions.dart';
-import 'package:trevago_app/models/tour_model.dart';
-import 'package:trevago_app/screens/tours/detail_tour_screen.dart';
+import 'package:trevago_app/models/restaurant_model.dart';
+import 'package:trevago_app/screens/restaurant/detail_restaurant_screen.dart';
 import 'package:trevago_app/utils/utils.dart';
 import 'package:trevago_app/widgets/custom_dialog_widget.dart';
-import 'package:trevago_app/widgets/list_tour_card_widget.dart';
+import 'package:trevago_app/widgets/list_restaurant_card_widget.dart';
 
-class ToursScreen extends StatefulWidget {
-  const ToursScreen({super.key});
+class RestaurantsScreen extends StatefulWidget {
+  const RestaurantsScreen({super.key});
 
-  static const String route = "/tours";
+  static const String route = "/restaurants";
 
   @override
-  State<ToursScreen> createState() => _ToursScreenState();
+  State<RestaurantsScreen> createState() => _RestaurantsScreenState();
 }
 
-class _ToursScreenState extends State<ToursScreen> {
+class _RestaurantsScreenState extends State<RestaurantsScreen> {
   final TextEditingController _searchController = TextEditingController();
 
   static final NumberFormat formatter = NumberFormat("##,000");
 
   String formatPrice(int price) => formatter.format(price).replaceAll(",", ".");
 
-  Future<List<TourModel>> retrieveTours(BuildContext context) async {
+  Future<List<RestaurantModel>> retrieveRestaurants(
+      BuildContext context) async {
     try {
-      final List tours = await getTours();
-      final List<TourModel> listTour = [];
-      for (var element in tours) {
-        listTour.add(TourModel(
-          id: element["id_wisata"],
-          title: element["nama_wisata"],
-          location: element["lokasi"],
-          price: element["harga_tiket"],
-          description: element["deskripsi_wisata"],
-          image: element["gambar_wisata"],
+      final List restaurants = await getRestaurants();
+      final List<RestaurantModel> listRestaurant = [];
+      for (var element in restaurants) {
+        listRestaurant.add(RestaurantModel(
+          id: element["id_rm"],
+          title: element["nama_rm"],
+          menu: element["menu"],
+          location: element["alamat"],
+          phone: element["no_tlpn"],
+          price: element["harga_pax"],
+          total_pax: element["jumlah_pax"],
+          image: element["gambar_rm"],
+          description: element["deskripsi_rm"],
         ));
       }
-      return Future.value(listTour);
+      return Future.value(listRestaurant);
     } catch (error) {
       CustomDialogWidget.showErrorDialog(context, error.toString());
       return Future.error(error);
@@ -91,8 +94,8 @@ class _ToursScreenState extends State<ToursScreen> {
           ),
         ],
       ),
-      body: FutureBuilder<List<TourModel>>(
-        future: retrieveTours(context),
+      body: FutureBuilder<List<RestaurantModel>>(
+        future: retrieveRestaurants(context),
         builder: (context, snapshot) {
           // print(snapshot.data);
           if (snapshot.connectionState == ConnectionState.waiting) {
@@ -130,24 +133,21 @@ class _ToursScreenState extends State<ToursScreen> {
             );
           }
           return ListView.builder(
-            padding: const EdgeInsets.all(24),
+            padding: const EdgeInsets.all(32),
             itemCount: snapshot.data!.length,
             itemBuilder: (context, index) {
               return GestureDetector(
                 onTap: () {
                   Navigator.of(context).pushNamed(
-                    DetailTourScreen.route,
+                    DetailRestaurantScreen.route,
                     arguments: snapshot.data!.elementAt(index),
                   );
                 },
                 child: Container(
                   height: 200,
                   margin: const EdgeInsets.only(bottom: 20),
-                  child: ListTourCardWidget(
-                    imageUrl:
-                        '${ApiConfig.tour_package_storage}/${snapshot.data!.elementAt(index).image}',
-                    title: snapshot.data!.elementAt(index).title,
-                    location: snapshot.data!.elementAt(index).location,
+                  child: ListRestaurantCardWidget(
+                    restaurant: snapshot.data!.elementAt(index),
                   ),
                 ),
               );

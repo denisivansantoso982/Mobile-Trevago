@@ -9,6 +9,7 @@ import 'package:trevago_app/models/users.dart';
 import 'package:trevago_app/models/tour_package_model.dart';
 import 'package:trevago_app/models/tour_model.dart';
 import 'package:trevago_app/models/transport_model.dart';
+import 'package:trevago_app/screens/restaurant/restaurants_screen.dart';
 import 'package:trevago_app/screens/tours/detail_tour_screen.dart';
 import 'package:trevago_app/screens/tours/tours_screen.dart';
 import 'package:trevago_app/screens/transports/transports_screen.dart';
@@ -46,7 +47,7 @@ class _DashboardMenuState extends State<DashboardMenu> {
       "image": ImageUtils.transport,
     },
     {
-      "navigate_to": "",
+      "navigate_to": RestaurantsScreen.route,
       "title": "Kuliner",
       "image": ImageUtils.restaurant,
     },
@@ -511,29 +512,23 @@ class _DashboardMenuState extends State<DashboardMenu> {
             // *Transport
             const SizedBox(height: 32),
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16),
+              padding: const EdgeInsets.symmetric(horizontal: 20),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  const Text(
+                  Text(
                     "Transport",
-                    style: TextStyle(
-                      color: ColourUtils.deepGray,
-                      fontSize: 16,
-                      fontWeight: FontWeight.w700,
-                    ),
+                    style: TextStyleUtils.semiboldDarkGray(18),
                   ),
                   GestureDetector(
-                    onTap: () {},
-                    child: const Text(
-                      "see All",
-                      style: TextStyle(
-                        color: ColourUtils.purple,
-                        fontSize: 14,
-                        fontWeight: FontWeight.w400,
-                      ),
+                    onTap: () {
+                      Navigator.of(context).pushNamed(TransportsScreen.route);
+                    },
+                    child: const Icon(
+                      Icons.chevron_right,
+                      color: ColourUtils.blue,
                     ),
-                  )
+                  ),
                 ],
               ),
             ),
@@ -562,7 +557,7 @@ class _DashboardMenuState extends State<DashboardMenu> {
                   physics: const ScrollPhysics(),
                   shrinkWrap: true,
                   itemCount: snapshot.hasData ? snapshot.data!.length : 0,
-                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
                   itemBuilder: (context, index) => GestureDetector(
                     onTap: () {
                       Navigator.of(context).pushNamed(

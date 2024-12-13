@@ -28,7 +28,6 @@ class _OrderTransportScreenState extends State<OrderTransportScreen> {
   final TextEditingController _nameTextController = TextEditingController();
   final TextEditingController _phoneTextController = TextEditingController();
   final TextEditingController _emailTextController = TextEditingController();
-  final TextEditingController _noteTextController = TextEditingController();
   late List<Map> paymentMethod;
   late Map selectedPaymentMethod;
   late TransportModel transport;
@@ -176,6 +175,7 @@ class _OrderTransportScreenState extends State<OrderTransportScreen> {
             shape:
                 const BeveledRectangleBorder(side: BorderSide.none),
             tilePadding: EdgeInsets.zero,
+            initiallyExpanded: true,
             childrenPadding:
                 const EdgeInsets.symmetric(horizontal: 16),
             children: [

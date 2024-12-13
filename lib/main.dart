@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:trevago_app/screens/restaurant/detail_restaurant_screen.dart';
+import 'package:trevago_app/screens/restaurant/restaurants_screen.dart';
 import 'package:trevago_app/screens/tours/detail_tour_screen.dart';
 import 'package:trevago_app/screens/tours/tours_screen.dart';
 import 'package:trevago_app/screens/transports/transports_screen.dart';
@@ -52,6 +54,8 @@ class MyApp extends StatelessWidget {
         PackagesScreen.route: (context) => const PackagesScreen(),
         ToursScreen.route: (context) => const ToursScreen(),
         TransportsScreen.route: (context) => const TransportsScreen(),
+        RestaurantsScreen.route: (context) => const RestaurantsScreen(),
+        DetailRestaurantScreen.route: (context) => const DetailRestaurantScreen(),
       },
     );
   }

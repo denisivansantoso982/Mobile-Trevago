@@ -96,6 +96,15 @@ Future<List> getTransports() async {
   }
 }
 
+Future<List> getRestaurants() async {
+  try {
+    final List restaurants = await api.getListRestaurants();
+    return restaurants;
+  } catch (error) {
+    return Future.error(error);
+  }
+}
+
 Future<void> newTransactionPackage(
   DateTime order_date,
   String note,
