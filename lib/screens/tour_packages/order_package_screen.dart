@@ -2,6 +2,7 @@
 
 import 'dart:async';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
@@ -46,7 +47,7 @@ class _OrderPackageScreenState extends State<OrderPackageScreen> {
   @override
   void initState() {
     _dateTextController.text =
-        DateFormat("EEEE, dd MMMM yyyy").format(DateTime.now());
+        DateFormat("dd MMMM yyyy").format(DateTime.now());
     retrieveUserProfile(context);
     paymentMethod = <Map>[
       {
@@ -130,20 +131,67 @@ class _OrderPackageScreenState extends State<OrderPackageScreen> {
   }
 
   Future<void> selectDate() async {
-    DateTime? date = await showDatePicker(
+    DateTime? date;
+    await showDialog(
       context: context,
-      firstDate: DateTime.now(),
-      lastDate: DateTime(2100),
-      initialDate: DateTime.now(),
+      builder: (context) => AlertDialog(
+        title: Text(
+          "Pilih Tanggal Penjemputan",
+          style: TextStyleUtils.mediumDarkGray(20),
+        ),
+        content: SizedBox(
+          height: 200,
+          child: CupertinoApp(
+            debugShowCheckedModeBanner: false,
+            color: Colors.white,
+            theme: CupertinoThemeData(
+              barBackgroundColor: Colors.white,
+              brightness: Brightness.light,
+              textTheme: CupertinoTextThemeData(
+                dateTimePickerTextStyle: TextStyleUtils.mediumBlue(16),
+              ),
+            ),
+            builder: (context, child) => CupertinoDatePicker(
+              dateOrder: DatePickerDateOrder.dmy,
+              mode: CupertinoDatePickerMode.date,
+              minimumDate: DateTime.now(),
+              initialDateTime: DateTime.now(),
+              onDateTimeChanged: (val) {
+                date = DateTime(val.year, val.month, val.day);
+              },
+            ),
+          ),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+            child: Text(
+              "Batal",
+              style: TextStyleUtils.mediumBlue(16),
+            ),
+          ),
+          ElevatedButton(
+            onPressed: () {
+              if (date != null) {
+                setState(() {
+                  selectedDate = date!;
+                  _dateTextController.text =
+                      DateFormat("dd MMMM yyyy").format(selectedDate);
+                });
+              }
+              Navigator.of(context).pop();
+            },
+            style: ButtonStyleUtils.activeButton,
+            child: Text(
+              "Selesai",
+              style: TextStyleUtils.mediumWhite(16),
+            ),
+          ),
+        ],
+      ),
     );
-
-    if (date != null) {
-      setState(() {
-        selectedDate = date;
-        _dateTextController.text =
-            DateFormat("EEEE, dd MMMM yyyy").format(date);
-      });
-    }
   }
 
   List<Widget> renderPaymentMethod() {

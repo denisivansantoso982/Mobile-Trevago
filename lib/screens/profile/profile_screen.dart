@@ -3,51 +3,32 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:trevago_app/configs/functions/functions.dart';
-import 'package:trevago_app/screens/welcome_screen.dart';
 import 'package:trevago_app/utils/utils.dart';
 import 'package:trevago_app/models/users.dart';
+import 'package:trevago_app/widgets/custom_dialog_widget.dart';
 
-class ProfileMenu extends StatefulWidget {
-  const ProfileMenu({super.key});
+class ProfileScreen extends StatefulWidget {
+  const ProfileScreen({super.key});
+
+  static const String route = "/profile";
 
   @override
-  State<ProfileMenu> createState() => _ProfileMenuState();
+  State<ProfileScreen> createState() => _ProfileScreenState();
 }
 
-class _ProfileMenuState extends State<ProfileMenu> {
+class _ProfileScreenState extends State<ProfileScreen> {
   final TextEditingController _nameTextController = TextEditingController();
   final TextEditingController _phoneTextController = TextEditingController();
   final TextEditingController _emailTextController = TextEditingController();
   final TextEditingController _usernameTextController = TextEditingController();
-
-  Future<void> handleLogout() async {
-    await logoutAction();
-    Navigator.of(context).pushNamedAndRemoveUntil(
-      WelcomeScreen.route,
-      (route) => false,
-    );
-  }
+  String token = "", name = "", phone = "", email = "", username = "";
 
   Future<Users?> retrieveUserProfile(context) async {
     try {
       final Users profile = await getProfile();
       return profile;
     } catch (error) {
-      showDialog(
-        context: context,
-        builder: (context) => AlertDialog(
-          title: const Text("Terjadi Kesalahan!"),
-          content: Text("$error"),
-          actions: [
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-              child: const Text("OKE"),
-            ),
-          ],
-        ),
-      );
+      CustomDialogWidget.showErrorDialog(context, error.toString());
       return null;
     }
   }
@@ -56,8 +37,20 @@ class _ProfileMenuState extends State<ProfileMenu> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.white,
-        title: const Text("Profil"),
+        backgroundColor: ColourUtils.blue,
+        leading: IconButton(
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+          icon: const Icon(
+            Icons.chevron_left,
+            color: Colors.white,
+          ),
+        ),
+        title: Text(
+          "Profil",
+          style: TextStyleUtils.mediumWhite(20),
+        ),
       ),
       body: ListView(
         padding: const EdgeInsets.symmetric(
@@ -73,12 +66,17 @@ class _ProfileMenuState extends State<ProfileMenu> {
                   child: CircularProgressIndicator(),
                 );
               }
-              _nameTextController.text = snapshot.hasData ? snapshot.data!.name : "";
-              _phoneTextController.text = snapshot.hasData ? snapshot.data!.phone : "";
-              _emailTextController.text = snapshot.hasData ? snapshot.data!.email : "";
-              _usernameTextController.text = snapshot.hasData ? snapshot.data!.username : "";
+              token = snapshot.data!.token;
+              _nameTextController.text =
+                  snapshot.hasData ? snapshot.data!.name : "";
+              _phoneTextController.text =
+                  snapshot.hasData ? snapshot.data!.phone : "";
+              _emailTextController.text =
+                  snapshot.hasData ? snapshot.data!.email : "";
+              _usernameTextController.text =
+                  snapshot.hasData ? snapshot.data!.username : "";
               return Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   // *Name
                   const Text(
@@ -236,23 +234,18 @@ class _ProfileMenuState extends State<ProfileMenu> {
                       ),
                     ),
                   ),
-                  const SizedBox(height: 16),
+                  const SizedBox(height: 32),
+                  ElevatedButton(
+                    onPressed: () {},
+                    style: ButtonStyleUtils.activeButton,
+                    child: Text(
+                      "Ubah",
+                      style: TextStyleUtils.semiboldWhite(16),
+                    ),
+                  ),
                 ],
               );
             },
-          ),
-          TextButton(
-            onPressed: () {
-              handleLogout();
-            },
-            child: const Text(
-              "Logout",
-              style: TextStyle(
-                color: ColourUtils.blue,
-                fontSize: 16,
-                fontWeight: FontWeight.w700,
-              ),
-            ),
           ),
         ],
       ),

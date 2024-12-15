@@ -18,6 +18,7 @@ import 'package:trevago_app/screens/tour_packages/detail_package_screen.dart';
 import 'package:intl/intl.dart';
 import 'package:trevago_app/screens/transports/detail_transport_screen.dart';
 import 'package:trevago_app/screens/tour_packages/packages_screen.dart';
+import 'package:trevago_app/widgets/custom_dialog_widget.dart';
 import 'package:trevago_app/widgets/tour_card_widget.dart';
 import 'package:trevago_app/widgets/tour_transparent_card_widget.dart';
 
@@ -69,6 +70,7 @@ class _DashboardMenuState extends State<DashboardMenu> {
       "name": "Alam",
     },
   ];
+
   String formatPrice(int price) => formatter.format(price).replaceAll(",", ".");
 
   Future<Users?> retrieveUserProfile(BuildContext context) async {
@@ -76,21 +78,7 @@ class _DashboardMenuState extends State<DashboardMenu> {
       final Users profile = await getProfile();
       return profile;
     } catch (error) {
-      showDialog(
-        context: context,
-        builder: (context) => AlertDialog(
-          title: const Text("Terjadi Kesalahan!"),
-          content: Text("$error"),
-          actions: [
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-              child: const Text("OKE"),
-            ),
-          ],
-        ),
-      );
+      CustomDialogWidget.showErrorDialog(context, error.toString());
       return null;
     }
   }

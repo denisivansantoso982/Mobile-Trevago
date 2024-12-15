@@ -62,6 +62,15 @@ Future<void> logoutAction() async {
 
 Future<Users> getProfile() async {
   try {
+    final Users oldUserInfo = await preferences.getUserProfile();
+    final Map profileResponse = await api.profile(oldUserInfo.token);
+    await preferences.setUserLogin(Users(
+      token: oldUserInfo.token,
+      username: profileResponse["username"],
+      phone: profileResponse["no_hp"] ?? "",
+      name: profileResponse["nama"] ?? "",
+      email: profileResponse["email"] ?? "",
+    ));
     final Users userInfo = await preferences.getUserProfile();
     return Future.value(userInfo);
   } catch (error) {

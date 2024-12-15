@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:trevago_app/configs/api/api.dart';
 import 'package:trevago_app/models/restaurant_model.dart';
-import 'package:trevago_app/screens/tour_packages/packages_screen.dart';
+import 'package:trevago_app/screens/restaurant/booking_restaurant_screen.dart';
 import 'package:trevago_app/utils/utils.dart';
 
 class DetailRestaurantScreen extends StatefulWidget {
@@ -190,7 +190,12 @@ class _DetailRestaurantScreenState extends State<DetailRestaurantScreen> {
       bottomNavigationBar: Container(
         padding: const EdgeInsets.all(8),
         child: ElevatedButton(
-          onPressed: () {},
+          onPressed: () {
+            Navigator.of(context).pushNamed(
+              BookingRestaurantScreen.route,
+              arguments: restaurant,
+            );
+          },
           style: ElevatedButton.styleFrom(
             backgroundColor: ColourUtils.blue,
             shape:

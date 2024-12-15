@@ -3,14 +3,11 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
-import 'package:trevago_app/configs/api/api.dart';
 import 'package:trevago_app/configs/functions/functions.dart';
 import 'package:trevago_app/models/transport_model.dart';
 import 'package:trevago_app/utils/utils.dart';
 import 'package:trevago_app/models/users.dart';
-import 'package:trevago_app/screens/dashboard_screen.dart';
 import 'package:trevago_app/widgets/custom_dialog_widget.dart';
 import 'package:trevago_app/widgets/list_transport_card_widget.dart';
 
