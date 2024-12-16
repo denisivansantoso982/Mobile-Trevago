@@ -4,8 +4,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:trevago_app/models/transport_model.dart';
+import 'package:trevago_app/screens/transports/maps_screen.dart';
 import 'package:trevago_app/utils/utils.dart';
 import 'package:trevago_app/screens/transports/order_transport_screen.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class DetailTransportScreen extends StatefulWidget {
   const DetailTransportScreen({super.key});
@@ -61,6 +63,7 @@ class _DetailTransportScreenState extends State<DetailTransportScreen> {
             builder: (context, child) => CupertinoDatePicker(
               mode: CupertinoDatePickerMode.time,
               use24hFormat: true,
+              initialDateTime: bookingTime,
               onDateTimeChanged: (time) {
                 selectedTime = TimeOfDay(hour: time.hour, minute: time.minute);
               },
@@ -175,7 +178,14 @@ class _DetailTransportScreenState extends State<DetailTransportScreen> {
     );
   }
 
-  void showMap() {}
+  Future<void> showMap() async {
+    LatLng? currentCoordinate =
+        await Navigator.of(context).pushNamed(MapsScreen.route) as LatLng?;
+    setState(() {
+      bookingLocationController.text =
+          "${currentCoordinate!.latitude},${currentCoordinate.longitude}";
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -369,6 +379,13 @@ class _DetailTransportScreenState extends State<DetailTransportScreen> {
                 // * Button
                 ElevatedButton(
                   onPressed: () {
+                    if (bookingLocationController.text.isEmpty) {
+                      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                        content: Text("Pilih lokasi anda!"),
+                        backgroundColor: Colors.red,
+                      ));
+                      return;
+                    }
                     Navigator.of(context).pushNamed(
                       OrderTransportScreen.route,
                       arguments: <String, dynamic>{

@@ -6,6 +6,7 @@ import 'package:trevago_app/screens/restaurant/detail_restaurant_screen.dart';
 import 'package:trevago_app/screens/restaurant/restaurants_screen.dart';
 import 'package:trevago_app/screens/tours/detail_tour_screen.dart';
 import 'package:trevago_app/screens/tours/tours_screen.dart';
+import 'package:trevago_app/screens/transports/maps_screen.dart';
 import 'package:trevago_app/screens/transports/transports_screen.dart';
 import 'package:trevago_app/utils/utils.dart';
 import 'package:trevago_app/screens/dashboard_screen.dart';
@@ -62,6 +63,7 @@ class MyApp extends StatelessWidget {
         BookingRestaurantScreen.route: (context) => const BookingRestaurantScreen(),
         TransactionScreen.route: (context) => const TransactionScreen(),
         ProfileScreen.route: (context) => const ProfileScreen(),
+        MapsScreen.route: (context) => const MapsScreen(),
       },
     );
   }
