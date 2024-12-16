@@ -175,6 +175,8 @@ class _DetailTransportScreenState extends State<DetailTransportScreen> {
     );
   }
 
+  void showMap() {}
+
   @override
   Widget build(BuildContext context) {
     transport = ModalRoute.of(context)!.settings.arguments as TransportModel;
@@ -246,7 +248,9 @@ class _DetailTransportScreenState extends State<DetailTransportScreen> {
                               controller: bookingLocationController,
                               readOnly: true,
                               style: TextStyleUtils.boldDarkGray(16),
-                              onTap: () {},
+                              onTap: () {
+                                showMap();
+                              },
                               decoration: InputDecorationUtils.noBorder(
                                 "Tentukan Lokasi Penjemputan",
                                 contentPadding: const EdgeInsets.only(
