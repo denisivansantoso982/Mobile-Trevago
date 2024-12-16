@@ -279,6 +279,34 @@ class InputDecorationUtils {
         ),
       );
 
+  static InputDecoration outlinedDeepGrayBorder(
+    String hintText, {
+    Widget? suffix,
+    Widget? prefix,
+    TextStyle? hintStyle,
+    EdgeInsetsGeometry? contentPadding,
+  }) =>
+      InputDecoration(
+        suffix: suffix,
+        prefix: prefix,
+        hintStyle: hintStyle ?? TextStyleUtils.semiboldLightGray(16),
+        contentPadding: contentPadding ??
+            const EdgeInsets.symmetric(
+              horizontal: 8,
+              vertical: 12,
+            ),
+        isDense: true,
+        hintText: hintText,
+        enabledBorder: OutlineInputBorder(
+          borderSide: const BorderSide(color: ColourUtils.deepGray),
+          borderRadius: BorderRadius.circular(6),
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderSide: const BorderSide(color: ColourUtils.deepGray),
+          borderRadius: BorderRadius.circular(6),
+        ),
+      );
+
   static InputDecoration underlineDefaultBorder(
     String hintText, {
     Widget? suffix,

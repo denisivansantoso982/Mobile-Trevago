@@ -99,6 +99,75 @@ class ApiConfig {
     }
   }
 
+  // ? Edit Profile
+  Future<Map> editProfile(
+    String name,
+    String email,
+    String username,
+    String phone,
+    String token,
+  ) async {
+    try {
+      client = http.Client();
+      final Map body = {
+        "nama": name,
+        "email": email,
+        "username": username,
+        "no_hp": phone,
+      };
+      http.Response response = await client
+          .put(
+            Uri.parse("${url}/user/edituser"),
+            headers: {
+              'content-type': 'application/x-www-form-urlencoded',
+              'authorization': 'bearer $token',
+            },
+            body: body,
+          )
+          .timeout(const Duration(seconds: 30));
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        final Map result = jsonDecode(response.body);
+        return Future.value(result);
+      }
+      throw Exception(response.body);
+    } catch (error) {
+      return Future.error(error);
+    }
+  }
+
+  // ? Change Password
+  Future<void> changePassword(
+    String username,
+    String old_pass,
+    String new_pass,
+    String token,
+  ) async {
+    try {
+      client = http.Client();
+      final Map body = {
+        "username": username,
+        "new_password": new_pass,
+        "old_password": old_pass,
+      };
+      http.Response response = await client
+          .put(
+            Uri.parse("${url}/user/changepassword"),
+            headers: {
+              'content-type': 'application/x-www-form-urlencoded',
+              'authorization': 'bearer $token',
+            },
+            body: body,
+          )
+          .timeout(const Duration(seconds: 30));
+      if (response.statusCode != 200 || response.statusCode != 201) {
+        throw Exception(response.body);
+      }
+    } catch (error) {
+      return Future.error(error);
+    }
+  }
+
+
   // ? Get Tour Packages
   Future<List> getListTourPackages() async {
     try {

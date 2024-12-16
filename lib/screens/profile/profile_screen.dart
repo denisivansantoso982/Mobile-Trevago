@@ -21,16 +21,314 @@ class _ProfileScreenState extends State<ProfileScreen> {
   final TextEditingController _phoneTextController = TextEditingController();
   final TextEditingController _emailTextController = TextEditingController();
   final TextEditingController _usernameTextController = TextEditingController();
+  final TextEditingController _oldPassTextController = TextEditingController();
+  final TextEditingController _newPassTextController = TextEditingController();
   String token = "", name = "", phone = "", email = "", username = "";
 
   Future<Users?> retrieveUserProfile(context) async {
     try {
       final Users profile = await getProfile();
+
+      token = profile.token;
+      name = profile.name;
+      phone = profile.phone;
+      email = profile.email;
+      username = profile.username;
+      _nameTextController.text = profile.name;
+      _phoneTextController.text = profile.phone;
+      _emailTextController.text = profile.email;
+      _usernameTextController.text = profile.username;
       return profile;
     } catch (error) {
       CustomDialogWidget.showErrorDialog(context, error.toString());
       return null;
     }
+  }
+
+  Future<void> doEditProfile() async {
+    try {
+      if (validationProfile()) {
+        CustomDialogWidget.showLoadingDialog(context);
+        await editProfile(
+          _nameTextController.text,
+          _phoneTextController.text,
+          _emailTextController.text,
+          _usernameTextController.text,
+          token,
+        );
+        Navigator.of(context).pop(); // Close Loading Dialog
+        Navigator.of(context).pop(); // Close Edit Dialog
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+          content: Text("Profil berhasil diperbarui!"),
+          backgroundColor: ColourUtils.blue,
+        ));
+        setState(() {});
+      }
+    } catch (error) {
+      Navigator.of(context).pop(); // Close Loading Dialog
+      CustomDialogWidget.showErrorDialog(context, error.toString());
+    }
+  }
+
+  Future<void> doChangePassword() async {
+    try {
+      if (validationChangePass()) {
+        CustomDialogWidget.showLoadingDialog(context);
+        await changePassword(
+          username,
+          _oldPassTextController.text,
+          _newPassTextController.text,
+          token,
+        );
+        Navigator.of(context).pop(); // Close Loading Dialog
+        Navigator.of(context).pop(); // Close Edit Dialog
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+          content: Text("Password berhasil diperbarui!"),
+          backgroundColor: ColourUtils.blue,
+        ));
+        setState(() {});
+      }
+    } catch (error) {
+      Navigator.of(context).pop(); // Close Loading Dialog
+      CustomDialogWidget.showErrorDialog(context, error.toString());
+    }
+  }
+
+  bool validationProfile() {
+    if (_nameTextController.text.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+        content: Text("Nama harus diisi!"),
+        backgroundColor: Colors.red,
+      ));
+      return false;
+    } else if (_usernameTextController.text.trim().length < 6) {
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+        content: Text("Username harus memiliki minimal 6 karakter!"),
+        backgroundColor: Colors.red,
+      ));
+      return false;
+    } else if (_emailTextController.text.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+        content: Text("Email harus diisi!"),
+        backgroundColor: Colors.red,
+      ));
+      return false;
+    } else if (!_emailTextController.text.contains("@")) {
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+        content: Text("Email tidak sesuai!"),
+        backgroundColor: Colors.red,
+      ));
+      return false;
+    } else if (_phoneTextController.text.length < 8) {
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+        content: Text("Nomor HP tidak sesuai!"),
+        backgroundColor: Colors.red,
+      ));
+      return false;
+    }
+    return true;
+  }
+
+  bool validationChangePass() {
+    if (_oldPassTextController.text.length < 8 || _newPassTextController.text.length < 8) {
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+        content: Text("Harus memiliki minimal 8 karakter!"),
+        backgroundColor: Colors.red,
+      ));
+      return false;
+    } else if (_newPassTextController.text == _oldPassTextController.text) {
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+        content: Text("Pastikan password baru berbeda dengan yang lama!"),
+        backgroundColor: Colors.red,
+      ));
+      return false;
+    }
+    return true;
+  }
+
+  void showEditDialog() {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text(
+          "Ubah Profil",
+          style: TextStyleUtils.boldDarkGray(20),
+        ),
+        content: ListView(
+          // crossAxisAlignment: CrossAxisAlignment.stretch,
+          shrinkWrap: true,
+          children: [
+            // *Name
+            TextField(
+              controller: _nameTextController,
+              style: TextStyleUtils.regularDarkGray(16),
+              keyboardType: TextInputType.name,
+              inputFormatters: [
+                LengthLimitingTextInputFormatter(100),
+              ],
+              cursorColor: ColourUtils.blue,
+              decoration: InputDecorationUtils.outlinedDeepGrayBorder("Nama",
+                contentPadding: const EdgeInsets.symmetric(
+                  horizontal: 8,
+                  vertical: 12,
+                ),
+              ),
+            ),
+            const SizedBox(height: 12),
+            // *Phone
+            TextField(
+              controller: _phoneTextController,
+              style: TextStyleUtils.regularDarkGray(16),
+              keyboardType: TextInputType.phone,
+              inputFormatters: [
+                LengthLimitingTextInputFormatter(15),
+                FilteringTextInputFormatter.digitsOnly,
+              ],
+              cursorColor: ColourUtils.blue,
+              decoration: InputDecorationUtils.outlinedDeepGrayBorder("Nomor Telepon",
+                contentPadding: const EdgeInsets.symmetric(
+                  horizontal: 8,
+                  vertical: 12,
+                ),
+              ),
+            ),
+            const SizedBox(height: 12),
+            // *Email
+            TextField(
+              controller: _emailTextController,
+              style: TextStyleUtils.regularDarkGray(16),
+              keyboardType: TextInputType.emailAddress,
+              inputFormatters: [
+                LengthLimitingTextInputFormatter(100),
+              ],
+              cursorColor: ColourUtils.blue,
+              decoration: InputDecorationUtils.outlinedDeepGrayBorder(
+                "Email",
+                contentPadding: const EdgeInsets.symmetric(
+                  horizontal: 8,
+                  vertical: 12,
+                ),
+              ),
+            ),
+            const SizedBox(height: 12),
+            // *Username
+            TextField(
+              controller: _usernameTextController,
+              style: TextStyleUtils.regularDarkGray(16),
+              keyboardType: TextInputType.name,
+              inputFormatters: [
+                LengthLimitingTextInputFormatter(50),
+              ],
+              cursorColor: ColourUtils.blue,
+              decoration: InputDecorationUtils.outlinedDeepGrayBorder(
+                "Username",
+                contentPadding: const EdgeInsets.symmetric(
+                  horizontal: 8,
+                  vertical: 12,
+                ),
+              ),
+            ),
+          ],
+        ),
+        actions: [
+          OutlinedButton(
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+            style: ButtonStyleUtils.outlinedActiveButton,
+            child: Text(
+              "Batal",
+              style: TextStyleUtils.semiboldBlue(16),
+            ),
+          ),
+          ElevatedButton(
+            onPressed: () {
+              doEditProfile();
+            },
+            style: ButtonStyleUtils.activeButton,
+            child: Text(
+              "Kirim",
+              style: TextStyleUtils.semiboldWhite(16),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  void showChangePassDialog() {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text(
+          "Ganti Password",
+          style: TextStyleUtils.boldDarkGray(20),
+        ),
+        content: ListView(
+          // crossAxisAlignment: CrossAxisAlignment.stretch,
+          shrinkWrap: true,
+          children: [
+            // *Old Pass
+            TextField(
+              controller: _oldPassTextController,
+              style: TextStyleUtils.regularDarkGray(16),
+              keyboardType: TextInputType.visiblePassword,
+              inputFormatters: [
+                LengthLimitingTextInputFormatter(100),
+              ],
+              cursorColor: ColourUtils.blue,
+              decoration: InputDecorationUtils.outlinedDeepGrayBorder(
+                "Masukkan Password Lama",
+                contentPadding: const EdgeInsets.symmetric(
+                  horizontal: 8,
+                  vertical: 12,
+                ),
+              ),
+            ),
+            const SizedBox(height: 12),
+            // *New Pass
+            TextField(
+              controller: _newPassTextController,
+              style: TextStyleUtils.regularDarkGray(16),
+              keyboardType: TextInputType.visiblePassword,
+              inputFormatters: [
+                LengthLimitingTextInputFormatter(100),
+              ],
+              cursorColor: ColourUtils.blue,
+              decoration: InputDecorationUtils.outlinedDeepGrayBorder(
+                "Masukkan Password Baru",
+                contentPadding: const EdgeInsets.symmetric(
+                  horizontal: 8,
+                  vertical: 12,
+                ),
+              ),
+            ),
+          ],
+        ),
+        actions: [
+          OutlinedButton(
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+            style: ButtonStyleUtils.outlinedActiveButton,
+            child: Text(
+              "Batal",
+              style: TextStyleUtils.semiboldBlue(16),
+            ),
+          ),
+          ElevatedButton(
+            onPressed: () {
+              doChangePassword();
+            },
+            style: ButtonStyleUtils.activeButton,
+            child: Text(
+              "Kirim",
+              style: TextStyleUtils.semiboldWhite(16),
+            ),
+          ),
+        ],
+      ),
+    );
   }
 
   @override
@@ -66,15 +364,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   child: CircularProgressIndicator(),
                 );
               }
-              token = snapshot.data!.token;
-              _nameTextController.text =
-                  snapshot.hasData ? snapshot.data!.name : "";
-              _phoneTextController.text =
-                  snapshot.hasData ? snapshot.data!.phone : "";
-              _emailTextController.text =
-                  snapshot.hasData ? snapshot.data!.email : "";
-              _usernameTextController.text =
-                  snapshot.hasData ? snapshot.data!.username : "";
               return Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
@@ -88,33 +377,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     ),
                   ),
                   const SizedBox(height: 4),
-                  TextField(
-                    controller: _nameTextController,
-                    readOnly: true,
-                    style: const TextStyle(
-                      color: Colors.black87,
-                      fontWeight: FontWeight.w400,
-                      fontSize: 16,
+                  Container(
+                    padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 12,),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(8),
+                      border: const Border.fromBorderSide(BorderSide(color: ColourUtils.gray, width: 1,),),
                     ),
-                    keyboardType: TextInputType.name,
-                    inputFormatters: [
-                      LengthLimitingTextInputFormatter(100),
-                    ],
-                    cursorColor: ColourUtils.blue,
-                    decoration: InputDecoration(
-                      isDense: true,
-                      hintText: "Nama",
-                      contentPadding: const EdgeInsets.symmetric(
-                        horizontal: 8,
-                        vertical: 12,
-                      ),
-                      focusedBorder: const OutlineInputBorder(
-                        borderSide: BorderSide(color: ColourUtils.blue),
-                      ),
-                      border: OutlineInputBorder(
-                        borderSide: BorderSide(color: Colors.grey.shade300),
-                      ),
-                    ),
+                    child: Text(name, style: TextStyleUtils.regularBlue(16),),
                   ),
                   const SizedBox(height: 12),
                   // *Phone
@@ -127,33 +396,23 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     ),
                   ),
                   const SizedBox(height: 4),
-                  TextField(
-                    controller: _phoneTextController,
-                    readOnly: true,
-                    style: const TextStyle(
-                      color: Colors.black87,
-                      fontWeight: FontWeight.w400,
-                      fontSize: 16,
+                  Container(
+                    padding: const EdgeInsets.symmetric(
+                      vertical: 8,
+                      horizontal: 12,
                     ),
-                    keyboardType: TextInputType.phone,
-                    inputFormatters: [
-                      LengthLimitingTextInputFormatter(15),
-                      FilteringTextInputFormatter.digitsOnly,
-                    ],
-                    cursorColor: ColourUtils.blue,
-                    decoration: InputDecoration(
-                      isDense: true,
-                      hintText: "Nomor Telepon",
-                      contentPadding: const EdgeInsets.symmetric(
-                        horizontal: 8,
-                        vertical: 12,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(8),
+                      border: const Border.fromBorderSide(
+                        BorderSide(
+                          color: ColourUtils.gray,
+                          width: 1,
+                        ),
                       ),
-                      focusedBorder: const OutlineInputBorder(
-                        borderSide: BorderSide(color: ColourUtils.blue),
-                      ),
-                      border: OutlineInputBorder(
-                        borderSide: BorderSide(color: Colors.grey.shade300),
-                      ),
+                    ),
+                    child: Text(
+                      phone,
+                      style: TextStyleUtils.regularBlue(16),
                     ),
                   ),
                   const SizedBox(height: 12),
@@ -167,32 +426,23 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     ),
                   ),
                   const SizedBox(height: 4),
-                  TextField(
-                    controller: _emailTextController,
-                    readOnly: true,
-                    style: const TextStyle(
-                      color: Colors.black87,
-                      fontWeight: FontWeight.w400,
-                      fontSize: 16,
+                  Container(
+                    padding: const EdgeInsets.symmetric(
+                      vertical: 8,
+                      horizontal: 12,
                     ),
-                    keyboardType: TextInputType.emailAddress,
-                    inputFormatters: [
-                      LengthLimitingTextInputFormatter(100),
-                    ],
-                    cursorColor: ColourUtils.blue,
-                    decoration: InputDecoration(
-                      isDense: true,
-                      hintText: "Email",
-                      contentPadding: const EdgeInsets.symmetric(
-                        horizontal: 8,
-                        vertical: 12,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(8),
+                      border: const Border.fromBorderSide(
+                        BorderSide(
+                          color: ColourUtils.gray,
+                          width: 1,
+                        ),
                       ),
-                      focusedBorder: const OutlineInputBorder(
-                        borderSide: BorderSide(color: ColourUtils.blue),
-                      ),
-                      border: OutlineInputBorder(
-                        borderSide: BorderSide(color: Colors.grey.shade300),
-                      ),
+                    ),
+                    child: Text(
+                      email,
+                      style: TextStyleUtils.regularBlue(16),
                     ),
                   ),
                   const SizedBox(height: 12),
@@ -206,42 +456,54 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     ),
                   ),
                   const SizedBox(height: 4),
-                  TextField(
-                    controller: _usernameTextController,
-                    readOnly: true,
-                    style: const TextStyle(
-                      color: Colors.black87,
-                      fontWeight: FontWeight.w400,
-                      fontSize: 16,
+                  Container(
+                    padding: const EdgeInsets.symmetric(
+                      vertical: 8,
+                      horizontal: 12,
                     ),
-                    keyboardType: TextInputType.name,
-                    inputFormatters: [
-                      LengthLimitingTextInputFormatter(50),
-                    ],
-                    cursorColor: ColourUtils.blue,
-                    decoration: InputDecoration(
-                      isDense: true,
-                      hintText: "Username",
-                      contentPadding: const EdgeInsets.symmetric(
-                        horizontal: 8,
-                        vertical: 12,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(8),
+                      border: const Border.fromBorderSide(
+                        BorderSide(
+                          color: ColourUtils.gray,
+                          width: 1,
+                        ),
                       ),
-                      focusedBorder: const OutlineInputBorder(
-                        borderSide: BorderSide(color: ColourUtils.blue),
-                      ),
-                      border: OutlineInputBorder(
-                        borderSide: BorderSide(color: Colors.grey.shade300),
-                      ),
+                    ),
+                    child: Text(
+                      username,
+                      style: TextStyleUtils.regularBlue(16),
                     ),
                   ),
                   const SizedBox(height: 32),
-                  ElevatedButton(
-                    onPressed: () {},
-                    style: ButtonStyleUtils.activeButton,
-                    child: Text(
-                      "Ubah",
-                      style: TextStyleUtils.semiboldWhite(16),
-                    ),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: OutlinedButton(
+                          onPressed: () {
+                            showChangePassDialog();
+                          },
+                          style: ButtonStyleUtils.outlinedActiveButton,
+                          child: Text(
+                            "Ganti Password",
+                            style: TextStyleUtils.semiboldBlue(16),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(width: 8),
+                      Expanded(
+                        child: ElevatedButton(
+                          onPressed: () {
+                            showEditDialog();
+                          },
+                          style: ButtonStyleUtils.activeButton,
+                          child: Text(
+                            "Ubah Profil",
+                            style: TextStyleUtils.semiboldWhite(16),
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                 ],
               );

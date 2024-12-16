@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:trevago_app/configs/functions/functions.dart';
 import 'package:trevago_app/utils/utils.dart';
 import 'package:trevago_app/screens/dashboard_screen.dart';
+import 'package:trevago_app/widgets/custom_dialog_widget.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -48,21 +49,7 @@ class _LoginScreenState extends State<LoginScreen> {
       }
     } catch (error) {
       Navigator.of(context).pop(); // ?Close Loading Dialog
-      showDialog(
-        context: context,
-        builder: (context) => AlertDialog(
-          title: const Text("Terjadi Kesalahan!"),
-          content: Text("$error"),
-          actions: [
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-              child: const Text("OKE"),
-            ),
-          ],
-        ),
-      );
+      CustomDialogWidget.showErrorDialog(context, error.toString());
     }
   }
 

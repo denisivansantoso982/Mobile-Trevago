@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:trevago_app/configs/functions/functions.dart';
 import 'package:trevago_app/utils/utils.dart';
 import 'package:trevago_app/screens/auth/login_screen.dart';
+import 'package:trevago_app/widgets/custom_dialog_widget.dart';
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key});
@@ -60,21 +61,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
       }
     } catch (error) {
       Navigator.of(context).pop(); // ?Close Loading Dialog
-      showDialog(
-        context: context,
-        builder: (context) => AlertDialog(
-          title: const Text("Terjadi Kesalahan!"),
-          content: Text("$error"),
-          actions: [
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-              child: const Text("OKE"),
-            ),
-          ],
-        ),
-      );
+      CustomDialogWidget.showErrorDialog(context, error.toString());
     }
   }
 
@@ -103,13 +90,13 @@ class _RegisterScreenState extends State<RegisterScreen> {
         backgroundColor: Colors.red,
       ));
       return false;
-    }  else if (_phoneTextController.text.length < 8) {
+    } else if (_phoneTextController.text.length < 8) {
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
         content: Text("Nomor HP tidak sesuai!"),
         backgroundColor: Colors.red,
       ));
       return false;
-    }else if (_passwordTextController.text.length < 8) {
+    } else if (_passwordTextController.text.length < 8) {
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
         content: Text("Password harus memiliki minimal 8 karakter!"),
         backgroundColor: Colors.red,

@@ -78,6 +78,40 @@ Future<Users> getProfile() async {
   }
 }
 
+Future<void> editProfile(
+  String name,
+  String phone,
+  String email,
+  String username,
+  String token,
+) async {
+  try {
+    final Map newProfile = await api.editProfile(name, email, username, phone, token);
+    await preferences.setUserLogin(Users(
+      token: token,
+      username: newProfile["username"] ?? "s",
+      phone: newProfile["no_hp"] ?? "",
+      name: newProfile["nama"] ?? "",
+      email: newProfile["email"] ?? "",
+    ));
+  } catch (error) {
+    return Future.error(error);
+  }
+}
+
+Future<void> changePassword(
+  String username,
+  String old_pass,
+  String new_pass,
+  String token,
+) async {
+  try {
+    await api.changePassword(username, old_pass, new_pass, token);
+  } catch (error) {
+    return Future.error(error);
+  }
+}
+
 Future<List> getTourPackages() async {
   try {
     final List packages = await api.getListTourPackages();
