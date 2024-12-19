@@ -59,7 +59,7 @@ class _DetailRestaurantScreenState extends State<DetailRestaurantScreen> {
                   child: ElevatedButton(
                     onPressed: () => Navigator.of(context).pop(),
                     style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.white.withOpacity(.8),
+                        backgroundColor: Colors.black.withValues(alpha: 255 / 4),
                         shape: const CircleBorder()),
                     child: const Icon(
                       Icons.chevron_left,
@@ -82,7 +82,7 @@ class _DetailRestaurantScreenState extends State<DetailRestaurantScreen> {
                       borderRadius: BorderRadius.circular(16),
                       boxShadow: [
                         BoxShadow(
-                          color: Colors.black.withOpacity(0.25),
+                          color: Colors.black.withValues(alpha: 255 / 4),
                           offset: const Offset(1, 1),
                           blurRadius: 4,
                         ),

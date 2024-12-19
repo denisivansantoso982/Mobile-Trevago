@@ -23,7 +23,7 @@ class TourTransparentCardWidget extends StatelessWidget {
         color: Colors.white,
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(.25),
+            color: Colors.black.withValues(alpha: 255 / 4),
             blurRadius: 4,
             offset: const Offset(1, 2),
           ),
@@ -74,7 +74,7 @@ class TourTransparentCardWidget extends StatelessWidget {
                   vertical: 4,
                 ),
                 decoration: BoxDecoration(
-                  color: Colors.black.withOpacity(.5),
+                  color: Colors.black.withValues(alpha: 255 / 4),
                   borderRadius:
                       const BorderRadius.vertical(bottom: Radius.circular(8)),
                 ),

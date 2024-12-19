@@ -6,6 +6,7 @@ import 'package:trevago_app/configs/functions/functions.dart';
 import 'package:trevago_app/screens/welcome_screen.dart';
 import 'package:trevago_app/utils/utils.dart';
 import 'package:trevago_app/screens/tour_packages/detail_order_package_screen.dart';
+import 'package:trevago_app/widgets/custom_dialog_widget.dart';
 
 class TransactionScreen extends StatefulWidget {
   const TransactionScreen({super.key});
@@ -26,29 +27,7 @@ class _TransactionScreenState extends State<TransactionScreen> {
       final List transactions = await getTransactionsPackage();
       return transactions;
     } catch (error) {
-      showDialog(
-        context: context,
-        builder: (context) => AlertDialog(
-          title: const Text("Terjadi Kesalahan!"),
-          content: Text("$error"),
-          actions: [
-            TextButton(
-              onPressed: () async {
-                if (error.toString().contains("Forbidden")) {
-                  await logoutAction();
-                  Navigator.of(context).pushNamedAndRemoveUntil(
-                    WelcomeScreen.route,
-                    (route) => false,
-                  );
-                } else {
-                  Navigator.of(context).pop();
-                }
-              },
-              child: const Text("OKE"),
-            ),
-          ],
-        ),
-      );
+      CustomDialogWidget.showErrorDialog(context, error.toString());
       return [];
     }
   }
@@ -57,8 +36,11 @@ class _TransactionScreenState extends State<TransactionScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.white,
-        title: const Text("Daftar Pesanan"),
+        backgroundColor: ColourUtils.blue,
+        title: Text(
+          "Daftar Pesanan",
+          style: TextStyleUtils.mediumWhite(20),
+        ),
       ),
       body: FutureBuilder(
         future: retrieveTransactions(),
@@ -92,7 +74,7 @@ class _TransactionScreenState extends State<TransactionScreen> {
                   borderRadius: BorderRadius.circular(8),
                   boxShadow: [
                     BoxShadow(
-                      color: Colors.black.withOpacity(.25),
+                      color: Colors.black.withValues(alpha: 255 / 4),
                       blurRadius: 4,
                       offset: const Offset(.5, 1),
                     ),

@@ -561,7 +561,7 @@ class _DashboardMenuState extends State<DashboardMenu> {
                         borderRadius: BorderRadius.circular(12),
                         boxShadow: [
                           BoxShadow(
-                            color: Colors.black.withOpacity(.25),
+                            color: Colors.black.withValues(alpha: 255 / 4),
                             blurRadius: 4,
                             offset: const Offset(.5, 1),
                           ),

@@ -243,7 +243,7 @@ class _OrderPackageScreenState extends State<OrderPackageScreen> {
     package_price = package.price;
     return PopScope(
       canPop: step == 1,
-      onPopInvoked: (poped) {
+      onPopInvokedWithResult: (poped, result) {
         if (poped) {
           return;
         }
@@ -391,7 +391,7 @@ class _OrderPackageScreenState extends State<OrderPackageScreen> {
                           color: Colors.white,
                           boxShadow: [
                             BoxShadow(
-                              color: Colors.black.withOpacity(.25),
+                              color: Colors.black.withValues(alpha: 255 / 4),
                               blurRadius: 4,
                               offset: const Offset(0, 1),
                             ),
@@ -443,7 +443,7 @@ class _OrderPackageScreenState extends State<OrderPackageScreen> {
                           color: Colors.white,
                           boxShadow: [
                             BoxShadow(
-                              color: Colors.black.withOpacity(.25),
+                              color: Colors.black.withValues(alpha: 255 / 4),
                               blurRadius: 4,
                               offset: const Offset(0, 1),
                             ),
@@ -537,7 +537,7 @@ class _OrderPackageScreenState extends State<OrderPackageScreen> {
                               fit: BoxFit.cover),
                           boxShadow: [
                             BoxShadow(
-                              color: Colors.black.withOpacity(.25),
+                              color: Colors.black.withValues(alpha: 255 / 4),
                               blurRadius: 4,
                               offset: const Offset(0, 1),
                             ),

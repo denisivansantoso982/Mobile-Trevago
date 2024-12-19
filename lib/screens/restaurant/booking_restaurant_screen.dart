@@ -129,7 +129,7 @@ class _BookingRestaurantScreenState extends State<BookingRestaurantScreen> {
               boxShadow: [
                 BoxShadow(
                   offset: const Offset(0, 1),
-                  color: Colors.black.withOpacity(.25),
+                  color: Colors.black.withValues(alpha: 255 / 4),
                   blurRadius: 4,
                 ),
               ],
@@ -200,7 +200,7 @@ class _BookingRestaurantScreenState extends State<BookingRestaurantScreen> {
               boxShadow: [
                 BoxShadow(
                   offset: const Offset(0, 1),
-                  color: Colors.black.withOpacity(.25),
+                  color: Colors.black.withValues(alpha: 255 / 4),
                   blurRadius: 4,
                 ),
               ],

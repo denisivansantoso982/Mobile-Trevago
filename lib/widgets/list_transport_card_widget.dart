@@ -31,7 +31,7 @@ class ListTransportCardWidget extends StatelessWidget {
         color: Colors.white,
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(.25),
+            color: Colors.black.withValues(alpha: 255 / 4),
             blurRadius: 4,
             offset: const Offset(1, 2),
           ),

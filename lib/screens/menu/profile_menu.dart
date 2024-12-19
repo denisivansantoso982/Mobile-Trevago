@@ -2,7 +2,8 @@
 
 import 'package:flutter/material.dart';
 import 'package:trevago_app/configs/functions/functions.dart';
-import 'package:trevago_app/screens/profile/profile_screen.dart';
+import 'package:trevago_app/screens/menu/profile/profile_screen.dart';
+import 'package:trevago_app/screens/menu/profile/transaction_screen.dart';
 import 'package:trevago_app/screens/welcome_screen.dart';
 import 'package:trevago_app/utils/utils.dart';
 import 'package:trevago_app/models/users.dart';
@@ -31,7 +32,7 @@ class _ProfileMenuState extends State<ProfileMenu> {
             color: ColourUtils.darkGray,
           ),
           "title": "Transaksi Saya",
-          "nav": () => Navigator.of(context).pushNamed(ProfileScreen.route),
+          "nav": () => Navigator.of(context).pushNamed(TransactionScreen.route),
         },
         {
           "icon": const Icon(

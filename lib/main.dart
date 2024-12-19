@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:trevago_app/screens/profile/profile_screen.dart';
-import 'package:trevago_app/screens/profile/transaction_screen.dart';
+import 'package:trevago_app/screens/menu/profile/profile_screen.dart';
+import 'package:trevago_app/screens/menu/profile/transaction_screen.dart';
 import 'package:trevago_app/screens/restaurant/booking_restaurant_screen.dart';
 import 'package:trevago_app/screens/restaurant/detail_restaurant_screen.dart';
 import 'package:trevago_app/screens/restaurant/restaurants_screen.dart';
