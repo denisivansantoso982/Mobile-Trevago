@@ -10,6 +10,7 @@ import 'package:trevago_app/models/tour_model.dart';
 import 'package:trevago_app/models/tour_package_model.dart';
 import 'package:trevago_app/screens/tour_packages/detail_package_screen.dart';
 import 'package:trevago_app/utils/utils.dart';
+import 'package:trevago_app/widgets/custom_dialog_widget.dart';
 import 'package:trevago_app/widgets/tour_transparent_card_widget.dart';
 
 class PackagesScreen extends StatefulWidget {
@@ -49,25 +50,57 @@ class _PackagesScreenState extends State<PackagesScreen> {
           ),
         ));
       }
-      return Future.value(listPackage);
+      return Future.value(listPackage
+          .where((e) => e.title.contains(_searchController.text))
+          .toList());
     } catch (error) {
-      showDialog(
-        context: context,
-        builder: (context) => AlertDialog(
-          title: const Text("Terjadi Kesalahan!"),
-          content: Text("$error"),
-          actions: [
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-              child: const Text("OKE"),
-            ),
-          ],
-        ),
-      );
+      CustomDialogWidget.showErrorDialog(context, error.toString());
       return Future.error(error);
     }
+  }
+
+  void showFilterDialog() {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text(
+          "Cari Paket Wisata",
+          style: TextStyleUtils.mediumDarkGray(20),
+        ),
+        content: SizedBox(
+          child: TextField(
+            controller: _searchController,
+            keyboardType: TextInputType.name,
+            style: TextStyleUtils.regularDarkGray(16),
+            decoration: InputDecorationUtils.outlinedBlueBorder(
+                "Cari Paket Wisata disini..."),
+          ),
+        ),
+        actions: [
+          OutlinedButton(
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+            style: ButtonStyleUtils.outlinedActiveButton,
+            child: Text(
+              "Batal",
+              style: TextStyleUtils.mediumBlue(18),
+            ),
+          ),
+          ElevatedButton(
+            onPressed: () {
+              setState(() {});
+              Navigator.of(context).pop();
+            },
+            style: ButtonStyleUtils.activeButton,
+            child: Text(
+              "Cari",
+              style: TextStyleUtils.mediumWhite(18),
+            ),
+          ),
+        ],
+      ),
+    );
   }
 
   @override
@@ -95,7 +128,9 @@ class _PackagesScreenState extends State<PackagesScreen> {
         ),
         actions: [
           TextButton(
-            onPressed: () {},
+            onPressed: () {
+              showFilterDialog();
+            },
             child: Row(
               children: [
                 const Icon(

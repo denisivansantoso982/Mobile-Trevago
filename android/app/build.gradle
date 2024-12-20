@@ -44,6 +44,11 @@ android {
         versionName = flutterVersionName
     }
 
+    // Menambahkan konfigurasi JVM target untuk Kotlin dan Java
+    kotlinOptions {
+        jvmTarget = '17'  // Mengatur target JVM untuk Kotlin
+    }
+
     buildTypes {
         release {
             // TODO: Add your own signing config for the release build.

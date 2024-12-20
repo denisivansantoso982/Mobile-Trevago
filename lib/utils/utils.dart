@@ -243,11 +243,13 @@ class InputDecorationUtils {
         contentPadding: contentPadding ?? const EdgeInsets.symmetric(horizontal: 8, vertical: 12,),
         isDense: true,
         hintText: hintText,
-        enabledBorder: const OutlineInputBorder(
-          borderSide: BorderSide.none,
+        enabledBorder: OutlineInputBorder(
+          borderSide: const BorderSide(color: ColourUtils.blue),
+          borderRadius: BorderRadius.circular(6),
         ),
-        focusedBorder: const OutlineInputBorder(
-          borderSide: BorderSide.none,
+        focusedBorder: OutlineInputBorder(
+          borderSide: const BorderSide(color: ColourUtils.blue),
+          borderRadius: BorderRadius.circular(6),
         ),
       );
 
