@@ -9,6 +9,7 @@ import 'package:intl/intl.dart';
 import 'package:trevago_app/configs/api/api.dart';
 import 'package:trevago_app/configs/functions/functions.dart';
 import 'package:trevago_app/models/tour_package_model.dart';
+import 'package:trevago_app/screens/payment_screen.dart';
 import 'package:trevago_app/utils/utils.dart';
 import 'package:trevago_app/models/users.dart';
 import 'package:trevago_app/screens/dashboard_screen.dart';
@@ -77,10 +78,10 @@ class _OrderPackageScreenState extends State<OrderPackageScreen> {
   Future<void> submitTransaction() async {
     try {
       CustomDialogWidget.showLoadingDialog(context);
-      await newTransactionPackage(
+      var res = await newTransactionPackage(
         selectedDate,
         _noteTextController.text,
-        package.price,
+        package.id,
         participant,
         package_price,
         participant * package_price,
@@ -91,10 +92,14 @@ class _OrderPackageScreenState extends State<OrderPackageScreen> {
           content: Text("Transaksi Berhasil!"),
         ),
       );
-      Navigator.of(context).pushNamedAndRemoveUntil(
-        DashboardScreen.route,
-        (route) => false,
-      );
+      Navigator.of(context).pushReplacement(
+        MaterialPageRoute(
+            builder: (context) => PaymentScreen(
+                  directUrl: res["redirect_url"].toString(),
+                  snapToken: res["snap_token"].toString(),
+                )),
+      ).then((_) => Navigator.of(context).pushReplacement(
+            MaterialPageRoute(builder: (context) => const DashboardScreen())));
     } catch (error) {
       Navigator.of(context).pop(); // Close Loading Dialog
       CustomDialogWidget.showErrorDialog(context, error.toString());

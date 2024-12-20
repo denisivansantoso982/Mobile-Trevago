@@ -262,6 +262,25 @@ class ApiConfig {
     }
   }
 
+  Future<bool> getListTransactionPackageById(String token, String id) async {
+    try {
+      client = http.Client();
+      http.Response response = await client.get(
+        Uri.parse("${url}/user/viewPesanan/$id"),
+        headers: {
+          'content-type': 'application/x-www-form-urlencoded',
+          'authorization': 'bearer $token',
+        },
+      ).timeout(const Duration(seconds: 30));
+      if (response.statusCode == 200) {
+        return true;
+      }
+      throw Exception(response.body);
+    } catch (error) {
+      return Future.error(error);
+    }
+  }
+
   // ? Add Transaction Tour Package
   Future<Map> addTransactionPackage(
     String token,
@@ -304,11 +323,7 @@ class ApiConfig {
   // ? Add Transaction Tour Transport
   Future<Map> addTransactionTransport(
     String token,
-    String note,
     int transport,
-    int qty,
-    int price,
-    int subtotal,
     String location,
     DateTime rent_date,
   ) async {
@@ -316,11 +331,7 @@ class ApiConfig {
       client = http.Client();
       final Map body = {
         "tgl_pesanan": DateTime.now().toString(),
-        "catatan": note,
         "id_kendaraan": transport.toString(),
-        "qty": qty.toString(),
-        "harga": price.toString(),
-        "subtotal": subtotal.toString(),
         "lokasi_penjemputan": location,
         "waktu_penjemputan": rent_date.toString(),
       };

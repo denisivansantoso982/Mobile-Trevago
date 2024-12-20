@@ -7,14 +7,16 @@ import 'package:trevago_app/screens/welcome_screen.dart';
 import 'package:trevago_app/utils/utils.dart';
 import 'package:trevago_app/screens/tour_packages/detail_order_package_screen.dart';
 
-class OrderedMenu extends StatefulWidget {
-  const OrderedMenu({super.key});
+class TransactionScreen extends StatefulWidget {
+  const TransactionScreen({super.key});
+
+  static const String route = "/transaction";
 
   @override
-  State<OrderedMenu> createState() => _OrderedMenuState();
+  State<TransactionScreen> createState() => _TransactionScreenState();
 }
 
-class _OrderedMenuState extends State<OrderedMenu> {
+class _TransactionScreenState extends State<TransactionScreen> {
   static final NumberFormat formatter = NumberFormat("##,000");
 
   String formatPrice(int price) => formatter.format(price).replaceAll(",", ".");
@@ -55,11 +57,8 @@ class _OrderedMenuState extends State<OrderedMenu> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: ColourUtils.blue,
-        title: Text(
-          "Daftar Pesanan",
-          style: TextStyleUtils.mediumWhite(20),
-        ),
+        backgroundColor: Colors.white,
+        title: const Text("Daftar Pesanan"),
       ),
       body: FutureBuilder(
         future: retrieveTransactions(),
@@ -93,7 +92,7 @@ class _OrderedMenuState extends State<OrderedMenu> {
                   borderRadius: BorderRadius.circular(8),
                   boxShadow: [
                     BoxShadow(
-                      color: Colors.black.withValues(alpha: 255 / 4),
+                      color: Colors.black.withOpacity(.25),
                       blurRadius: 4,
                       offset: const Offset(.5, 1),
                     ),
@@ -154,15 +153,15 @@ class _OrderedMenuState extends State<OrderedMenu> {
                     ),
                     Container(
                       padding: const EdgeInsets.all(12),
-                      child: Row(
+                      child: const Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Flexible(
                             child: Text(
-                              snapshot.data![index]["status"],
+                              "Pembelian Berhasil",
                               softWrap: false,
                               overflow: TextOverflow.ellipsis,
-                              style: const TextStyle(
+                              style: TextStyle(
                                 color: ColourUtils.blue,
                                 fontSize: 16,
                                 fontWeight: FontWeight.w600,

@@ -2,6 +2,8 @@
 
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:trevago_app/screens/menu/ordered_menu.dart';
+import 'package:trevago_app/screens/payment_screen.dart';
 import 'package:trevago_app/utils/utils.dart';
 
 class DetailOrderPackageScreen extends StatelessWidget {
@@ -17,9 +19,22 @@ class DetailOrderPackageScreen extends StatelessWidget {
 
   String formatPrice(int price) => formatter.format(price).replaceAll(",", ".");
 
+
   @override
   Widget build(BuildContext context) {
     package_transaction = ModalRoute.of(context)!.settings.arguments as Map;
+  void handleOnPayTap() {
+    Navigator.of(context)
+        .pushReplacement(
+          MaterialPageRoute(
+              builder: (context) => PaymentScreen(
+                    directUrl: package_transaction["redirect_url"].toString(),
+                    snapToken: package_transaction["snap_token"].toString(),
+                  )),
+        )
+        .then((_) => Navigator.of(context).pushReplacement(
+            MaterialPageRoute(builder: (context) => const OrderedMenu())));
+  }
 
     return Scaffold(
       appBar: AppBar(
@@ -82,6 +97,26 @@ class DetailOrderPackageScreen extends StatelessWidget {
                     ),
                   ],
                 ),
+                Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+                  const SizedBox(height: 6),
+                  Container(
+                    padding:
+                        const EdgeInsets.symmetric(vertical: 4, horizontal: 12),
+                    decoration: BoxDecoration(
+                      color: ColourUtils.blue,
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    child: Text(
+                      package_transaction["status"].toString(),
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.w600,
+                        fontSize: 13,
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 6),
+                ]),
               ],
             ),
           ),
@@ -207,7 +242,9 @@ class DetailOrderPackageScreen extends StatelessWidget {
                     ),
                     const SizedBox(height: 4),
                     Text(
-                      package_transaction["catatan"],
+                      package_transaction["catatan"]?.isNotEmpty
+                          ? package_transaction["catatan"]
+                          : "Tidak ada catatan",
                       style: const TextStyle(
                         color: ColourUtils.blue,
                         fontWeight: FontWeight.w600,
@@ -298,7 +335,7 @@ class DetailOrderPackageScreen extends StatelessWidget {
                             ),
                           ),
                           Text(
-                            "x ${package_transaction["qty"]} Peserta",
+                            "x ${package_transaction["qty"]}",
                             style: const TextStyle(
                               color: ColourUtils.blue,
                               fontWeight: FontWeight.w400,
@@ -356,6 +393,21 @@ class DetailOrderPackageScreen extends StatelessWidget {
                   ],
                 ),
               ),
+              const SizedBox(width: 8),
+              package_transaction["status"] == "Menunggu Pembayaran" ?
+              Expanded(
+                child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: ColourUtils.blue,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(4),
+                      ),
+                    ),
+                    onPressed: handleOnPayTap,
+                    child: const Text("Lanjutkan Pembayaran",
+                        style: TextStyle(color: Colors.white)),
+                    ),
+              ): const SizedBox()
             ],
           )),
     );

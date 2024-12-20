@@ -6,6 +6,8 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:trevago_app/configs/functions/functions.dart';
 import 'package:trevago_app/models/transport_model.dart';
+import 'package:trevago_app/screens/dashboard_screen.dart';
+import 'package:trevago_app/screens/payment_screen.dart';
 import 'package:trevago_app/utils/utils.dart';
 import 'package:trevago_app/models/users.dart';
 import 'package:trevago_app/widgets/custom_dialog_widget.dart';
@@ -68,24 +70,25 @@ class _OrderTransportScreenState extends State<OrderTransportScreen> {
   Future<void> submitTransaction() async {
     try {
       CustomDialogWidget.showLoadingDialog(context);
-      // await newTransactionPackage(
-      //   selectedDate,
-      //   _noteTextController.text,
-      //   package.price,
-      //   participant,
-      //   package_price,
-      //   participant * package_price,
-      // );
-      // ScaffoldMessenger.of(context).showSnackBar(
-      //   const SnackBar(
-      //     backgroundColor: ColourUtils.blue,
-      //     content: Text("Transaksi Berhasil!"),
-      //   ),
-      // );
-      // Navigator.of(context).pushNamedAndRemoveUntil(
-      //   DashboardScreen.route,
-      //   (route) => false,
-      // );
+      var res = await newTransactionTransport(
+        transport.id,
+        location,
+        bookingDate,
+      );
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          backgroundColor: ColourUtils.blue,
+          content: Text("Transaksi Berhasil!"),
+        ),
+      );
+       Navigator.of(context).pushReplacement(
+        MaterialPageRoute(
+            builder: (context) => PaymentScreen(
+                  directUrl: res["redirect_url"].toString(),
+                  snapToken: res["snap_token"].toString(),
+                )),
+      ).then((_) => Navigator.of(context).pushReplacement(
+            MaterialPageRoute(builder: (context) => const DashboardScreen())));
     } catch (error) {
       Navigator.of(context).pop(); // Close Loading Dialog
       CustomDialogWidget.showErrorDialog(context, error.toString());

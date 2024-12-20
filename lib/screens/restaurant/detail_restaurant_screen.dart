@@ -82,7 +82,11 @@ class _DetailRestaurantScreenState extends State<DetailRestaurantScreen> {
                       borderRadius: BorderRadius.circular(16),
                       boxShadow: [
                         BoxShadow(
+<<<<<<< HEAD
                           color: Colors.black.withValues(alpha: 255 / 4),
+=======
+                          color: Colors.black.withOpacity(0.25),
+>>>>>>> 21c589e (payment)
                           offset: const Offset(1, 1),
                           blurRadius: 4,
                         ),

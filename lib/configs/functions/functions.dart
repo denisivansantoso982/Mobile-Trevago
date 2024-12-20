@@ -148,7 +148,7 @@ Future<List> getRestaurants() async {
   }
 }
 
-Future<void> newTransactionPackage(
+Future<Map> newTransactionPackage(
   DateTime order_date,
   String note,
   int package,
@@ -158,7 +158,7 @@ Future<void> newTransactionPackage(
 ) async {
   try {
     final Users userInfo = await preferences.getUserProfile();
-    await api.addTransactionPackage(
+    return await api.addTransactionPackage(
       userInfo.token,
       order_date,
       note,
@@ -172,24 +172,16 @@ Future<void> newTransactionPackage(
   }
 }
 
-Future<void> newTransactionTransport(
-  String note,
+Future<Map> newTransactionTransport(
   int transport,
-  int duration,
-  int price,
-  int subtotal,
   String location,
   DateTime rent_date,
 ) async {
   try {
     final Users userInfo = await preferences.getUserProfile();
-    await api.addTransactionTransport(
+    return await api.addTransactionTransport(
       userInfo.token,
-      note,
       transport,
-      duration,
-      price,
-      subtotal,
       location,
       rent_date,
     );
@@ -204,6 +196,17 @@ Future<List> getTransactionsPackage() async {
     final List transports = await api.getListTransactionPackage(
       userInfo.token,
     );
+    return Future.value(transports);
+  } catch (error) {
+    return Future.error(error);
+  }
+}
+
+Future<bool> getTransactionsPackageById(String id) async {
+  try {
+    final Users userInfo = await preferences.getUserProfile();
+    final bool transports =
+        await api.getListTransactionPackageById(userInfo.token, id);
     return Future.value(transports);
   } catch (error) {
     return Future.error(error);

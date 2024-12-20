@@ -74,7 +74,11 @@ class TourTransparentCardWidget extends StatelessWidget {
                   vertical: 4,
                 ),
                 decoration: BoxDecoration(
+<<<<<<< HEAD
                   color: Colors.black.withValues(alpha: 255 / 4),
+=======
+                  color: Colors.black.withOpacity(.5),
+>>>>>>> 21c589e (payment)
                   borderRadius:
                       const BorderRadius.vertical(bottom: Radius.circular(8)),
                 ),
