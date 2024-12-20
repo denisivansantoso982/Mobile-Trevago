@@ -45,11 +45,57 @@ class _RestaurantsScreenState extends State<RestaurantsScreen> {
           description: element["deskripsi_rm"],
         ));
       }
-      return Future.value(listRestaurant);
+      return Future.value(listRestaurant
+          .where((e) => e.title.contains(_searchController.text))
+          .toList());
     } catch (error) {
       CustomDialogWidget.showErrorDialog(context, error.toString());
       return Future.error(error);
     }
+  }
+
+  void showFilterDialog() {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text(
+          "Cari Kuliner",
+          style: TextStyleUtils.mediumDarkGray(20),
+        ),
+        content: SizedBox(
+          child: TextField(
+            controller: _searchController,
+            keyboardType: TextInputType.name,
+            style: TextStyleUtils.regularDarkGray(16),
+            decoration: InputDecorationUtils.outlinedBlueBorder(
+                "Cari Kuliner disini..."),
+          ),
+        ),
+        actions: [
+          OutlinedButton(
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+            style: ButtonStyleUtils.outlinedActiveButton,
+            child: Text(
+              "Batal",
+              style: TextStyleUtils.mediumBlue(18),
+            ),
+          ),
+          ElevatedButton(
+            onPressed: () {
+              setState(() {});
+              Navigator.of(context).pop();
+            },
+            style: ButtonStyleUtils.activeButton,
+            child: Text(
+              "Cari",
+              style: TextStyleUtils.mediumWhite(18),
+            ),
+          ),
+        ],
+      ),
+    );
   }
 
   @override
@@ -72,12 +118,14 @@ class _RestaurantsScreenState extends State<RestaurantsScreen> {
           icon: const Icon(Icons.chevron_left),
         ),
         title: Text(
-          "Wisata",
+          "Kuliner",
           style: TextStyleUtils.mediumWhite(24),
         ),
         actions: [
           TextButton(
-            onPressed: () {},
+            onPressed: () {
+              showFilterDialog();
+            },
             child: Row(
               children: [
                 const Icon(

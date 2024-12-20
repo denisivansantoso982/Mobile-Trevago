@@ -42,11 +42,54 @@ class _ToursScreenState extends State<ToursScreen> {
           image: element["gambar_wisata"],
         ));
       }
-      return Future.value(listTour);
+      return Future.value(listTour.where((e) => e.title.contains(_searchController.text)).toList());
     } catch (error) {
       CustomDialogWidget.showErrorDialog(context, error.toString());
       return Future.error(error);
     }
+  }
+
+  void showFilterDialog() {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text(
+          "Cari Tempat Wisata",
+          style: TextStyleUtils.mediumDarkGray(20),
+        ),
+        content: SizedBox(
+          child: TextField(
+            controller: _searchController,
+            keyboardType: TextInputType.name,
+            style: TextStyleUtils.regularDarkGray(16),
+            decoration: InputDecorationUtils.outlinedBlueBorder("Cari wisatamu disini..."),
+          ),
+        ),
+        actions: [
+          OutlinedButton(
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+            style: ButtonStyleUtils.outlinedActiveButton,
+            child: Text(
+              "Batal",
+              style: TextStyleUtils.mediumBlue(18),
+            ),
+          ),
+          ElevatedButton(
+            onPressed: () {
+              setState(() {});
+              Navigator.of(context).pop();
+            },
+            style: ButtonStyleUtils.activeButton,
+            child: Text(
+              "Cari",
+              style: TextStyleUtils.mediumWhite(18),
+            ),
+          ),
+        ],
+      ),
+    );
   }
 
   @override
@@ -74,7 +117,9 @@ class _ToursScreenState extends State<ToursScreen> {
         ),
         actions: [
           TextButton(
-            onPressed: () {},
+            onPressed: () {
+              showFilterDialog();
+            },
             child: Row(
               children: [
                 const Icon(

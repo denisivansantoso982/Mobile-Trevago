@@ -59,7 +59,7 @@ class _DetailTourScreenState extends State<DetailTourScreen> {
                   child: ElevatedButton(
                     onPressed: () => Navigator.of(context).pop(),
                     style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.black.withValues(alpha: 255 / 4),
+                        backgroundColor: Colors.white,
                         shape: const CircleBorder()),
                     child: const Icon(
                       Icons.chevron_left,

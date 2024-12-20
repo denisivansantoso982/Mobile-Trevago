@@ -15,6 +15,7 @@ class TransportsScreen extends StatefulWidget {
 }
 
 class _TransportsScreenState extends State<TransportsScreen> {
+  final TextEditingController _searchController = TextEditingController();
 
   Future<List<TransportModel>> retrieveTransports() async {
     try {
@@ -33,16 +34,66 @@ class _TransportsScreenState extends State<TransportsScreen> {
           ),
         );
       }
-      return Future.value(listTransport);
+      return Future.value(listTransport.where((e) => e.name.contains(_searchController.text)).toList());
     } catch (error) {
       return Future.error(error);
     }
   }
 
+  void showFilterDialog() {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text(
+          "Cari Transportasi",
+          style: TextStyleUtils.mediumDarkGray(20),
+        ),
+        content: SizedBox(
+          child: TextField(
+            controller: _searchController,
+            keyboardType: TextInputType.name,
+            style: TextStyleUtils.regularDarkGray(16),
+            decoration: InputDecorationUtils.outlinedBlueBorder(
+                "Cari transportasi disini..."),
+          ),
+        ),
+        actions: [
+          OutlinedButton(
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+            style: ButtonStyleUtils.outlinedActiveButton,
+            child: Text(
+              "Batal",
+              style: TextStyleUtils.mediumBlue(18),
+            ),
+          ),
+          ElevatedButton(
+            onPressed: () {
+              setState(() {});
+              Navigator.of(context).pop();
+            },
+            style: ButtonStyleUtils.activeButton,
+            child: Text(
+              "Cari",
+              style: TextStyleUtils.mediumWhite(18),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _searchController.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-       appBar: AppBar(
+      appBar: AppBar(
         backgroundColor: ColourUtils.blue,
         leadingWidth: 48,
         leading: IconButton(
@@ -56,6 +107,26 @@ class _TransportsScreenState extends State<TransportsScreen> {
           "Transportasi",
           style: TextStyleUtils.mediumWhite(24),
         ),
+        actions: [
+          TextButton(
+            onPressed: () {
+              showFilterDialog();
+            },
+            child: Row(
+              children: [
+                const Icon(
+                  Icons.filter_alt_outlined,
+                  color: Colors.white,
+                ),
+                const SizedBox(width: 2),
+                Text(
+                  "Filter",
+                  style: TextStyleUtils.regularWhite(18),
+                ),
+              ],
+            ),
+          ),
+        ],
       ),
       body: FutureBuilder<List<TransportModel>>(
         future: retrieveTransports(),

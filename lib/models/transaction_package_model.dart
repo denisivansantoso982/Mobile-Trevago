@@ -1,7 +1,7 @@
 import 'package:trevago_app/models/tour_package_model.dart';
 
-class TransactionModel {
-  const TransactionModel({
+class TransactionPackageModel {
+  const  TransactionPackageModel({
     required this.id,
     required this.orderDate,
     this.admin,
@@ -11,6 +11,10 @@ class TransactionModel {
     required this.qty,
     required this.price,
     required this.subtotal,
+    this.snapToken,
+    this.redirectURL,
+    required this.status,
+    this.midtransId,
   });
 
   final int id;
@@ -22,4 +26,8 @@ class TransactionModel {
   final int qty;
   final int price;
   final int subtotal;
+  final String? snapToken;
+  final String? redirectURL;
+  final String status;
+  final String? midtransId;
 }
