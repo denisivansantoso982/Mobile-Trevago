@@ -163,26 +163,26 @@ class _DetailTourScreenState extends State<DetailTourScreen> {
           )
         ],
       ),
-      bottomNavigationBar: Container(
-        padding: const EdgeInsets.all(8),
-        child: ElevatedButton(
-          onPressed: () {
-            Navigator.of(context).pushNamed(PackagesScreen.route, arguments: tour,);
-          },
-          style: ElevatedButton.styleFrom(
-            backgroundColor: ColourUtils.blue,
-            shape:
-                RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-          ),
-          child: const Text(
-            "Pesan Sekarang",
-            style: TextStyle(
-              color: Colors.white,
-              fontSize: 16,
-            ),
-          ),
-        ),
-      ),
+      // bottomNavigationBar: Container(
+      //   padding: const EdgeInsets.all(8),
+      //   child: ElevatedButton(
+      //     onPressed: () {
+      //       Navigator.of(context).pushNamed(PackagesScreen.route, arguments: tour,);
+      //     },
+      //     style: ElevatedButton.styleFrom(
+      //       backgroundColor: ColourUtils.blue,
+      //       shape:
+      //           RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+      //     ),
+      //     child: const Text(
+      //       "Pesan Sekarang",
+      //       style: TextStyle(
+      //         color: Colors.white,
+      //         fontSize: 16,
+      //       ),
+      //     ),
+      //   ),
+      // ),
     );
   }
 }

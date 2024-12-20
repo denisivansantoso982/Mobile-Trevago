@@ -36,6 +36,12 @@ class _TransactionScreenState extends State<TransactionScreen> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: ColourUtils.blue,
+        leading: IconButton(
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+          icon: const Icon(Icons.chevron_left, color: Colors.white,),
+        ),
         title: Text(
           "Daftar Pesanan",
           style: TextStyleUtils.mediumWhite(20),

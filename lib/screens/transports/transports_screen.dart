@@ -155,13 +155,11 @@ class _TransportsScreenState extends State<TransportsScreen> {
                 ],
               ),
             );
-          } else if (!snapshot.hasData) {
-            const Text(
-              "Transportasi Tidak Ditemukan!!",
-              style: TextStyle(
-                fontSize: 16,
-                color: Colors.black87,
-                fontWeight: FontWeight.w600,
+          } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+            return Center(
+              child: Text(
+                "Transportasi Tidak Ditemukan!!",
+                style: TextStyleUtils.regularGray(16),
               ),
             );
           }

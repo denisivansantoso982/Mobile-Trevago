@@ -164,13 +164,11 @@ class _ToursScreenState extends State<ToursScreen> {
                 ],
               ),
             );
-          } else if (!snapshot.hasData) {
-            const Text(
-              "Wisata Tidak Ditemukan!!",
-              style: TextStyle(
-                fontSize: 16,
-                color: Colors.black87,
-                fontWeight: FontWeight.w600,
+          } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+            return Center(
+              child: Text(
+                "Wisata Tidak Ditemukan!!",
+                style: TextStyleUtils.regularGray(16),
               ),
             );
           }

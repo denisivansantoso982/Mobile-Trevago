@@ -47,45 +47,47 @@ class ListTourCardWidget extends StatelessWidget {
                 Container(
                   width: double.infinity,
                   padding: const EdgeInsets.all(8),
-                  height: 72,
+                  height: 80,
                   color: Colors.white,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      Text(
-                        title,
-                        overflow: TextOverflow.ellipsis,
-                        softWrap: false,
-                        style: TextStyleUtils.mediumDarkGray(22),
-                      ),
-                      const SizedBox(height: 4),
-                      Row(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          const Icon(
-                            Icons.place,
-                            color: ColourUtils.gray,
-                            size: 20,
-                          ),
-                          const SizedBox(width: 4),
-                          Text(
-                            location,
-                            overflow: TextOverflow.ellipsis,
-                            softWrap: false,
-                            style: TextStyleUtils.regularGray(16),
-                          ),
-                        ],
-                      ),
-                      (price == null
-                          ? const SizedBox()
-                          : Text(
-                              price!,
+                  child: SingleChildScrollView(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        Text(
+                          title,
+                          overflow: TextOverflow.ellipsis,
+                          softWrap: false,
+                          style: TextStyleUtils.mediumDarkGray(22),
+                        ),
+                        const SizedBox(height: 4),
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            const Icon(
+                              Icons.place,
+                              color: ColourUtils.gray,
+                              size: 20,
+                            ),
+                            const SizedBox(width: 4),
+                            Text(
+                              location,
                               overflow: TextOverflow.ellipsis,
                               softWrap: false,
-                              style: TextStyleUtils.semiboldBlue(18),
-                            )),
-                    ],
+                              style: TextStyleUtils.regularGray(16),
+                            ),
+                          ],
+                        ),
+                        (price == null
+                            ? const SizedBox()
+                            : Text(
+                                price!,
+                                overflow: TextOverflow.ellipsis,
+                                softWrap: false,
+                                style: TextStyleUtils.semiboldBlue(18),
+                              )),
+                      ],
+                    ),
                   ),
                 ),
               ],

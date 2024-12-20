@@ -175,17 +175,14 @@ class _PackagesScreenState extends State<PackagesScreen> {
                 ],
               ),
             );
-          } else if (!snapshot.hasData) {
-            const Text(
-              "Paket Wisata Tidak Ada!!",
-              style: TextStyle(
-                fontSize: 16,
-                color: Colors.black87,
-                fontWeight: FontWeight.w600,
+          } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+            return Center(
+              child: Text(
+                "Paket Wisata Tidak Ditemukan!!",
+                style: TextStyleUtils.regularGray(16),
               ),
             );
           }
-          // return Text(snapshot.data.toString());
           return GridView.builder(
             padding: const EdgeInsets.symmetric(
               horizontal: 24,

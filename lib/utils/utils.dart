@@ -343,17 +343,21 @@ class InputDecorationUtils {
     EdgeInsetsGeometry? contentPadding,
   }) =>
       InputDecoration(
-        isDense: true,
         suffix: suffix,
         prefix: prefix,
-        hintStyle: hintStyle ?? TextStyleUtils.mediumLightGray(16),
+        hintStyle: hintStyle ?? TextStyleUtils.semiboldLightGray(16),
         contentPadding: contentPadding ??
             const EdgeInsets.symmetric(
-              horizontal: 4,
-              vertical: 2,
+              horizontal: 8,
+              vertical: 12,
             ),
+        isDense: true,
         hintText: hintText,
-        enabledBorder: InputBorder.none,
-        focusedBorder: InputBorder.none,
+        enabledBorder: const OutlineInputBorder(
+          borderSide: BorderSide.none,
+        ),
+        focusedBorder: const OutlineInputBorder(
+          borderSide: BorderSide.none,
+        ),
       );
 }

@@ -125,7 +125,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           controller: _usernameTextContrroller,
                           keyboardType: TextInputType.name,
                           style: TextStyleUtils.semiboldBlue(16),
-                          decoration: InputDecorationUtils.outlinedBlueBorder(
+                          decoration: InputDecorationUtils.noBorder(
                               "Username"),
                         ),
                       ),
@@ -157,7 +157,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           keyboardType: TextInputType.visiblePassword,
                           obscureText: securePass,
                           style: TextStyleUtils.semiboldBlue(16),
-                          decoration: InputDecorationUtils.outlinedBlueBorder(
+                          decoration: InputDecorationUtils.noBorder(
                               "Kata Sandi"),
                         ),
                       ),

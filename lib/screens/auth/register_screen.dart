@@ -168,7 +168,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           controller: _nameTextController,
                           keyboardType: TextInputType.name,
                           style: TextStyleUtils.semiboldBlue(16),
-                          decoration: InputDecorationUtils.outlinedBlueBorder(
+                          decoration: InputDecorationUtils.noBorder(
                               "Nama Pengguna"),
                         ),
                       ),
@@ -206,7 +206,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             FilteringTextInputFormatter.deny(RegExp(r"\s+")),
                           ],
                           style: TextStyleUtils.semiboldBlue(16),
-                          decoration: InputDecorationUtils.outlinedBlueBorder(
+                          decoration: InputDecorationUtils.noBorder(
                               "Username"),
                         ),
                       ),
@@ -241,7 +241,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           keyboardType: TextInputType.emailAddress,
                           style: TextStyleUtils.semiboldBlue(16),
                           decoration:
-                              InputDecorationUtils.outlinedBlueBorder("Email"),
+                              InputDecorationUtils.noBorder("Email"),
                         ),
                       ),
                     ],
@@ -277,7 +277,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           inputFormatters: [
                             FilteringTextInputFormatter.digitsOnly,
                           ],
-                          decoration: InputDecorationUtils.outlinedBlueBorder(
+                          decoration: InputDecorationUtils.noBorder(
                               "08xxxxxxxxxx"),
                         ),
                       ),
@@ -309,7 +309,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           keyboardType: TextInputType.visiblePassword,
                           obscureText: securePass,
                           style: TextStyleUtils.semiboldBlue(16),
-                          decoration: InputDecorationUtils.outlinedBlueBorder(
+                          decoration: InputDecorationUtils.noBorder(
                               "Kata Sandi"),
                         ),
                       ),
@@ -356,7 +356,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           keyboardType: TextInputType.visiblePassword,
                           obscureText: secureConfirmPass,
                           style: TextStyleUtils.semiboldBlue(16),
-                          decoration: InputDecorationUtils.outlinedBlueBorder(
+                          decoration: InputDecorationUtils.noBorder(
                               "Ulangi Kata Sandi"),
                         ),
                       ),

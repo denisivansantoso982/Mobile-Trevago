@@ -46,44 +46,46 @@ class ListRestaurantCardWidget extends StatelessWidget {
                 Container(
                   width: double.infinity,
                   padding: const EdgeInsets.all(8),
-                  height: 86,
+                  height: 96,
                   color: Colors.white,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      Text(
-                        restaurant.title,
-                        overflow: TextOverflow.ellipsis,
-                        softWrap: false,
-                        style: TextStyleUtils.mediumDarkGray(18),
-                      ),
-                      const SizedBox(height: 4),
-                      Row(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          const Icon(
-                            Icons.place,
-                            color: ColourUtils.darkGray,
-                            size: 20,
-                          ),
-                          const SizedBox(width: 4),
-                          Text(
-                            restaurant.location,
-                            overflow: TextOverflow.ellipsis,
-                            softWrap: false,
-                            style: TextStyleUtils.regularDarkGray(14),
-                          ),
-                        ],
-                      ),
-                      const SizedBox(height: 4),
-                      Text(
-                        "Rp. ${formatPrice(restaurant.price)}",
-                        overflow: TextOverflow.ellipsis,
-                        softWrap: false,
-                        style: TextStyleUtils.semiboldBlue(18),
-                      ),
-                    ],
+                  child: SingleChildScrollView(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        Text(
+                          restaurant.title,
+                          overflow: TextOverflow.ellipsis,
+                          softWrap: false,
+                          style: TextStyleUtils.mediumDarkGray(18),
+                        ),
+                        const SizedBox(height: 4),
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            const Icon(
+                              Icons.place,
+                              color: ColourUtils.darkGray,
+                              size: 20,
+                            ),
+                            const SizedBox(width: 4),
+                            Text(
+                              restaurant.location,
+                              overflow: TextOverflow.ellipsis,
+                              softWrap: false,
+                              style: TextStyleUtils.regularDarkGray(14),
+                            ),
+                          ],
+                        ),
+                        const SizedBox(height: 4),
+                        Text(
+                          "Rp. ${formatPrice(restaurant.price)}",
+                          overflow: TextOverflow.ellipsis,
+                          softWrap: false,
+                          style: TextStyleUtils.semiboldBlue(18),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ],

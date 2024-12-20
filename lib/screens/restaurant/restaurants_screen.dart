@@ -170,13 +170,11 @@ class _RestaurantsScreenState extends State<RestaurantsScreen> {
                 ],
               ),
             );
-          } else if (!snapshot.hasData) {
-            const Text(
-              "Wisata Tidak Ditemukan!!",
-              style: TextStyle(
-                fontSize: 16,
-                color: Colors.black87,
-                fontWeight: FontWeight.w600,
+          } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+            return Center(
+              child: Text(
+                "Kuliner Tidak Ditemukan!!",
+                style: TextStyleUtils.regularGray(16),
               ),
             );
           }
