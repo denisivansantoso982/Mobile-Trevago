@@ -82,7 +82,7 @@ class _DetailTourScreenState extends State<DetailTourScreen> {
                       borderRadius: BorderRadius.circular(16),
                       boxShadow: [
                         BoxShadow(
-                          color: Colors.black.withValues(alpha: 255 / 4),
+                          color: Colors.black.withAlpha(50),
                           offset: const Offset(1, 1),
                           blurRadius: 4,
                         ),

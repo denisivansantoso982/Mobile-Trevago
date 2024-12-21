@@ -93,7 +93,7 @@ class _OrderedMenuState extends State<OrderedMenu> {
                   borderRadius: BorderRadius.circular(8),
                   boxShadow: [
                     BoxShadow(
-                      color: Colors.black.withValues(alpha: 255 / 4),
+                      color: Colors.black.withAlpha(50),
                       blurRadius: 4,
                       offset: const Offset(.5, 1),
                     ),

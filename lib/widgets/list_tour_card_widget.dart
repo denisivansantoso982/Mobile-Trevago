@@ -25,7 +25,7 @@ class ListTourCardWidget extends StatelessWidget {
         color: Colors.white,
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withValues(alpha: 255 / 4),
+            color: Colors.black.withAlpha(50),
             blurRadius: 4,
             offset: const Offset(1, 2),
           ),

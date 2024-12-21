@@ -66,7 +66,7 @@ class DetailOrderPackageScreen extends StatelessWidget {
               boxShadow: [
                 BoxShadow(
                   blurRadius: 4,
-                  color: Colors.black.withValues(alpha: 255 / 4),
+                  color: Colors.black.withAlpha(50),
                   offset: const Offset(0, 2),
                 ),
               ],
@@ -129,7 +129,7 @@ class DetailOrderPackageScreen extends StatelessWidget {
               boxShadow: [
                 BoxShadow(
                   blurRadius: 4,
-                  color: Colors.black.withValues(alpha: 255 / 4),
+                  color: Colors.black.withAlpha(50),
                   offset: const Offset(0, 2),
                 ),
               ],
@@ -220,7 +220,7 @@ class DetailOrderPackageScreen extends StatelessWidget {
               boxShadow: [
                 BoxShadow(
                   blurRadius: 4,
-                  color: Colors.black.withValues(alpha: 255 / 4),
+                  color: Colors.black.withAlpha(50),
                   offset: const Offset(0, 2),
                 ),
               ],
@@ -303,7 +303,7 @@ class DetailOrderPackageScreen extends StatelessWidget {
                       ),
                       decoration: BoxDecoration(
                         border: Border.all(
-                          color: Colors.black.withValues(alpha: 255 / 4),
+                          color: Colors.black.withAlpha(50),
                           width: 1,
                         ),
                         borderRadius: BorderRadius.circular(4),
@@ -361,7 +361,7 @@ class DetailOrderPackageScreen extends StatelessWidget {
             boxShadow: [
               BoxShadow(
                 blurRadius: 4,
-                color: Colors.black.withValues(alpha: 255 / 4),
+                color: Colors.black.withAlpha(50),
                 offset: const Offset(0, -2),
               ),
             ],

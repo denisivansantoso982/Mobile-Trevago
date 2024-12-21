@@ -396,7 +396,7 @@ class _OrderPackageScreenState extends State<OrderPackageScreen> {
                           color: Colors.white,
                           boxShadow: [
                             BoxShadow(
-                              color: Colors.black.withValues(alpha: 255 / 4),
+                              color: Colors.black.withAlpha(50),
                               blurRadius: 4,
                               offset: const Offset(0, 1),
                             ),
@@ -448,7 +448,7 @@ class _OrderPackageScreenState extends State<OrderPackageScreen> {
                           color: Colors.white,
                           boxShadow: [
                             BoxShadow(
-                              color: Colors.black.withValues(alpha: 255 / 4),
+                              color: Colors.black.withAlpha(50),
                               blurRadius: 4,
                               offset: const Offset(0, 1),
                             ),
@@ -542,7 +542,7 @@ class _OrderPackageScreenState extends State<OrderPackageScreen> {
                               fit: BoxFit.cover),
                           boxShadow: [
                             BoxShadow(
-                              color: Colors.black.withValues(alpha: 255 / 4),
+                              color: Colors.black.withAlpha(50),
                               blurRadius: 4,
                               offset: const Offset(0, 1),
                             ),

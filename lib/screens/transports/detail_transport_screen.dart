@@ -218,7 +218,7 @@ class _DetailTransportScreenState extends State<DetailTransportScreen> {
               boxShadow: [
                 BoxShadow(
                   offset: const Offset(0, 1),
-                  color: Colors.black.withValues(alpha: 255 / 4),
+                  color: Colors.black.withAlpha(50),
                   blurRadius: 4,
                 ),
               ],
