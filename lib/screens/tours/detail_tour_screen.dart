@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:trevago_app/configs/api/api.dart';
 import 'package:trevago_app/models/tour_model.dart';
-import 'package:trevago_app/screens/tour_packages/packages_screen.dart';
 import 'package:trevago_app/utils/utils.dart';
 
 class DetailTourScreen extends StatefulWidget {

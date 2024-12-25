@@ -34,7 +34,7 @@ class _TransportsScreenState extends State<TransportsScreen> {
           ),
         );
       }
-      return Future.value(listTransport.where((e) => e.name.contains(_searchController.text)).toList());
+      return Future.value(listTransport.where((e) => e.name.toLowerCase().contains(_searchController.text.toLowerCase())).toList());
     } catch (error) {
       return Future.error(error);
     }

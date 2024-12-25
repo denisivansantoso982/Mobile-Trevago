@@ -42,7 +42,7 @@ class _ToursScreenState extends State<ToursScreen> {
           image: element["gambar_wisata"],
         ));
       }
-      return Future.value(listTour.where((e) => e.title.contains(_searchController.text)).toList());
+      return Future.value(listTour.where((e) => e.title.toLowerCase().contains(_searchController.text.toLowerCase())).toList());
     } catch (error) {
       CustomDialogWidget.showErrorDialog(context, error.toString());
       return Future.error(error);

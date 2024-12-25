@@ -51,7 +51,7 @@ class _PackagesScreenState extends State<PackagesScreen> {
         ));
       }
       return Future.value(listPackage
-          .where((e) => e.title.contains(_searchController.text))
+          .where((e) => e.title.toLowerCase().contains(_searchController.text.toLowerCase()))
           .toList());
     } catch (error) {
       CustomDialogWidget.showErrorDialog(context, error.toString());
