@@ -154,9 +154,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
           "Ubah Profil",
           style: TextStyleUtils.boldDarkGray(20),
         ),
-        content: ListView(
+        content: SingleChildScrollView(child: Column(
           // crossAxisAlignment: CrossAxisAlignment.stretch,
-          shrinkWrap: true,
+          // shrinkWrap: true,
           children: [
             // *Name
             TextField(
@@ -230,6 +230,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             ),
           ],
         ),
+        ),
         actions: [
           OutlinedButton(
             onPressed: () {
@@ -264,9 +265,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
           "Ganti Password",
           style: TextStyleUtils.boldDarkGray(20),
         ),
-        content: ListView(
+        content:SingleChildScrollView(child: Column(
           // crossAxisAlignment: CrossAxisAlignment.stretch,
-          shrinkWrap: true,
+          //shrinkWrap: true,
           children: [
             // *Old Pass
             TextField(
@@ -304,6 +305,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               ),
             ),
           ],
+        ),
         ),
         actions: [
           OutlinedButton(
