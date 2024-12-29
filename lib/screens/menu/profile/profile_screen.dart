@@ -154,81 +154,82 @@ class _ProfileScreenState extends State<ProfileScreen> {
           "Ubah Profil",
           style: TextStyleUtils.boldDarkGray(20),
         ),
-        content: ListView(
-          // crossAxisAlignment: CrossAxisAlignment.stretch,
-          shrinkWrap: true,
-          children: [
-            // *Name
-            TextField(
-              controller: _nameTextController,
-              style: TextStyleUtils.regularDarkGray(16),
-              keyboardType: TextInputType.name,
-              inputFormatters: [
-                LengthLimitingTextInputFormatter(100),
-              ],
-              cursorColor: ColourUtils.blue,
-              decoration: InputDecorationUtils.outlinedDeepGrayBorder("Nama",
-                contentPadding: const EdgeInsets.symmetric(
-                  horizontal: 8,
-                  vertical: 12,
+        content: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              // *Name
+              TextField(
+                controller: _nameTextController,
+                style: TextStyleUtils.regularDarkGray(16),
+                keyboardType: TextInputType.name,
+                inputFormatters: [
+                  LengthLimitingTextInputFormatter(100),
+                ],
+                cursorColor: ColourUtils.blue,
+                decoration: InputDecorationUtils.outlinedDeepGrayBorder("Nama",
+                  contentPadding: const EdgeInsets.symmetric(
+                    horizontal: 8,
+                    vertical: 12,
+                  ),
                 ),
               ),
-            ),
-            const SizedBox(height: 12),
-            // *Phone
-            TextField(
-              controller: _phoneTextController,
-              style: TextStyleUtils.regularDarkGray(16),
-              keyboardType: TextInputType.phone,
-              inputFormatters: [
-                LengthLimitingTextInputFormatter(15),
-                FilteringTextInputFormatter.digitsOnly,
-              ],
-              cursorColor: ColourUtils.blue,
-              decoration: InputDecorationUtils.outlinedDeepGrayBorder("Nomor Telepon",
-                contentPadding: const EdgeInsets.symmetric(
-                  horizontal: 8,
-                  vertical: 12,
+              const SizedBox(height: 12),
+              // *Phone
+              TextField(
+                controller: _phoneTextController,
+                style: TextStyleUtils.regularDarkGray(16),
+                keyboardType: TextInputType.phone,
+                inputFormatters: [
+                  LengthLimitingTextInputFormatter(15),
+                  FilteringTextInputFormatter.digitsOnly,
+                ],
+                cursorColor: ColourUtils.blue,
+                decoration: InputDecorationUtils.outlinedDeepGrayBorder("Nomor Telepon",
+                  contentPadding: const EdgeInsets.symmetric(
+                    horizontal: 8,
+                    vertical: 12,
+                  ),
                 ),
               ),
-            ),
-            const SizedBox(height: 12),
-            // *Email
-            TextField(
-              controller: _emailTextController,
-              style: TextStyleUtils.regularDarkGray(16),
-              keyboardType: TextInputType.emailAddress,
-              inputFormatters: [
-                LengthLimitingTextInputFormatter(100),
-              ],
-              cursorColor: ColourUtils.blue,
-              decoration: InputDecorationUtils.outlinedDeepGrayBorder(
-                "Email",
-                contentPadding: const EdgeInsets.symmetric(
-                  horizontal: 8,
-                  vertical: 12,
+              const SizedBox(height: 12),
+              // *Email
+              TextField(
+                controller: _emailTextController,
+                style: TextStyleUtils.regularDarkGray(16),
+                keyboardType: TextInputType.emailAddress,
+                inputFormatters: [
+                  LengthLimitingTextInputFormatter(100),
+                ],
+                cursorColor: ColourUtils.blue,
+                decoration: InputDecorationUtils.outlinedDeepGrayBorder(
+                  "Email",
+                  contentPadding: const EdgeInsets.symmetric(
+                    horizontal: 8,
+                    vertical: 12,
+                  ),
                 ),
               ),
-            ),
-            const SizedBox(height: 12),
-            // *Username
-            TextField(
-              controller: _usernameTextController,
-              style: TextStyleUtils.regularDarkGray(16),
-              keyboardType: TextInputType.name,
-              inputFormatters: [
-                LengthLimitingTextInputFormatter(50),
-              ],
-              cursorColor: ColourUtils.blue,
-              decoration: InputDecorationUtils.outlinedDeepGrayBorder(
-                "Username",
-                contentPadding: const EdgeInsets.symmetric(
-                  horizontal: 8,
-                  vertical: 12,
+              const SizedBox(height: 12),
+              // *Username
+              TextField(
+                controller: _usernameTextController,
+                style: TextStyleUtils.regularDarkGray(16),
+                keyboardType: TextInputType.name,
+                inputFormatters: [
+                  LengthLimitingTextInputFormatter(50),
+                ],
+                cursorColor: ColourUtils.blue,
+                decoration: InputDecorationUtils.outlinedDeepGrayBorder(
+                  "Username",
+                  contentPadding: const EdgeInsets.symmetric(
+                    horizontal: 8,
+                    vertical: 12,
+                  ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
         actions: [
           OutlinedButton(
@@ -486,7 +487,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           style: ButtonStyleUtils.outlinedActiveButton,
                           child: Text(
                             "Ganti Password",
-                            style: TextStyleUtils.semiboldBlue(16),
+                            style: TextStyleUtils.semiboldBlue(14),
                           ),
                         ),
                       ),
@@ -499,7 +500,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           style: ButtonStyleUtils.activeButton,
                           child: Text(
                             "Ubah Profil",
-                            style: TextStyleUtils.semiboldWhite(16),
+                            style: TextStyleUtils.semiboldWhite(14),
                           ),
                         ),
                       ),
