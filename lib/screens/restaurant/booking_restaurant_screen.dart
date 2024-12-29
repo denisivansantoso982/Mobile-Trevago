@@ -1,8 +1,14 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
+import 'package:trevago_app/configs/functions/functions.dart';
+import 'package:trevago_app/models/restaurant_model.dart';
+import 'package:trevago_app/screens/dashboard_screen.dart';
 import 'package:trevago_app/utils/utils.dart';
+import 'package:trevago_app/widgets/custom_dialog_widget.dart';
 
 class BookingRestaurantScreen extends StatefulWidget {
   const BookingRestaurantScreen({super.key});
@@ -18,6 +24,7 @@ class _BookingRestaurantScreenState extends State<BookingRestaurantScreen> {
   final TextEditingController _dateTextController = TextEditingController();
   final TextEditingController _participantTextController =
       TextEditingController(text: "1");
+  late RestaurantModel restaurant;
   DateTime date = DateTime.now();
   int participant = 1;
 
@@ -25,7 +32,7 @@ class _BookingRestaurantScreenState extends State<BookingRestaurantScreen> {
   void initState() {
     super.initState();
     _dateTextController.text =
-        DateFormat("dd MMMM yyyy").format(DateTime.now());
+        DateFormat("dd MMMM yyyy H:mm").format(DateTime.now());
   }
 
   Future<void> selectDate() async {
@@ -34,7 +41,7 @@ class _BookingRestaurantScreenState extends State<BookingRestaurantScreen> {
       context: context,
       builder: (context) => AlertDialog(
         title: Text(
-          "Pilih Tanggal Penjemputan",
+          "Pilih Waktu Reservasi",
           style: TextStyleUtils.mediumDarkGray(20),
         ),
         content: SizedBox(
@@ -50,12 +57,14 @@ class _BookingRestaurantScreenState extends State<BookingRestaurantScreen> {
               ),
             ),
             builder: (context, child) => CupertinoDatePicker(
-              dateOrder: DatePickerDateOrder.dmy,
-              mode: CupertinoDatePickerMode.date,
+              dateOrder: DatePickerDateOrder.mdy,
+              showDayOfWeek: false,
+              use24hFormat: true,
+              mode: CupertinoDatePickerMode.dateAndTime,
               minimumDate: date,
               initialDateTime: date,
               onDateTimeChanged: (date) {
-                selectedDate = DateTime(date.year, date.month, date.day);
+                selectedDate = date;
               },
             ),
           ),
@@ -76,7 +85,7 @@ class _BookingRestaurantScreenState extends State<BookingRestaurantScreen> {
                 setState(() {
                   date = selectedDate!;
                   _dateTextController.text =
-                      DateFormat("dd MMMM yyyy").format(date);
+                      DateFormat("dd MMMM yyyy H:mm").format(date);
                 });
               }
               Navigator.of(context).pop();
@@ -92,6 +101,22 @@ class _BookingRestaurantScreenState extends State<BookingRestaurantScreen> {
     );
   }
 
+  Future<void> doProcessReservation() async {
+    try {
+      CustomDialogWidget.showLoadingDialog(context);
+      await newReservationRestaurant(restaurant.id, participant, date);
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+        content: Text("Berhasil Melakukan Reservasi!"),
+        backgroundColor: ColourUtils.blue,
+      ));
+      Navigator.of(context)
+          .popUntil(ModalRoute.withName(DashboardScreen.route));
+    } catch (error) {
+      Navigator.of(context).pop(); // Close Loading Dialog
+      CustomDialogWidget.showErrorDialog(context, error.toString());
+    }
+  }
+
   @override
   void dispose() {
     super.dispose();
@@ -101,6 +126,7 @@ class _BookingRestaurantScreenState extends State<BookingRestaurantScreen> {
 
   @override
   Widget build(BuildContext context) {
+    restaurant = ModalRoute.of(context)!.settings.arguments as RestaurantModel;
     return Scaffold(
       appBar: AppBar(
         backgroundColor: ColourUtils.blue,
@@ -296,7 +322,9 @@ class _BookingRestaurantScreenState extends State<BookingRestaurantScreen> {
       bottomNavigationBar: Container(
         padding: const EdgeInsets.all(8),
         child: ElevatedButton(
-          onPressed: () {},
+          onPressed: () {
+            doProcessReservation();
+          },
           style: ElevatedButton.styleFrom(
             backgroundColor: ColourUtils.blue,
             shape:

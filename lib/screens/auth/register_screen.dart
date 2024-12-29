@@ -169,7 +169,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           keyboardType: TextInputType.name,
                           style: TextStyleUtils.semiboldBlue(16),
                           decoration: InputDecorationUtils.noBorder(
-                              "Nama Pengguna"),
+                              "Nama Lengkap Pengguna"),
                         ),
                       ),
                     ],

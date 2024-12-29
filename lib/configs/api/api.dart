@@ -6,13 +6,13 @@ import 'package:http/http.dart' as http;
 
 class ApiConfig {
   // ! pastikan untuk mengubah IP ini dengan IP server
-  static const String url = "http://192.168.1.33:5001/api";
+  static const String url = "http://192.168.43.59:5001/api";
   static const String tour_package_storage =
-      "http://192.168.1.33:5001/storage/wisata";
+      "http://192.168.43.59:5001/storage/wisata";
   static const String transport_storage =
-      "http://192.168.1.33:5001/storage/transport";
+      "http://192.168.43.59:5001/storage/transport";
   static const String restaurant_storage =
-      "http://192.168.1.33:5001/storage/rumahmakan";
+      "http://192.168.43.59:5001/storage/rumahmakan";
 
   late http.Client client;
 
@@ -24,13 +24,15 @@ class ApiConfig {
         "username": username,
         "password": password,
       };
-      http.Response response = await client.post(
-        Uri.parse("${url}/user/login"),
-        headers: {
-          'content-type': 'application/x-www-form-urlencoded',
-        },
-        body: body,
-      ).timeout(const Duration(seconds: 30));
+      http.Response response = await client
+          .post(
+            Uri.parse("${url}/user/login"),
+            headers: {
+              'content-type': 'application/x-www-form-urlencoded',
+            },
+            body: body,
+          )
+          .timeout(const Duration(seconds: 30));
       if (response.statusCode != 200) {
         throw Exception(response.body);
       }
@@ -58,13 +60,14 @@ class ApiConfig {
         "password": password,
         "no_hp": phone,
       };
-      http.Response response = await client.post(
-        Uri.parse("${url}/user/register"),
-        headers: {
-          'content-type': 'application/x-www-form-urlencoded',
-        },
-        body: body,
-      )
+      http.Response response = await client
+          .post(
+            Uri.parse("${url}/user/register"),
+            headers: {
+              'content-type': 'application/x-www-form-urlencoded',
+            },
+            body: body,
+          )
           .timeout(const Duration(seconds: 30));
       if (response.statusCode == 200 || response.statusCode == 201) {
         final Map result = jsonDecode(response.body);
@@ -167,14 +170,14 @@ class ApiConfig {
     }
   }
 
-
   // ? Get Tour Packages
   Future<List> getListTourPackages() async {
     try {
       client = http.Client();
-      http.Response response = await client.get(
-        Uri.parse("${url}/user/getPaketwisata"),
-      )
+      http.Response response = await client
+          .get(
+            Uri.parse("${url}/user/getPaketwisata"),
+          )
           .timeout(const Duration(seconds: 30));
       if (response.statusCode == 200) {
         List result = jsonDecode(response.body);
@@ -209,9 +212,11 @@ class ApiConfig {
   Future<List> getListTransports() async {
     try {
       client = http.Client();
-      http.Response response = await client.get(
-        Uri.parse("${url}/user/getkendaraan"),
-      ).timeout(const Duration(seconds: 30));
+      http.Response response = await client
+          .get(
+            Uri.parse("${url}/user/getkendaraan"),
+          )
+          .timeout(const Duration(seconds: 30));
       if (response.statusCode == 200) {
         List result = jsonDecode(response.body);
         return Future.value(result);
@@ -301,14 +306,15 @@ class ApiConfig {
         "harga": price.toString(),
         "sub_total": subtotal.toString(),
       };
-      http.Response response = await client.post(
-        Uri.parse("${url}/user/createPesananWithDetails"),
-        headers: {
-          'content-type': 'application/x-www-form-urlencoded',
-          'authorization': 'bearer $token',
-        },
-        body: body,
-      )
+      http.Response response = await client
+          .post(
+            Uri.parse("${url}/user/createPesananWithDetails"),
+            headers: {
+              'content-type': 'application/x-www-form-urlencoded',
+              'authorization': 'bearer $token',
+            },
+            body: body,
+          )
           .timeout(const Duration(seconds: 30));
       if (response.statusCode == 200 || response.statusCode == 201) {
         Map result = jsonDecode(response.body);
@@ -335,18 +341,52 @@ class ApiConfig {
         "lokasi_penjemputan": location,
         "waktu_penjemputan": rent_date.toString(),
       };
-      http.Response response = await client.post(
-        Uri.parse("${url}/user/createPesananWithDetailsKendaraan"),
-        headers: {
-          'content-type': 'application/x-www-form-urlencoded',
-          'authorization': 'bearer $token',
-        },
-        body: body,
-      )
+      http.Response response = await client
+          .post(
+            Uri.parse("${url}/user/createPesananWithDetailsKendaraan"),
+            headers: {
+              'content-type': 'application/x-www-form-urlencoded',
+              'authorization': 'bearer $token',
+            },
+            body: body,
+          )
           .timeout(const Duration(seconds: 30));
       if (response.statusCode == 200 || response.statusCode == 201) {
         Map result = jsonDecode(response.body);
         return Future.value(result);
+      }
+      throw Exception(response.body);
+    } catch (error) {
+      return Future.error(error);
+    }
+  }
+
+  // ? Add Reservation Restaurant
+  Future<void> addReservationRestaurant(
+    String token,
+    int restaurant,
+    int amount,
+    DateTime reservation_date,
+  ) async {
+    try {
+      client = http.Client();
+      final Map body = {
+        "waktu_reservasi": reservation_date.toString(),
+        "id_rm": restaurant.toString(),
+        "jumlah_pax": amount.toString(),
+      };
+      http.Response response = await client
+          .post(
+            Uri.parse("${url}/user/addReservasiRm"),
+            headers: {
+              'content-type': 'application/x-www-form-urlencoded',
+              'authorization': 'bearer $token',
+            },
+            body: body,
+          )
+          .timeout(const Duration(seconds: 30));
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        return;
       }
       throw Exception(response.body);
     } catch (error) {

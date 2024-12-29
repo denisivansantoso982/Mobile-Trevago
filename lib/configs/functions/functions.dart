@@ -190,6 +190,24 @@ Future<Map> newTransactionTransport(
   }
 }
 
+Future<void> newReservationRestaurant(
+  int restaurant,
+  int amount,
+  DateTime reservation_date,
+) async {
+  try {
+    final Users userInfo = await preferences.getUserProfile();
+    await api.addReservationRestaurant(
+      userInfo.token,
+      restaurant,
+      amount,
+      reservation_date,
+    );
+  } catch (error) {
+    return Future.error(error);
+  }
+}
+
 Future<List> getTransactionsPackage() async {
   try {
     final Users userInfo = await preferences.getUserProfile();
