@@ -2,7 +2,8 @@
     <application
         android:label="Travego"
         android:name="${applicationName}"
-        android:icon="@mipmap/logooo">
+        android:icon="@mipmap/logooo"
+        android:usesCleartextTraffic="true">
         <activity
             android:name=".MainActivity"
             android:exported="true"
