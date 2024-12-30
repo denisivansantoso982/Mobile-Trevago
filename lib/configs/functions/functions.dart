@@ -86,7 +86,8 @@ Future<void> editProfile(
   String token,
 ) async {
   try {
-    final Map newProfile = await api.editProfile(name, email, username, phone, token);
+    final Map newProfile =
+        await api.editProfile(name, email, username, phone, token);
     await preferences.setUserLogin(Users(
       token: token,
       username: newProfile["username"] ?? "s",
@@ -226,6 +227,17 @@ Future<bool> getTransactionsPackageById(String id) async {
     final bool transports =
         await api.getListTransactionPackageById(userInfo.token, id);
     return Future.value(transports);
+  } catch (error) {
+    return Future.error(error);
+  }
+}
+
+Future<List> getReservationRestaurant() async {
+  try {
+    final Users userInfo = await preferences.getUserProfile();
+    final List reservationRestaurant =
+        await api.getReservationRestaurant(userInfo.token);
+    return reservationRestaurant;
   } catch (error) {
     return Future.error(error);
   }

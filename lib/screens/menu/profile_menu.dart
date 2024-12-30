@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:trevago_app/configs/functions/functions.dart';
 import 'package:trevago_app/screens/menu/profile/profile_screen.dart';
+import 'package:trevago_app/screens/menu/profile/reservation_restaurant_screen.dart';
 import 'package:trevago_app/screens/menu/profile/transaction_screen.dart';
 import 'package:trevago_app/screens/welcome_screen.dart';
 import 'package:trevago_app/utils/utils.dart';
@@ -33,6 +34,14 @@ class _ProfileMenuState extends State<ProfileMenu> {
           ),
           "title": "Transaksi Saya",
           "nav": () => Navigator.of(context).pushNamed(TransactionScreen.route),
+        },
+        {
+          "icon": const Icon(
+            Icons.food_bank_outlined,
+            color: ColourUtils.darkGray,
+          ),
+          "title": "Reservasi Restoran",
+          "nav": () => Navigator.of(context).pushNamed(ReservationRestaurantScreen.route),
         },
         {
           "icon": const Icon(

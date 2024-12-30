@@ -246,6 +246,27 @@ class ApiConfig {
     }
   }
 
+  // ? Get List Reservation Restaurant
+  Future<List> getReservationRestaurant(String token) async {
+    try {
+      client = http.Client();
+      http.Response response = await client.get(
+        Uri.parse("${url}/user/getReservasiRm"),
+        headers: {
+          'content-type': 'application/x-www-form-urlencoded',
+          'authorization': 'bearer $token',
+        },
+      ).timeout(const Duration(seconds: 30));
+      if (response.statusCode == 200) {
+        List result = jsonDecode(response.body);
+        return Future.value(result);
+      }
+      throw Exception(response.body);
+    } catch (error) {
+      return Future.error(error);
+    }
+  }
+
   // ? Get List Transaction Package
   Future<List> getListTransactionPackage(String token) async {
     try {

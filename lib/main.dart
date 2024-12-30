@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:trevago_app/screens/menu/profile/profile_screen.dart';
+import 'package:trevago_app/screens/menu/profile/reservation_restaurant_screen.dart';
 import 'package:trevago_app/screens/menu/profile/transaction_screen.dart';
 import 'package:trevago_app/screens/restaurant/booking_restaurant_screen.dart';
+import 'package:trevago_app/screens/restaurant/detail_reservation_restaurant_screen.dart';
 import 'package:trevago_app/screens/restaurant/detail_restaurant_screen.dart';
 import 'package:trevago_app/screens/restaurant/restaurants_screen.dart';
 import 'package:trevago_app/screens/tours/detail_tour_screen.dart';
@@ -64,6 +66,8 @@ class MyApp extends StatelessWidget {
         TransactionScreen.route: (context) => const TransactionScreen(),
         ProfileScreen.route: (context) => const ProfileScreen(),
         MapsScreen.route: (context) => const MapsScreen(),
+        ReservationRestaurantScreen.route: (context) => const ReservationRestaurantScreen(),
+        DetailReservationRestaurantScreen.route: (context) => DetailReservationRestaurantScreen(),
       },
     );
   }
